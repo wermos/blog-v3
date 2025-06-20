@@ -20,6 +20,8 @@ jobs:
           node-version: 20
 
       - run: npm ci
+      - name: Install Playwright Browser
+        run: npx playwright install --with-deps chromium
       - run: npm run build
 
       - uses: actions/configure-pages@v5
