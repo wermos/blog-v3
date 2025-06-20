@@ -13,7 +13,7 @@ import rehypeMermaid from 'rehype-mermaid';
 export default defineConfig({
   output: 'static',
   site: 'https://wermos.github.io',
-  // base: '/blog-v3',
+  base: '/blog-v3',
 
   markdown: {
     remarkPlugins: [remarkMath],
