@@ -5,6 +5,7 @@ date:   2025-06-29
 tags: ['test']
 # image: '../2023-post/banner.png'
 authors: ['enscribe']
+mathjax: true
 ---
 
 <!-- ## Checking Math ($x$, $y$) -->
@@ -75,24 +76,3 @@ let a3;
 ## Checking External Links
 
 Let's check a link [like this](https://www.mathjax.org/).
-
-<script>
-window.MathJax = {
-  loader: {
-    // load: ['[tex]/mathtools', '[tex]/textmacros'],
-    // load: ['[tex]/textmacros'],
-    load: ['[tex]/mathtools'],
-  },
-  tex: {
-    displayMath: [["$$","$$"], ["\\[", "\\]"]],
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    // packages: {'[+]': ['mathtools', 'textmacros']}
-    // packages: { '[+]': ['textmacros'] }
-    packages: { '[+]': ['mathtools'] }
-  }
-};
-</script>
-
-<script type="text/javascript" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js">
-</script>

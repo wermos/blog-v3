@@ -9,15 +9,16 @@ import { SITE } from '@/consts'
 import { cn } from '@/lib/utils'
 
 interface Props {
-  class?: string
+  class?: string,
+  mathjax?: boolean,
 }
 
-const { class: className } = Astro.props
+const { class: className, mathjax } = Astro.props
 ---
 
 <!doctype html>
 <html class="bg-background text-foreground" lang={SITE.locale}>
-  <Head>
+  <Head mathjax={mathjax}>
     <slot name="head" />
   </Head>
   <body>

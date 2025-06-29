@@ -58,7 +58,7 @@ const combinedReadingTime =
 const tocSections = await getTOCSections(currentPostId)
 ---
 
-<Layout>
+<Layout mathjax={post.data.mathjax}>
   <PostHead slot="head" post={post} />
   {
     (hasChildPosts || isCurrentSubpost) && (

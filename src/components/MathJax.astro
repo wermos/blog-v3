@@ -1,0 +1,21 @@
+<script is:inline>
+  window.MathJax = {
+    loader: {
+      load: ['[tex]/mathtools'],
+    },
+    tex: {
+      packages: { '[+]': ['mathtools'] },
+    },
+    chtml: {
+      adaptiveCSS: true,
+    },
+    startup: {
+      ready: () => {
+        console.log('MathJax is ready!');
+        window.MathJax.startup.defaultReady();
+      }
+    }
+  };
+</script>
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
