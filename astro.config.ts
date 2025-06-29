@@ -13,11 +13,12 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import remarkEmoji from 'remark-emoji';
 import remarkMath from 'remark-math';
 import rehypeDocument from 'rehype-document';
-import rehypeMermaid from 'rehype-mermaid';
 import remarkGemoji from 'remark-gemoji';
 
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
+
+import mermaid from 'astro-mermaid';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -25,6 +26,10 @@ export default defineConfig({
   site: 'https://wermos.github.io',
   // base: '/blog',
   integrations: [
+    mermaid({
+      theme: 'default', // Default light theme
+      autoTheme: true   // Automatically switches based on data-theme
+    }),
     expressiveCode({
       themes: ['github-light', 'github-dark'],
       plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
@@ -107,12 +112,6 @@ export default defineConfig({
             light: 'github-light',
             dark: 'github-dark',
           },
-        },
-      ],
-      [
-        rehypeMermaid,
-        {
-          strategy: 'img-svg',
         },
       ],
     ],

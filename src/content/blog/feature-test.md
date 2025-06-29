@@ -49,6 +49,26 @@ graph TD
   D --> B
 ```
 
+A more complex diagram:
+
+```mermaid
+flowchart TB
+  subgraph Interpretation 2
+    direction TB
+    A(+)-->B(a)
+    A(+)-->C(+)
+    C-->D(b)
+    C-->E(c)
+  end
+  subgraph Interpretation 1
+    direction TB
+    G(+)-->H(+)
+    H-->I(a)
+    H-->J(b)
+    G-->K(c)
+  end
+```
+
 ## Checking gemoji
 
 :+1:
