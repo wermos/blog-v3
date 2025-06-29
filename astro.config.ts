@@ -1,26 +1,29 @@
-import { defineConfig } from 'astro/config'
+import { defineConfig } from 'astro/config';
 
-import mdx from '@astrojs/mdx'
-import react from '@astrojs/react'
-import sitemap from '@astrojs/sitemap'
-import icon from 'astro-icon'
+import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
+import icon from 'astro-icon';
 
-import expressiveCode from 'astro-expressive-code'
-import { rehypeHeadingIds } from '@astrojs/markdown-remark'
-import rehypeExternalLinks from 'rehype-external-links'
-import rehypeKatex from 'rehype-katex'
-import rehypePrettyCode from 'rehype-pretty-code'
-import remarkEmoji from 'remark-emoji'
-import remarkMath from 'remark-math'
-import rehypeDocument from 'rehype-document'
+import expressiveCode from 'astro-expressive-code';
+import { rehypeHeadingIds } from '@astrojs/markdown-remark';
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypeMathjax from 'rehype-mathjax/browser';
+import rehypePrettyCode from 'rehype-pretty-code';
+import remarkEmoji from 'remark-emoji';
+import remarkMath from 'remark-math';
+import rehypeDocument from 'rehype-document';
+import rehypeMermaid from 'rehype-mermaid';
+import remarkGemoji from 'remark-gemoji';
 
-import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
-import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://astro-erudite.vercel.app',
+  site: 'https://wermos.github.io',
+  // base: '/blog',
   integrations: [
     expressiveCode({
       themes: ['github-light', 'github-dark'],
@@ -86,7 +89,6 @@ export default defineConfig({
       [
         rehypeDocument,
         {
-          css: 'https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css',
         },
       ],
       [
@@ -97,7 +99,7 @@ export default defineConfig({
         },
       ],
       rehypeHeadingIds,
-      rehypeKatex,
+      rehypeMathjax,
       [
         rehypePrettyCode,
         {
@@ -107,7 +109,13 @@ export default defineConfig({
           },
         },
       ],
+      [
+        rehypeMermaid,
+        {
+          strategy: 'img-svg',
+        },
+      ],
     ],
-    remarkPlugins: [remarkMath, remarkEmoji],
+    remarkPlugins: [remarkMath, remarkEmoji, remarkGemoji],
   },
 })
