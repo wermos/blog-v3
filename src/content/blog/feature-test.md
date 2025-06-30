@@ -8,8 +8,8 @@ authors: ['enscribe']
 mathjax: true
 ---
 
-<!-- ## Checking Math ($x$, $y$) -->
-## Checking Math
+## Checking Math ($x$, $y$)
+<!-- ## Checking Math -->
 
 Here is some inline math: $x^2 + y^2 = z^2$.
 
@@ -77,7 +77,7 @@ flowchart TB
 
 Basic code snippet:
 
-```cpp showLineNumbers=false
+```cpp
 #include <iostream>
 
 int main() {
@@ -87,7 +87,7 @@ int main() {
 
 With line numbers:
 
-```js
+```js showLineNumbers=true
 let a1;
 let a2;
 let a3;
