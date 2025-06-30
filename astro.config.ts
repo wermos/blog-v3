@@ -38,12 +38,13 @@ export default defineConfig({
       defaultProps: {
         wrap: true,
         collapseStyle: 'collapsible-auto',
-        overridesByLang: {
-          'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
-            {
-              showLineNumbers: false,
-            },
-        },
+        showLineNumbers: false,
+        // overridesByLang: {
+        //   'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
+        //     {
+        //       showLineNumbers: false,
+        //     },
+        // },
       },
       styleOverrides: {
         codeFontSize: '0.75rem',
