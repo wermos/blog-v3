@@ -50,7 +50,7 @@
   font-style: normal;
   font-display: swap;
 }
-
+/* 
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -81,6 +81,38 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
+} */
+
+:root {
+  --background: oklch(0.98 0.01 80);        /* soft cream */
+  --foreground: oklch(0.25 0.02 240);       /* dark slate lavender */
+  --primary: oklch(0.88 0.06 330);          /* pastel pink */
+  --primary-foreground: oklch(0.2 0.02 300);/* deep plum text on pink */
+  --secondary: oklch(0.9 0.04 150);         /* mint green */
+  --secondary-foreground: oklch(0.3 0.02 150);
+  --muted: oklch(0.93 0.02 250);            /* powder blue */
+  --muted-foreground: oklch(0.45 0.02 250);
+  --accent: oklch(0.92 0.04 40);            /* soft peach */
+  --accent-foreground: oklch(0.3 0.03 40);
+  --destructive: oklch(0.75 0.12 27);       /* dusty red */
+  --border: oklch(0.85 0.01 250);           /* light lavender-grey */
+  --ring: oklch(0.7 0.03 220);              /* soft blue ring */
+}
+
+[data-theme='dark'] {
+  --background: oklch(0.2 0.01 260);
+  --foreground: oklch(0.98 0.01 80);
+  --primary: oklch(0.65 0.06 330);
+  --primary-foreground: oklch(0.95 0.01 10);
+  --secondary: oklch(0.45 0.04 150);
+  --secondary-foreground: oklch(0.95 0.01 10);
+  --muted: oklch(0.3 0.01 250);
+  --muted-foreground: oklch(0.85 0.02 250);
+  --accent: oklch(0.5 0.04 40);
+  --accent-foreground: oklch(0.95 0.01 10);
+  --destructive: oklch(0.55 0.1 27);
+  --border: oklch(0.4 0.01 250);
+  --ring: oklch(0.65 0.02 220);
 }
 
 @layer base {
@@ -91,4 +123,15 @@
   ::file-selector-button {
     @apply border-border outline-ring/50 tracking-tight;
   }
+}
+
+.svg-force-light {
+  background: oklch(0.98 0.01 80);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Optional: add subtle border in dark mode */
+[data-theme="dark"] .svg-force-light {
+  border: 1px solid #333;
 }
