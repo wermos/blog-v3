@@ -1,0 +1,44 @@
+---
+// src/components/FigureImage.astro
+import { Image } from 'astro:assets';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkHtml from 'remark-html';
+import remarkMath from 'remark-math';
+import rehypeMathjax from 'rehype-mathjax/browser';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+
+interface FigureImageProps {
+  caption?: string
+  figureClass?: string
+  captionClass?: string
+  [key: string]: any
+}
+
+const { 
+  caption, 
+  figureClass, 
+  captionClass = "text-center mt-2 text-sm text-muted-foreground",
+  ...imageProps 
+} = Astro.props as FigureImageProps
+
+let processedCaption = '';
+if (caption) {
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkMath)
+    .use(remarkRehype)
+    .use(rehypeMathjax)
+    .use(remarkHtml)
+    .use(rehypeStringify);
+  
+  const result = await processor.process(caption);
+  processedCaption = String(result);
+}
+---
+
+<figure class={figureClass}>
+  <Image {...(imageProps as any)} />
+  {caption && <figcaption class={captionClass} set:html={processedCaption} />}
+</figure>
