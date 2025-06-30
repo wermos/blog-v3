@@ -51,6 +51,7 @@
   font-display: swap;
 }
 
+/* Cosmic Spectrum Theme */
 .root {
   --background: oklch(0.99 0.01 85);
   --foreground: oklch(0.32 0.08 250);
