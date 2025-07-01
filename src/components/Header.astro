@@ -2,6 +2,7 @@
 import Link from '@/components/Link.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 import MobileMenu from '@/components/ui/mobile-menu'
+import QuickSearch from '@/components/QuickSearch' // Add this import
 import { NAV_LINKS, SITE } from '@/consts'
 import { Image } from 'astro:assets'
 import logo from '../../public/static/logo.svg'
@@ -17,7 +18,7 @@ import logo from '../../public/static/logo.svg'
         >{SITE.title}</span
       >
     </Link>
-    <div class="flex items-center sm:gap-4">
+    <div class="flex items-center gap-2 sm:gap-4"> <!-- Changed gap-4 to gap-2 for tighter spacing -->
       <nav class="hidden items-center gap-4 text-sm sm:flex sm:gap-6">
         {
           NAV_LINKS.map((item) => (
@@ -30,6 +31,10 @@ import logo from '../../public/static/logo.svg'
           ))
         }
       </nav>
+      <!-- Add QuickSearch here -->
+      <div class="hidden sm:block"> <!-- Hide on mobile to save space -->
+        <QuickSearch client:load />
+      </div>
       <MobileMenu client:load transition:persist />
       <ThemeToggle transition:persist />
     </div>
