@@ -4,6 +4,8 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
+import mermaid from 'astro-mermaid';
+import pagefind from 'astro-pagefind';
 
 import expressiveCode from 'astro-expressive-code';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
@@ -17,8 +19,6 @@ import remarkGemoji from 'remark-gemoji';
 
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
-
-import mermaid from 'astro-mermaid';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -78,9 +78,15 @@ export default defineConfig({
     react(),
     sitemap(),
     icon(),
+    pagefind(),
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        external: ['/pagefind/pagefind.js']
+      }
+    }
   },
   server: {
     port: 1234,
