@@ -22,8 +22,10 @@ import mermaid from 'astro-mermaid';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://wermos.github.io',
-  // base: '/blog',
+  site: 'https://wermos.github.io/blog-v3/',
+  base: 'blog-v3',
+  // trailingSlash: 'always',
+  output: 'static',
   integrations: [
     mermaid({
       theme: 'default', // Default light theme
