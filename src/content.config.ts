@@ -17,24 +17,21 @@ const blog = defineCollection({
     }),
 })
 
-/// If we ever need this feature again, uncomment the following code block
-/// and make sure to create the authors directory with the appropriate markdown files.
-/// If you need to add authors, create a directory at `src/content/authors`
-// const authors = defineCollection({
-//   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/authors' }),
-//   schema: z.object({
-//     name: z.string(),
-//     pronouns: z.string().optional(),
-//     avatar: z.string().url().or(z.string().startsWith('/')),
-//     bio: z.string().optional(),
-//     mail: z.string().email().optional(),
-//     website: z.string().url().optional(),
-//     twitter: z.string().url().optional(),
-//     github: z.string().url().optional(),
-//     linkedin: z.string().url().optional(),
-//     discord: z.string().url().optional(),
-//   }),
-// })
+const authors = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/authors' }),
+  schema: z.object({
+    name: z.string(),
+    pronouns: z.string().optional(),
+    avatar: z.string().url().or(z.string().startsWith('/')),
+    bio: z.string().optional(),
+    mail: z.string().email().optional(),
+    website: z.string().url().optional(),
+    twitter: z.string().url().optional(),
+    github: z.string().url().optional(),
+    linkedin: z.string().url().optional(),
+    discord: z.string().url().optional(),
+  }),
+})
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
@@ -52,6 +49,6 @@ const projects = defineCollection({
 
 export const collections = {
   blog,
-  // authors,
+  authors,
   projects,
 }
