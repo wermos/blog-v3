@@ -1,0 +1,98 @@
+---
+title:  "The Laptops I've Had So Far"
+date:   2022-11-22 01:09:02 +0530
+description: "A short account of the different laptops I've owned so far."
+---
+import FigureImage from '@/components/FigureImage.astro'
+import legion from '../../assets/images/Legion_5_Pro.png'
+import inspiron from '../../assets/images/Inspiron_3501.png'
+
+I've owned 3 laptops so far. I got my first laptop in 2017. It worked great for 4 years, until the screen suddenly gave out in 2021. After that, I got a crappy laptop which I used for 1.5 years before buying a gaming laptop that I am proud to call my own. Without further ado, let's look at the 3 laptops I've owned, their specs, and the prices.
+
+# The First Laptop
+
+My very first laptop was an entry-level gaming laptop: it was a Dell Inspiron 5577. There were 2 variants in the market at the time in 2017. One sported an i7-7700HQ processor and an SSD and cost \$800. The other variant had an i7-7300HQ and a HDD and cost \$700. (The other specs were the same.)
+
+Since the laptop is so old, I can't find a picture of it to put on the blog post. However, I found [a review of the more expensive version on Medium](https://medium.com/matrixpc/dell-inspiron-5577-a-great-laptop-if-you-get-it-cheap-b67811d19e62). Before I read the review, I had actually forgotten all about the more expensive version! :joy:
+
+The specs are:
+
+- Processor: Intel 7th Gen [i5-7300HQ](https://www.intel.in/content/www/in/en/products/sku/97456/intel-core-i57300hq-processor-6m-cache-up-to-3-50-ghz/specifications.html), 4 cores, 4 threads
+- RAM: 8 GB RAM
+- Storage: 1 TB HDD
+- Screen: 1920×1080p, 60 Hz refresh rate
+- GPU: GTX 1050, 4 GB VRAM
+
+## Thoughts
+
+This laptop was the most powerful machine I knew about and had for the longest time. I really can't say anything bad about it. I played games like Crysis 3 at max settings and got a comfortable 50 fps. I even managed to run Assassin's Creed Origins near high settings and got a stable 40-50 fps. (I said "near high" because I had manually tweaked the settings, so some were Medium, and others were at High.)
+
+The only bad thing is that the screen stopped working, and the repair shops I took it to were unable to fix it. My theory is that the screen stopped working because it was not built to withstand Kolkata's heat. Since the laptop was bought in the US, it stands to reason that it was made to withstand the average US temperatures.
+
+## My Technical Knowledge
+
+While I was using the laptop, I barely knew anything about programming and GPUs. I never installed Visual Studio or the like. The idea that you could use the GPU for your own purposes was something that never occurred to me. As such, I barely used the full compute capabilities of the laptop whenever I was doing programming.
+
+# The Second Laptop
+
+In late 2020/early 2021, my first laptop started having occasional screen issues. The screen would randomly go blank, and closing the lid and reopening it would do the trick. In February 2021, the issue became severe: if the lid was opened beyond 45°, the screen would go blank. This was obviously unusable.
+
+However, during this time, I was having online classes, and the final exams were about to start. Due to these imminent threats, we went out and bought a laptop for ₹54 000.
+
+<FigureImage
+  src={inspiron}
+  alt="Inspiron 3501 picture"
+  caption="The laptop I got: an Inspiron 3501."
+  class="w-full max-w-2xl mx-auto"
+/>
+
+The minute I laid eyes on this laptop, I had nothing but disdain for the specs. After all, my previous laptop was so much better :triumph:
+
+The specs are:
+
+- Processor: Intel 11th Gen [i5-1135G7](https://ark.intel.com/content/www/us/en/ark/products/208658/intel-core-i51135g7-processor-8m-cache-up-to-4-20-ghz.html), 4 cores, 8 threads
+- RAM: 8 GB DDR4 RAM
+- Storage: 1 TB HDD
+- Screen: 1920×1080p, 60 Hz refresh rate
+- GPU: None.
+
+Due to the lack of a GPU, I could not play most games I was playing/wanted to play. During this time, I got into the game [Genshin Impact](https://genshin.hoyoverse.com/en/home), but I had to play the game at Lowest settings. Yes, they really had a setting below Low, called Lowest, for people with potato PCs like me. Even then, the loading screens took forever to load.
+
+## My Technical Knowledge
+
+During my tenure with this laptop, I learned and practiced Vim and eventually made it my daily driver. (I learned Vim on my first laptop, but didn't use it much.) I was forced to use Vim in the second laptop because it couldn't handle the load of having a few browser tabs open along with VS Code. Apart from this, I deep-dived into C++ and also learned a lot about computer architecture and SIMD.
+
+I wrote a CPU-side raytracer (to be discussed in an upcoming blog post), and that was the moment when my desire to learn how to make the GPU do my bidding materialized. However, the problem is that Intel integrated GPUs (iGPUs) don't support CUDA as that is Nvidia's proprietary technology. Instead, to communicate with an Intel iGPU, I would have to use OpenCL, which is widely regarded as being harder to use than CUDA. Moreover, OpenCL is known to be slower on Nvidia GPUs than CUDA, so I would have to learn CUDA at some point anyways.
+
+# The Third Laptop
+
+On October 23, 2022, I finally caved and used the GSoC money I had gotten so far (and the other half that I hadn't received yet) to buy the laptop I had been eyeing for over an year: the Legion 5 Pro.
+
+Overall, I am very happy with the purchase due to the sheer power of the laptop (especially when comparing it to the previous laptop), and I also finally have an Nvidia GPU again :star_struck:
+
+<FigureImage
+  src={legion}
+  alt="Legion 5 Pro picture"
+  caption="My new pride and joy."
+  class="w-full max-w-2xl mx-auto"
+/>
+
+The laptop was quite expensive: with Diwali discounts and a bit of bargaining, I got the price down to ₹147 490. It still cost an arm and a leg, as you can see :smiling_face_with_tear:
+
+However, the specs are amazing:
+
+- Processor: Intel 12th Gen [i7-12700H](https://ark.intel.com/content/www/us/en/ark/products/132228/intel-core-i712700h-processor-24m-cache-up-to-4-70-ghz.html), 8 Efficiency and 6 Performance Cores, 20 threads
+- RAM: 16 GB DDR5 4800MHz RAM
+- Storage: 1 TB SSD
+- Screen: 2560×1600p, 165 Hz refresh rate
+- GPU: RTX 3060 (with 6 GB GDDR6 VRAM), max. TGP of 140 W
+
+Apart from these, the laptop also has a MUX switch. This boosts game FPS as well, because it means that the discrete GPU doesn't need to go through the iGPU to write to the screen's framebuffer.
+
+## Thoughts
+
+Overall, I'm very impressed and happy with the performance, and hope to get 5 years out of this laptop. I can finally play Genshin Impact at max settings. I also tried out [Cyberpunk 2077](https://www.cyberpunk.net/in/en/) with ray-tracing on, and I was getting a stable 30-40 fps. In [Control](https://controlgame.com/), I was getting a stable 60 fps with ray-tracing on.
+
+## My Technical Knowledge
+
+As I have an Nvidia GPU again, I've been slowly learning about the plethora of software that Nvidia has. I will share the things I learned in subsequent blog posts. Stay tuned!
