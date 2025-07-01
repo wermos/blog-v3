@@ -1,1 +1,2 @@
-*.mdx linguist-vendored
+*.md linguist-documentation=false
+*.mdx linguist-documentation=false
