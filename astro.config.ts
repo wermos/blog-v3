@@ -9,7 +9,6 @@ import expressiveCode from 'astro-expressive-code';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeMathjax from 'rehype-mathjax/browser';
-import rehypePrettyCode from 'rehype-pretty-code';
 import remarkEmoji from 'remark-emoji';
 import remarkMath from 'remark-math';
 import rehypeDocument from 'rehype-document';
@@ -93,11 +92,6 @@ export default defineConfig({
     syntaxHighlight: false,
     rehypePlugins: [
       [
-        rehypeDocument,
-        {
-        },
-      ],
-      [
         rehypeExternalLinks,
         {
           target: '_blank',
@@ -106,15 +100,6 @@ export default defineConfig({
       ],
       rehypeHeadingIds,
       rehypeMathjax,
-      [
-        rehypePrettyCode,
-        {
-          theme: {
-            light: 'github-light',
-            dark: 'github-dark',
-          },
-        },
-      ],
     ],
     remarkPlugins: [remarkMath, remarkEmoji, remarkGemoji],
   },
