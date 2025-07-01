@@ -32,7 +32,7 @@ jobs:
 
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}/
+      url: https://wermos.github.io/blog-v3
 
     steps:
       - name: Deploy to GitHub Pages
