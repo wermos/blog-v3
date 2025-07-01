@@ -13,34 +13,34 @@ export const SITE: Site = {
 
 export const NAV_LINKS: SocialLink[] = [
   {
-    href: '/blog',
+    href: 'blog',
     label: 'blog',
   },
   {
-    href: '/authors',
+    href: 'authors',
     label: 'authors',
   },
   {
-    href: '/about',
+    href: 'about',
     label: 'about',
   },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    href: 'https://github.com/jktrn',
+    href: 'https://github.com/wermos',
     label: 'GitHub',
   },
+  // {
+  //   href: 'https://twitter.com/enscry',
+  //   label: 'Twitter',
+  // },
   {
-    href: 'https://twitter.com/enscry',
-    label: 'Twitter',
-  },
-  {
-    href: 'mailto:jason@enscribe.dev',
+    href: 'mailto:tirthankar.blog.responses@gmail.com',
     label: 'Email',
   },
   {
-    href: '/rss.xml',
+    href: 'rss.xml',
     label: 'RSS',
   },
 ]
