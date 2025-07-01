@@ -32,7 +32,7 @@ export default defineConfig({
       autoTheme: true   // Automatically switches based on data-theme
     }),
     expressiveCode({
-      themes: ['github-light', 'github-dark'],
+      themes: ['one-dark-pro'],
       plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
       useDarkModeMediaQuery: false,
       themeCssSelector: (theme) => `[data-theme="${theme.name.split('-')[1]}"]`,
@@ -47,33 +47,33 @@ export default defineConfig({
         //     },
         // },
       },
-      styleOverrides: {
-        codeFontSize: '0.75rem',
-        borderColor: 'var(--border)',
-        codeFontFamily: 'var(--font-mono)',
-        codeBackground:
-          'color-mix(in oklab, var(--secondary) 25%, transparent)',
-        frames: {
-          editorActiveTabForeground: 'var(--muted-foreground)',
-          editorActiveTabBackground:
-            'color-mix(in oklab, var(--secondary) 25%, transparent)',
-          editorActiveTabIndicatorBottomColor: 'transparent',
-          editorActiveTabIndicatorTopColor: 'transparent',
-          editorTabBorderRadius: '0',
-          editorTabBarBackground: 'transparent',
-          editorTabBarBorderBottomColor: 'transparent',
-          frameBoxShadowCssValue: 'none',
-          terminalBackground:
-            'color-mix(in oklab, var(--secondary) 25%, transparent)',
-          terminalTitlebarBackground: 'transparent',
-          terminalTitlebarBorderBottomColor: 'transparent',
-          terminalTitlebarForeground: 'var(--muted-foreground)',
-        },
-        lineNumbers: {
-          foreground: 'var(--muted-foreground)',
-        },
-        uiFontFamily: 'var(--font-sans)',
-      },
+      // styleOverrides: {
+      //   codeFontSize: '0.75rem',
+      //   borderColor: 'var(--border)',
+      //   codeFontFamily: 'var(--font-mono)',
+      //   codeBackground:
+      //     'color-mix(in oklab, var(--secondary) 25%, transparent)',
+      //   frames: {
+      //     editorActiveTabForeground: 'var(--muted-foreground)',
+      //     editorActiveTabBackground:
+      //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
+      //     editorActiveTabIndicatorBottomColor: 'transparent',
+      //     editorActiveTabIndicatorTopColor: 'transparent',
+      //     editorTabBorderRadius: '0',
+      //     editorTabBarBackground: 'transparent',
+      //     editorTabBarBorderBottomColor: 'transparent',
+      //     frameBoxShadowCssValue: 'none',
+      //     terminalBackground:
+      //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
+      //     terminalTitlebarBackground: 'transparent',
+      //     terminalTitlebarBorderBottomColor: 'transparent',
+      //     terminalTitlebarForeground: 'var(--muted-foreground)',
+      //   },
+      //   lineNumbers: {
+      //     foreground: 'var(--muted-foreground)',
+      //   },
+      //   uiFontFamily: 'var(--font-sans)',
+      // },
     }),
     mdx(),
     react(),
