@@ -9,8 +9,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prettier": "prettier --write **/*.{ts,tsx,css,astro} --ignore-path .gitignore",
-    "postinstall": "patch-package"
+    "prettier": "prettier --write **/*.{ts,tsx,css,astro} --ignore-path .gitignore"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -33,7 +32,6 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
     "mermaid": "^10.9.3",
-    "patch-package": "^8.0.0",
     "radix-ui": "^1.4.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
