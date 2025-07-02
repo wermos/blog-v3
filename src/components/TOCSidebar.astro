@@ -143,7 +143,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 }
 
 <script>
-  const HEADER_OFFSET = 80
+  const HEADER_OFFSET = 95
 
   class TOCState {
     links: NodeListOf<Element> = document.querySelectorAll(
@@ -176,7 +176,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     static build() {
       state.headings = Array.from(
         document.querySelectorAll<HTMLElement>(
-          '.prose h2, .prose h3, .prose h4, .prose h5, .prose h6',
+          '.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6',
         ),
       )
 
