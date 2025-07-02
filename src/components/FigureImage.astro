@@ -1,12 +1,12 @@
 ---
 // src/components/FigureImage.astro
-import { Image } from 'astro:assets';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkMath from 'remark-math';
-import rehypeMathjax from 'rehype-mathjax/browser';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
+import { Image } from 'astro:assets'
+import rehypeMathjax from 'rehype-mathjax/browser'
+import rehypeStringify from 'rehype-stringify'
+import remarkMath from 'remark-math'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import { unified } from 'unified'
 
 interface FigureImageProps {
   caption?: string
@@ -15,28 +15,28 @@ interface FigureImageProps {
   [key: string]: any
 }
 
-const { 
-  caption, 
-  figureClass, 
-  captionClass = "text-center mt-2 text-sm text-muted-foreground",
-  ...imageProps 
+const {
+  caption,
+  figureClass,
+  captionClass = 'text-center mt-2 text-sm text-muted-foreground',
+  ...imageProps
 } = Astro.props as FigureImageProps
 
-let processedCaption = '';
+let processedCaption = ''
 if (caption) {
   const processor = unified()
-    .use(remarkParse)      // Parses markdown
-    .use(remarkMath)       // Identifies math syntax
-    .use(remarkRehype)     // Converts remark tree to rehype tree
-    .use(rehypeMathjax)    // Processes math in rehype tree
-    .use(rehypeStringify); // Converts rehype tree to HTML string
-  
-  const result = await processor.process(caption);
-  processedCaption = String(result);
+    .use(remarkParse) // Parses markdown
+    .use(remarkMath) // Identifies math syntax
+    .use(remarkRehype) // Converts remark tree to rehype tree
+    .use(rehypeMathjax) // Processes math in rehype tree
+    .use(rehypeStringify) // Converts rehype tree to HTML string
+
+  const result = await processor.process(caption)
+  processedCaption = String(result)
 }
 ---
 
 <figure class={figureClass}>
-  <Image {...(imageProps as any)} />
+  <Image {...imageProps as any} />
   {caption && <figcaption class={captionClass} set:html={processedCaption} />}
 </figure>

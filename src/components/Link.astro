@@ -13,13 +13,18 @@ const { href, external, class: className, underline, ...rest } = Astro.props
 
 // Handle base path for all internal links
 const baseUrl = import.meta.env.BASE_URL || '/'
-const isExternal = external || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')
+const isExternal =
+  external ||
+  href.startsWith('http') ||
+  href.startsWith('mailto:') ||
+  href.startsWith('tel:') ||
+  href.startsWith('#')
 
-const finalHref = isExternal 
-  ? href  // External links and anchors stay as-is
-  : href.startsWith('/') 
-    ? `${baseUrl.replace(/\/$/, '')}${href}`  // Absolute internal links get base path
-    : `${baseUrl.replace(/\/$/, '')}/${href}`  // Relative links also get base path
+const finalHref = isExternal
+  ? href // External links and anchors stay as-is
+  : href.startsWith('/')
+    ? `${baseUrl.replace(/\/$/, '')}${href}` // Absolute internal links get base path
+    : `${baseUrl.replace(/\/$/, '')}/${href}` // Relative links also get base path
 ---
 
 <a

@@ -11,11 +11,14 @@
     },
     startup: {
       ready: () => {
-        console.log('MathJax is ready!');
-        window.MathJax.startup.defaultReady();
-      }
-    }
-  };
+        console.log('MathJax is ready!')
+        window.MathJax.startup.defaultReady()
+      },
+    },
+  }
 </script>
 
-<script is:inline async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script
+  is:inline
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

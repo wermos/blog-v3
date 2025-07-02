@@ -115,7 +115,7 @@ const tocSections = await getTOCSections(currentPostId)
           alt={post.data.title}
           width={1200}
           height={630}
-          class="col-span-full mx-auto w-full max-w-5xl object-cover rounded-xl"
+          class="col-span-full mx-auto w-full max-w-5xl rounded-xl object-cover"
         />
       )
     }
@@ -132,7 +132,7 @@ const tocSections = await getTOCSections(currentPostId)
         <div
           class="text-muted-foreground divide-border mb-4 flex flex-col items-center justify-center divide-y text-xs sm:flex-row sm:flex-wrap sm:divide-x sm:divide-y-0 sm:text-sm"
         >
-        <!-- Existing authors section -->
+          <!-- Existing authors section -->
           {
             authors.length > 0 && (
               <div class="flex w-full items-center justify-center gap-x-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
@@ -163,26 +163,28 @@ const tocSections = await getTOCSections(currentPostId)
           }
 
           <!-- Published date with hover tooltip -->
-          <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+          <div
+            class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
+          >
             <Icon name="lucide:calendar" class="size-3" />
             <span>Posted </span>
-            <span 
+            <span
               class="relative cursor-help"
               data-full-date={(() => {
-                const date = post.data.date;
-                const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
-                
+                const date = post.data.date
+                const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0
+
                 return date.toLocaleString('en-US', {
                   weekday: 'short',
-                  year: 'numeric', 
+                  year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                   ...(hasTime && {
                     hour: 'numeric',
                     minute: '2-digit',
-                    timeZoneName: 'short'
-                  })
-                });
+                    timeZoneName: 'short',
+                  }),
+                })
               })()}
             >
               {formatDate(post.data.date)}
@@ -190,36 +192,41 @@ const tocSections = await getTOCSections(currentPostId)
           </div>
 
           <!-- Last modified date with hover tooltip (if exists) -->
-          {post.data.lastModified && (
-            <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
-              <Icon name="lucide:edit" class="size-3" />
-              <span>Updated </span>
-              <span 
-                class="relative cursor-help"
-                data-full-date={(() => {
-                  const date = post.data.lastModified;
-                  const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
-                  
-                  return date.toLocaleString('en-US', {
-                    weekday: 'short',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    ...(hasTime && {
-                      hour: 'numeric',
-                      minute: '2-digit',
-                      timeZoneName: 'short'
+          {
+            post.data.lastModified && (
+              <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+                <Icon name="lucide:edit" class="size-3" />
+                <span>Updated </span>
+                <span
+                  class="relative cursor-help"
+                  data-full-date={(() => {
+                    const date = post.data.lastModified
+                    const hasTime =
+                      date.getHours() !== 0 || date.getMinutes() !== 0
+
+                    return date.toLocaleString('en-US', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      ...(hasTime && {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        timeZoneName: 'short',
+                      }),
                     })
-                  });
-                })()}
-              >
-                {formatDate(post.data.lastModified)}
-              </span>
-            </div>
-          )}
+                  })()}
+                >
+                  {formatDate(post.data.lastModified)}
+                </span>
+              </div>
+            )
+          }
 
           <!-- Reading time with icon -->
-          <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+          <div
+            class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
+          >
             <Icon name="lucide:clock" class="size-3" />
             <span>
               {postReadingTime}

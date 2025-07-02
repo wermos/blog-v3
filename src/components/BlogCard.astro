@@ -20,7 +20,9 @@ interface Props {
 
 const { entry } = Astro.props
 const formattedDate = formatDate(entry.data.date)
-const formattedLastModified = entry.data.lastModified ? formatDate(entry.data.lastModified) : null
+const formattedLastModified = entry.data.lastModified
+  ? formatDate(entry.data.lastModified)
+  : null
 const readTime = await getCombinedReadingTime(entry.id)
 const authors = await parseAuthors(entry.data.authors ?? [])
 const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
@@ -41,7 +43,7 @@ const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
             alt={entry.data.title}
             width={1200}
             height={630}
-            class="object-cover rounded-md"
+            class="rounded-md object-cover"
           />
         </div>
       )
