@@ -1,0 +1,8 @@
+node_modules
+dist
+public
+.build
+.netlify
+output
+*.log
+src/assets/
