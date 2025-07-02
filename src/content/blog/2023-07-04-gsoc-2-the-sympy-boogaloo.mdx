@@ -1,11 +1,12 @@
 ---
-title:  "GSoC 2 — The SymPy Boogaloo"
-date:   2023-07-04 20:25:37 +0530
+title: 'GSoC 2 — The SymPy Boogaloo'
+date: 2023-07-04 20:25:37 +0530
 description: 'In this blog post, I will discuss what my 2nd GSoC project is about.'
 image: '../../assets/images/gsoc/gsoc-logo-with-sympy-logo.png'
 mathjax: true
 tags: ['gsoc', 'sympy']
 ---
+
 import Callout from '@/components/Callout.astro'
 
 # GSoC with SymPy
@@ -21,6 +22,7 @@ In response to my email, [Aaron Meurer](https://www.asmeurer.com/blog/about/) re
 ## Wait, what is SymPy?
 
 As the About section on [SymPy's GitHub](https://github.com/sympy/sympy) says, SymPy is
+
 > A computer algebra system written in pure Python
 
 The way I like to explain it to people is like this: If I were to ask MATLAB what the value of $d$ is, where
@@ -53,7 +55,11 @@ I get the output `d = log(2)`.
 In MATLAB's case, I got the approximate numerical value, whereas in SymPy's case, I got the symbolic answer.
 
 <Callout variant="note">
-I am aware that MATLAB has a [Symbolic Math Toolbox™](https://in.mathworks.com/products/symbolic.html) which gives MATLAB symbolic capabilities. On the flip side, running `d.evalf()` at the end of the SymPy snippet will print `0.693147180559945` on the terminal. Therefore, the above example is simplistic, but it helps me get the point across.
+  I am aware that MATLAB has a [Symbolic Math
+  Toolbox™](https://in.mathworks.com/products/symbolic.html) which gives MATLAB
+  symbolic capabilities. On the flip side, running `d.evalf()` at the end of the
+  SymPy snippet will print `0.693147180559945` on the terminal. Therefore, the
+  above example is simplistic, but it helps me get the point across.
 </Callout>
 
 # The Project
@@ -67,6 +73,7 @@ My proposal can be found [here](https://docs.google.com/document/d/1QgOpu5xwl-i1
 ## What is the LaTeX Parser?
 
 The [LaTeX parser](https://docs.sympy.org/latest/modules/parsing.html#experimental-mathrm-latex-parsing) is one of the submodules in SymPy which allows you to convert a LaTeX expression into a SymPy expression. For example, if I have some LaTeX code like `\int\! x^2 \,dx`, I can convert it into a SymPy expression by running:
+
 ```py showLineNumbers=true
 from sympy.parsing.latex import parse_latex
 
@@ -102,7 +109,7 @@ However, after the code became a part of SymPy (and even while that process was 
 There were a few issues with ANTLR, which is the reason other alternatives were being considered:
 
 1. The runtime package can be difficult to install. There have [been](https://github.com/augustt198/latex2sympy/issues/32) [reports](https://github.com/sympy/sympy/issues/14004#issuecomment-1072591073) of users who found the LaTeX parser's runtime dependencies difficult to install. There are a couple of packages on conda-forge with closely related names: `antlr4-python3-runtime` and `antlr-python-runtime`. Installing the wrong one causes hard-to-debug issues. As one user who ran into this issue pointed out,
-    > That's a few lost hours for each of the two characters
+   > That's a few lost hours for each of the two characters
 2. The above issue is further exacerbated by the fact that the required package's name is `antlr4-python3-runtime` on PyPI.
 
 In [#19528](https://github.com/sympy/sympy/issues/19528), [sylee957](https://github.com/sylee957) pointed out a few more shortcomings of the existing ANTLR-based parser:
@@ -139,11 +146,11 @@ Numerous advantages to using Lark [were identified](https://github.com/sympy/sym
 4. Lark shows strong performance.
 5. Lark handles ambiguities that PEG parsers cannot. By [using the Early parser](https://lark-parser.readthedocs.io/en/latest/parsers.html#earley), for example, Lark can return all a tree with all the possibilities if a certain expression is ambiguous.
 6. Lark uses a dedicated, self-described format,
-   * that cannot include implementation details (e.g. inline python). This is good because the library itself enforces separation of concerns (i.e. keeping the grammar definition separate from the parser).
-   * which can be stored inline in a `.py` file, or
-     * stored in one or more `.lark` files.
-   * which has plugins for various editors. For example, there is a [VS Code extension](https://github.com/lark-parser/vscode-lark) and a [PyCharm plugin](https://github.com/lark-parser/intellij-syntax-highlighting) for syntax highlighting Lark files,
-   * can be used to generate parsers in other languages like Julia and JavaScript (see the last point [here](https://lark-parser.readthedocs.io/en/latest/features.html#extra-features).)
+   - that cannot include implementation details (e.g. inline python). This is good because the library itself enforces separation of concerns (i.e. keeping the grammar definition separate from the parser).
+   - which can be stored inline in a `.py` file, or
+     - stored in one or more `.lark` files.
+   - which has plugins for various editors. For example, there is a [VS Code extension](https://github.com/lark-parser/vscode-lark) and a [PyCharm plugin](https://github.com/lark-parser/intellij-syntax-highlighting) for syntax highlighting Lark files,
+   - can be used to generate parsers in other languages like Julia and JavaScript (see the last point [here](https://lark-parser.readthedocs.io/en/latest/features.html#extra-features).)
 7. has a "standard library" of useful tokens and expressions which can be imported into a grammar.
 8. Lark can generate an standalone `.py` file. In this case, this is not a big advantage since one of the reasons for moving away from ANTLR was to remove compiled components.
 
