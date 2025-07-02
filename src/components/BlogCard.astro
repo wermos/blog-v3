@@ -20,6 +20,7 @@ interface Props {
 
 const { entry } = Astro.props
 const formattedDate = formatDate(entry.data.date)
+const formattedLastModified = entry.data.lastModified ? formatDate(entry.data.lastModified) : null
 const readTime = await getCombinedReadingTime(entry.id)
 const authors = await parseAuthors(entry.data.authors ?? [])
 const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
@@ -72,7 +73,21 @@ const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
             </>
           )
         }
-        <span>{formattedDate}</span>
+        <span class="flex items-center gap-1">
+          <Icon name="lucide:calendar" class="size-3" />
+          {formattedDate}
+        </span>
+        {
+          formattedLastModified && (
+            <>
+              <Separator orientation="vertical" className="h-4!" />
+              <span class="flex items-center gap-1">
+                <Icon name="lucide:edit" class="size-3" />
+                Updated {formattedLastModified}
+              </span>
+            </>
+          )
+        }
         <Separator orientation="vertical" className="h-4!" />
         <span>{readTime}</span>
         {
