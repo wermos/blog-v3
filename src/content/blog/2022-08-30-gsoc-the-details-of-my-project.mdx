@@ -1,20 +1,22 @@
 ---
-title:  "GSoC — The Details of My Project"
-date:   2022-08-30 16:49:29 +0530
+title: 'GSoC — The Details of My Project'
+date: 2022-08-30 16:49:29 +0530
 description: 'In this post, I will discuss what exactly my work is and its relation to the ACTS project.'
 tags: ['gsoc', 'cern-hsf']
 ---
+
 import FigureImage from '@/components/FigureImage.astro'
 
 # Project Description
 
 The original project description was:
+
 > We propose the development of a linear algebra plugin for ACTS, which makes use of explicit vectorization.
 >
-> * Port a similar existing library implementation ([fast5x5](https://gitlab.in2p3.fr/CodeursIntensifs/Fast5x5/)/[xsimd](https://github.com/xtensor-stack/xsimd)) to a suitable library backend (can be decided upon together with the student).
-> * Adapt the implementation to the linear algebra operations needed in the ACTS numerical integration for particle propagation.
-> * Validate the approach and its performance and possibly optimize the performance further.
-> * Given enough time, find a way to make the implementation available to ACTS as a compute backend and run it in ACTS example code.
+> - Port a similar existing library implementation ([fast5x5](https://gitlab.in2p3.fr/CodeursIntensifs/Fast5x5/)/[xsimd](https://github.com/xtensor-stack/xsimd)) to a suitable library backend (can be decided upon together with the student).
+> - Adapt the implementation to the linear algebra operations needed in the ACTS numerical integration for particle propagation.
+> - Validate the approach and its performance and possibly optimize the performance further.
+> - Given enough time, find a way to make the implementation available to ACTS as a compute backend and run it in ACTS example code.
 
 The project, as described on the CERN-HSF webpage, can be found [here](https://hepsoftwarefoundation.org/gsoc/2022/proposal_Acts-vectorized-LA-backend.html).
 
@@ -26,13 +28,13 @@ Let’s take the example of adding two 4-dimensional vectors together. The naïv
 
 In this simple example, using SIMD instructions gave us an approximately 4× speed-up.
 
-<FigureImage 
+<FigureImage
   src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SIMD2.svg/400px-SIMD2.svg.png"
   width="400"
   height="412"
   alt="picture demonstrating track finding and fitting"
   caption="Representation of a SIMD register (Picture Credits: Wikipedia, courtesy of [Vadikus](https://commons.wikimedia.org/w/index.php?title=User:Vadikus))"
-  class="w-full max-w-xl mx-auto"
+  class="mx-auto w-full max-w-xl"
 />
 
 However, it is not as simple as that. There are many SIMD ISAs, for example [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions), [SSE2](https://en.wikipedia.org/wiki/SSE2), [SSE3](https://en.wikipedia.org/wiki/SSE3), [SSSE3](https://en.wikipedia.org/wiki/SSSE3) (note the one extra "S"!), [SSE4](https://en.wikipedia.org/wiki/SSE4), [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions), AVX2, [AVX512](https://en.wikipedia.org/wiki/AVX-512), and more.

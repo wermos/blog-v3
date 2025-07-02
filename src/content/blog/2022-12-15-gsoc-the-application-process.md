@@ -1,6 +1,6 @@
 ---
-title:  "GSoC — The Application Process"
-date:   2022-12-15 21:02:29 +0530
+title: 'GSoC — The Application Process'
+date: 2022-12-15 21:02:29 +0530
 description: 'In this blog post, I will discuss what the application process for GSoC is like, and the timeline in which I did things and applied.'
 image: https://media2.dev.to/dynamic/image/width=900,height=450,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9kfay5ld90py6xtql220.png
 tags: ['gsoc']
@@ -14,11 +14,11 @@ Before starting on your GSoC journey, it makes sense to check if you are eligibl
 
 The [GSoC FAQ](https://developers.google.com/open-source/gsoc/rules) states that
 
-> * You must be at least 18 years of age when you register
-> * You must be eligible to work in the country you will reside in during the program.
-> * You must be an open source beginner or a student.
-> * You have not been accepted as a GSoC Contributor/Student in GSoC more than once.
-> * You must reside in a country that is not currently embargoed by the United States. See [Program Rules](https://developers.google.com/open-source/gsoc/rules) for more information.
+> - You must be at least 18 years of age when you register
+> - You must be eligible to work in the country you will reside in during the program.
+> - You must be an open source beginner or a student.
+> - You have not been accepted as a GSoC Contributor/Student in GSoC more than once.
+> - You must reside in a country that is not currently embargoed by the United States. See [Program Rules](https://developers.google.com/open-source/gsoc/rules) for more information.
 
 Like the excerpt says, you can refer to the [Program Rules](https://summerofcode.withgoogle.com/rules) for a full description of everything relating to the program, in lawyer-y language.
 
@@ -54,9 +54,9 @@ The first step for applying to GSoC is to choose an Organization. To that end, t
 
 Apart from the points mentioned in the Student Guide, here are some alternative factors you might base your decision upon:
 
-* The programming languages they use. This is primarily for those who do not want a (programming) language barrier.
-* What they do. This is primarily for people who want a behind-the-scenes look on how people achieve a certain task. For example, if I wanted a behind-the-scenes look on how Linux kernel development works, I might want to apply to [The Linux Foundation](https://summerofcode.withgoogle.com/programs/2022/organizations/the-linux-foundation).
-* How interesting their projects are. This is for people for whom the organization does not matter too much.
+- The programming languages they use. This is primarily for those who do not want a (programming) language barrier.
+- What they do. This is primarily for people who want a behind-the-scenes look on how people achieve a certain task. For example, if I wanted a behind-the-scenes look on how Linux kernel development works, I might want to apply to [The Linux Foundation](https://summerofcode.withgoogle.com/programs/2022/organizations/the-linux-foundation).
+- How interesting their projects are. This is for people for whom the organization does not matter too much.
 
 In the end, I chose my organization based on how interested I was in the projects they had: I found [this project](https://hepsoftwarefoundation.org/gsoc/2022/proposal_Acts-vectorized-LA-backend.html) very interesting and wanted to help them make their math backend faster. For me, the fact that I was also getting to work with CERN was just an added bonus.
 
@@ -84,8 +84,8 @@ Reviewers usually place a greater weightage on code PRs (i.e. PRs which actually
 
 Examples of popular PR-based organizations include
 
-* [SymPy](https://github.com/sympy/sympy/wiki/GSoC-Student-Instructions)
-* [SciPy](https://github.com/scipy/scipy/wiki/GSoC-2022-project-ideas)
+- [SymPy](https://github.com/sympy/sympy/wiki/GSoC-Student-Instructions)
+- [SciPy](https://github.com/scipy/scipy/wiki/GSoC-2022-project-ideas)
 
 #### Getting Started with PR-based Organizations
 
@@ -109,8 +109,8 @@ Sometimes (but not all the time), reviewers also take how long you take to the a
 
 Examples of qualification task-based organizations include
 
-* [CERN-HSF](https://summerofcode.withgoogle.com/programs/2022/organizations/cern-hsf)
-* [FFmpeg](https://summerofcode.withgoogle.com/programs/2022/organizations/ffmpeg)
+- [CERN-HSF](https://summerofcode.withgoogle.com/programs/2022/organizations/cern-hsf)
+- [FFmpeg](https://summerofcode.withgoogle.com/programs/2022/organizations/ffmpeg)
 
 #### My Experience
 
@@ -128,8 +128,8 @@ So at this point, you probably have a specific organization in mind. (Or maybe n
 
 In 2022, Google [made a couple of changes](https://opensource.googleblog.com/2021/11/expanding-google-summer-of-code-in-2022.html) to the way projects work:
 
-* Two project formats were introduced: medium length projects, which are expected to take approximately 175 hours of work, and long projects, which are expected to take approximately 350 hours of work. Long projects have a stipend that is twice that of the medium length projects.
-* Project timeframes were made flexible:
+- Two project formats were introduced: medium length projects, which are expected to take approximately 175 hours of work, and long projects, which are expected to take approximately 350 hours of work. Long projects have a stipend that is twice that of the medium length projects.
+- Project timeframes were made flexible:
 
   > You can spread the project out over a longer period of time and you can even switch to a longer timeframe mid-program if life happens. Rather than a mandatory 12-week program that runs from June – August with everyone required to finish their projects by the end of the 12th week, we are opening it up so mentors and their GSoC Contributors can decide together if they want to extend the deadline for the project up to 22 weeks.
 
@@ -179,9 +179,9 @@ The first thing to look at is the [published GSoC timeline](https://developers.g
 
 The three dates of interest are:
 
-* the date that the accepted GSoC organizations are announced ([February 22<sup>nd</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#february_22_-_1800_utc) for next year). This is the day you can start contacting qualification-task based organizations if they were accepted.
-* the date that GSoC application period starts ([March 20<sup>th</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#march_20_-_1800_utc) for next year). This is the day you should ideally have a first draft of your proposal ready, and start asking for mentor feedback.
-* the date that the GSoC application period ends ([April 4<sup>th</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#april_4_-_1800_utc) for the next year). This is the day by which you should have submitted all your proposals on the portal, and overall be done with everything. **This is a hard deadline.**
+- the date that the accepted GSoC organizations are announced ([February 22<sup>nd</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#february_22_-_1800_utc) for next year). This is the day you can start contacting qualification-task based organizations if they were accepted.
+- the date that GSoC application period starts ([March 20<sup>th</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#march_20_-_1800_utc) for next year). This is the day you should ideally have a first draft of your proposal ready, and start asking for mentor feedback.
+- the date that the GSoC application period ends ([April 4<sup>th</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#april_4_-_1800_utc) for the next year). This is the day by which you should have submitted all your proposals on the portal, and overall be done with everything. **This is a hard deadline.**
 
 ## When Should I Start?
 
@@ -189,11 +189,11 @@ There is no hard and fast date by which you should start. That being said, there
 
 If it is your first time applying to GSoC and contributing to Open Source, the earlier you start, the better. There is no "too early" when it comes to Open Source contributions. In fact, starting early has many advantages:
 
-* It allows you to learn Git and GitHub, and possibly a new language, with less pressure as the GSoC deadline is still very far away.
-* It allows you to get used to the process and cadence of fixing bugs, opening PRs, and dealing with code reviews.
-* It gives you a lot of time to get lots of PRs merged, which will increase your chances of getting accepted for GSoC.
-* If you don't like your first choice of organization, you can still switch and experiment with multiple organizations before settling on one.
-* It allows you to explore multiple submodules before settling on one. If we take the example of SymPy specifically, then starting early allows you to explore submodules like [`codegen`](https://github.com/sympy/sympy/tree/4801871259a1a8db27bae99f5ea4db109bb1320a/sympy/codegen) and [`integrals`](https://github.com/sympy/sympy/tree/4801871259a1a8db27bae99f5ea4db109bb1320a/sympy/integrals).
+- It allows you to learn Git and GitHub, and possibly a new language, with less pressure as the GSoC deadline is still very far away.
+- It allows you to get used to the process and cadence of fixing bugs, opening PRs, and dealing with code reviews.
+- It gives you a lot of time to get lots of PRs merged, which will increase your chances of getting accepted for GSoC.
+- If you don't like your first choice of organization, you can still switch and experiment with multiple organizations before settling on one.
+- It allows you to explore multiple submodules before settling on one. If we take the example of SymPy specifically, then starting early allows you to explore submodules like [`codegen`](https://github.com/sympy/sympy/tree/4801871259a1a8db27bae99f5ea4db109bb1320a/sympy/codegen) and [`integrals`](https://github.com/sympy/sympy/tree/4801871259a1a8db27bae99f5ea4db109bb1320a/sympy/integrals).
 
 In terms of real time, October or November is a great time to start, but you can start a bit later too, like December or even January. The main difference between starting later and earlier, like I said before, is the amount of exploration you can do.
 

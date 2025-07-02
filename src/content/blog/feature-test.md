@@ -1,13 +1,14 @@
 ---
 title: 'Test Markdown Features Post'
 description: 'Testing MathJax rendering inside an Astro blog post'
-date:   2025-06-29
+date: 2025-06-29
 tags: ['test']
 image: 'callouts-component/banner.png'
 mathjax: true
 ---
 
 ## Checking Math ($x$, $y$)
+
 <!-- ## Checking Math -->
 
 Here is some inline math: $x^2 + y^2 = z^2$.
@@ -87,9 +88,9 @@ int main() {
 With line numbers:
 
 ```js showLineNumbers=true
-let a1;
-let a2;
-let a3;
+let a1
+let a2
+let a3
 ```
 
 ## Checking External Links

@@ -1,6 +1,6 @@
 ---
-title:  "GSoC — The Final Status Report"
-date:   2022-11-21 20:19:56 +0530
+title: 'GSoC — The Final Status Report'
+date: 2022-11-21 20:19:56 +0530
 description: 'In this blog post, I will describe the work I have done after the midterm evaluation.'
 tags: ['gsoc', 'cern-hsf']
 ---
