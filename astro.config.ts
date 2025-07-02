@@ -1,25 +1,24 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from 'astro/config'
 
-import mdx from '@astrojs/mdx';
-import react from '@astrojs/react';
-import sitemap from '@astrojs/sitemap';
-import icon from 'astro-icon';
+import mdx from '@astrojs/mdx'
+import react from '@astrojs/react'
+import sitemap from '@astrojs/sitemap'
+import icon from 'astro-icon'
 
-import expressiveCode from 'astro-expressive-code';
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
-import rehypeExternalLinks from 'rehype-external-links';
-import rehypeMathjax from 'rehype-mathjax/browser';
-import remarkEmoji from 'remark-emoji';
-import remarkMath from 'remark-math';
-import rehypeDocument from 'rehype-document';
-import remarkGemoji from 'remark-gemoji';
+import expressiveCode from 'astro-expressive-code'
+import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypeMathjax from 'rehype-mathjax/browser'
+import remarkEmoji from 'remark-emoji'
+import remarkMath from 'remark-math'
+import remarkGemoji from 'remark-gemoji'
 
-import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
-import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 
-import mermaid from 'astro-mermaid';
+import mermaid from 'astro-mermaid'
 
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
@@ -29,7 +28,7 @@ export default defineConfig({
   integrations: [
     mermaid({
       theme: 'default', // Default light theme
-      autoTheme: true   // Automatically switches based on data-theme
+      autoTheme: true, // Automatically switches based on data-theme
     }),
     expressiveCode({
       themes: ['one-dark-pro'],
