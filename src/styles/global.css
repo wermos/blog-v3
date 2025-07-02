@@ -55,19 +55,18 @@
 :root {
   --background: oklch(0.99 0.01 85);
   --foreground: oklch(0.32 0.08 250);
-  --primary: oklch(0.48 0.18 280);
+  --primary: oklch(0.42 0.22 280);  /* Darker, more saturated */
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.65 0.15 200);
-  --secondary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.5 0.3 200);  /* Much darker, more chroma */
+  --secondary-foreground: oklch(0.95 0.05 200);  /* Lighter foreground */
   --muted: oklch(0.96 0.02 240);
   --muted-foreground: oklch(0.42 0.04 240);
-  --accent: oklch(0.48 0.18 280);
+  --accent: oklch(0.42 0.22 280);  /* Match primary for consistency */
   --accent-foreground: oklch(0.99 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.02 240);
-  --ring: oklch(0.48 0.18 280);
+  --border: oklch(0.6 0.1 240);  /* Much darker, more visible */
+  --ring: oklch(0.42 0.22 280);
 }
-
 [data-theme='dark'] {
   --background: oklch(0.16 0.08 250);
   --foreground: oklch(0.97 0.01 220);
@@ -80,7 +79,7 @@
   --accent: oklch(0.72 0.16 280);
   --accent-foreground: oklch(0.16 0.08 250);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0/ 60%);
   --ring: oklch(0.68 0.16 280);
 }
 
