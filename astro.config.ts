@@ -20,8 +20,6 @@ import mermaid from 'astro-mermaid'
 
 import tailwindcss from '@tailwindcss/vite'
 
-// import playformCompress from '@playform/compress';
-
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
   base: 'blog-v3',
