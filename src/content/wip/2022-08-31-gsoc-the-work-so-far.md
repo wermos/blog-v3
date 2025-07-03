@@ -63,6 +63,7 @@ After making a few changes, it became apparent that I needed somewhere to push m
 The original directory structure was quite flat. However, it was not amenable to the amount and volume of changes I needed to make. For this reason, I reorganized the entire repository multiple times (for example, in [`85ad3fd`](https://github.com/wermos/Fast5x5/commit/85ad3fd1de82ee6313bb2685e2a02f368d7e5e6a), [`20d4fb9`](https://github.com/wermos/Fast5x5/commit/20d4fb9940f01c547272cb3b2e775335992d8ea6), [`125a084`](https://github.com/wermos/Fast5x5/commit/125a084f374c92936a2bc9f8e41d561c31346588), and [`69bd4d8`](https://github.com/wermos/Fast5x5/commit/69bd4d8cc3f6e3aeb0c6baf21d9510b931984799)).
 
 The original directory structure was:
+<!-- cspell:disable -->
 {% noln plaintext %}
 .
 ├── README.md
@@ -92,6 +93,7 @@ The original directory structure was:
     ├── unit_vector.cpp
     └── run_all.cpp
 {% endnoln %}
+<!-- cspell:enable -->
 
 The current (at the time of writing) file structure is as follows:
 {% noln plaintext %}
