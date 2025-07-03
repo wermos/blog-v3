@@ -20,65 +20,60 @@ import mermaid from 'astro-mermaid'
 
 import tailwindcss from '@tailwindcss/vite'
 
+// import playformCompress from '@playform/compress';
+
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
   base: 'blog-v3',
   // trailingSlash: 'always',
   output: 'static',
-  integrations: [
-    mermaid({
-      theme: 'default', // Default light theme
-      autoTheme: true, // Automatically switches based on data-theme
-    }),
-    expressiveCode({
-      themes: ['one-dark-pro'],
-      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
-      useDarkModeMediaQuery: false,
-      themeCssSelector: (theme) => `[data-theme="${theme.name.split('-')[1]}"]`,
-      defaultProps: {
-        wrap: true,
-        collapseStyle: 'collapsible-auto',
-        showLineNumbers: false,
-        // overridesByLang: {
-        //   'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
-        //     {
-        //       showLineNumbers: false,
-        //     },
-        // },
-      },
-      // styleOverrides: {
-      //   codeFontSize: '0.75rem',
-      //   borderColor: 'var(--border)',
-      //   codeFontFamily: 'var(--font-mono)',
-      //   codeBackground:
-      //     'color-mix(in oklab, var(--secondary) 25%, transparent)',
-      //   frames: {
-      //     editorActiveTabForeground: 'var(--muted-foreground)',
-      //     editorActiveTabBackground:
-      //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
-      //     editorActiveTabIndicatorBottomColor: 'transparent',
-      //     editorActiveTabIndicatorTopColor: 'transparent',
-      //     editorTabBorderRadius: '0',
-      //     editorTabBarBackground: 'transparent',
-      //     editorTabBarBorderBottomColor: 'transparent',
-      //     frameBoxShadowCssValue: 'none',
-      //     terminalBackground:
-      //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
-      //     terminalTitlebarBackground: 'transparent',
-      //     terminalTitlebarBorderBottomColor: 'transparent',
-      //     terminalTitlebarForeground: 'var(--muted-foreground)',
-      //   },
-      //   lineNumbers: {
-      //     foreground: 'var(--muted-foreground)',
-      //   },
-      //   uiFontFamily: 'var(--font-sans)',
+  integrations: [mermaid({
+    theme: 'default', // Default light theme
+    autoTheme: true, // Automatically switches based on data-theme
+  }), expressiveCode({
+    themes: ['one-dark-pro'],
+    plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
+    useDarkModeMediaQuery: false,
+    themeCssSelector: (theme) => `[data-theme="${theme.name.split('-')[1]}"]`,
+    defaultProps: {
+      wrap: true,
+      collapseStyle: 'collapsible-auto',
+      showLineNumbers: false,
+      // overridesByLang: {
+      //   'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
+      //     {
+      //       showLineNumbers: false,
+      //     },
       // },
-    }),
-    mdx(),
-    react(),
-    sitemap(),
-    icon(),
-  ],
+    },
+    // styleOverrides: {
+    //   codeFontSize: '0.75rem',
+    //   borderColor: 'var(--border)',
+    //   codeFontFamily: 'var(--font-mono)',
+    //   codeBackground:
+    //     'color-mix(in oklab, var(--secondary) 25%, transparent)',
+    //   frames: {
+    //     editorActiveTabForeground: 'var(--muted-foreground)',
+    //     editorActiveTabBackground:
+    //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
+    //     editorActiveTabIndicatorBottomColor: 'transparent',
+    //     editorActiveTabIndicatorTopColor: 'transparent',
+    //     editorTabBorderRadius: '0',
+    //     editorTabBarBackground: 'transparent',
+    //     editorTabBarBorderBottomColor: 'transparent',
+    //     frameBoxShadowCssValue: 'none',
+    //     terminalBackground:
+    //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
+    //     terminalTitlebarBackground: 'transparent',
+    //     terminalTitlebarBorderBottomColor: 'transparent',
+    //     terminalTitlebarForeground: 'var(--muted-foreground)',
+    //   },
+    //   lineNumbers: {
+    //     foreground: 'var(--muted-foreground)',
+    //   },
+    //   uiFontFamily: 'var(--font-sans)',
+    // },
+  }), mdx(), react(), sitemap(), icon(), (await import("@playform/compress")).default()],
   vite: {
     plugins: [tailwindcss()],
   },
