@@ -1,21 +1,13 @@
 ---
-layout: single 
-title:  "GSoC 2 --- The Final Status Report"
+title:  "GSoC 2 — The Final Status Report"
 date:   2023-09-11 21:57:13 +0530
-classes: wide
-toc: true
-toc_sticky: true
-usecodehl: true
-usemathjax: true
-usemermaid: true
-custom_css: gsoc-2
-header:
-  image: /assets/images/gsoc/gsoc-logo-with-sympy-logo.png
-  image_description: "A picture with the Google Summer of Code logo on the left and the SymPy logo on the right."
-categories: gsoc sympy
+description: "In this post, I'll talk about all the work that I did in my second GSoC."
+image: '../../../assets/images/gsoc/gsoc-logo-with-sympy-logo.png'
+mathjax: true
+tags: ['gsoc', 'sympy']
 ---
 
-In this post, I'll talk about all the work that I did in my second GSoC.
+import './gsoc-2.css'
 
 I had originally hoped to mimic the way I had written blog posts in my first GSoC: A three-part series, with an initial post, an intermediate post which would chronicle all the work that had been done up to the Midterm Evaluation, and then finally a final post which talks about the work that had done between the Midterm Evaluation and the Final Evaluation. The final blog post would also discuss future directions for the project, so that people who work on the work on the project after me would be able to easily extend the work I had done.
 
@@ -98,7 +90,7 @@ I soon ran into another issue: Rules for things like addition must be defined re
 
 My rule for addition was something like `add: expression ADD expression`. With an input expression like $a + b + c$, the parse trees will be something like
 
-{% mermaid %}
+```mermaid
 flowchart TB
   subgraph Interpretation 2
     direction TB
@@ -114,7 +106,7 @@ flowchart TB
     H-->J(b)
     G-->K(c)
   end
-{% endmermaid %}
+```
 
 where the first interpretation corresponds to $(a + b) + c$, and the second interpretation corresponds to $a + (b + c)$.
 
@@ -164,54 +156,45 @@ I decided to not talk about them in this blog post because the exposition for th
 
 During my GSoC period, most of my time went into working on the $\mathrm{\LaTeX}$ parser. However, I occasionally also worked on things which were not directly related to my GSoC project. I've separated all my work during the GSoC period into two categories based on their relevance to the $\mathrm{\LaTeX}$ parser.
 
-<!-- markdownlint-disable MD033 -->
 <div class="list-section">
   <ul>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25324">
-        <span class="pr-list-item-icon"></span>
-        #25324: Added a preliminary Lark $\mathrm{\LaTeX}$ parser implementation.
+        <span class="pr-list-item-icon"></span>#25324: Added a preliminary Lark $\mathrm{\LaTeX}$ parser implementation.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25515">
-        <span class="pr-list-item-icon"></span>
-        #25515: Removed <code>evaluate=False</code> from the Lark-based $\mathrm{\LaTeX}$ parser.
+        <span class="pr-list-item-icon"></span>#25515: Removed <code>evaluate=False</code> from the Lark-based $\mathrm{\LaTeX}$ parser.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25535">
-        <span class="pr-list-item-icon"></span>
-        #25535: Refactored Transformer code and fixed a minor inconsistency.
+        <span class="pr-list-item-icon"></span>#25535: Refactored Transformer code and fixed a minor inconsistency.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25552">
-        <span class="pr-list-item-icon"></span>
-        #25552: Added support for <code>Min</code>, <code>Max</code>, <code>Bra</code>, and <code>Ket</code>.
+        <span class="pr-list-item-icon"></span>#25552: Added support for <code>Min</code>, <code>Max</code>, <code>Bra</code>, and <code>Ket</code>.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25569">
-        <span class="pr-list-item-icon"></span>
-        #25269: Simplified Lark $\mathrm{\LaTeX}$ parser testing framework.
+        <span class="pr-list-item-icon"></span>#25269: Simplified Lark $\mathrm{\LaTeX}$ parser testing framework.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25622">
-        <span class="pr-list-item-icon"></span>
-        #25622: Added error messages to the Lark $\mathrm{\LaTeX}$ parser.
+        <span class="pr-list-item-icon"></span>#25622: Added error messages to the Lark $\mathrm{\LaTeX}$ parser.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25626">
-        <span class="pr-list-item-icon"></span>
-        #25626: Made many miscellaneous improvements to Lark $\mathrm{\LaTeX}$ parser.
+        <span class="pr-list-item-icon"></span>#25626: Made many miscellaneous improvements to Lark $\mathrm{\LaTeX}$ parser.
       </a>
     </li>
   </ul>
 </div>
-<!-- markdownlint-enable MD033 -->
 
 ### Breakdown
 
@@ -245,36 +228,30 @@ There were a bunch of other changes in [#25626](https://github.com/sympy/sympy/p
 
 This section lists all the PRs that I made which had no direct relevance to the $\mathrm{\LaTeX}$ parser.
 
-<!-- markdownlint-disable MD033 -->
 <div class="list-section">
   <ul>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25189">
-        <span class="pr-list-item-icon"></span>
-        #25189: Added a test for the unused array function parameter in the C code generator.
+        <span class="pr-list-item-icon"></span>#25189: Added a test for the unused array function parameter in the C code generator.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25205">
-        <span class="pr-list-item-icon"></span>
-        #25205: Fixed a small error in the docs.
+        <span class="pr-list-item-icon"></span>#25205: Fixed a small error in the docs.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25292">
-        <span class="pr-list-item-icon"></span>
-        #25292: Removed unnecessary code in MathML printer.
+        <span class="pr-list-item-icon"></span>#25292: Removed unnecessary code in MathML printer.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/pull/25295">
-        <span class="pr-list-item-icon"></span>
-        #25295: Added the logo to the SymPy documentation.
+        <span class="pr-list-item-icon"></span>#25295: Added the logo to the SymPy documentation.
       </a>
     </li>
   </ul>
 </div>
-<!-- markdownlint-enable MD033 -->
 
 ### Breakdown
 
@@ -296,60 +273,50 @@ At some point during the GSoC, my mentor asked me to open issues in the SymPy Is
 
 To that end, I opened a bunch of issues for different things: I opened some issues to keep track of the work that remained to be done in the testing infrastructure, features that needed to be added to the new $\mathrm{\LaTeX}$ parser, etc. I also opened a couple of issues to get the community's preference on certain things.
 
-<!-- markdownlint-disable MD033 -->
 <div class="list-section">
   <ul>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25365">
-        <span class="open-issue-list-item-icon"></span>
-        #25365: Master Issue for my GSoC Project, <i>Rewriting the $\mathrm{\LaTeX}$ Parser in Lark</i>.
+        <span class="open-issue-list-item-icon"></span>#25365: Master Issue for my GSoC Project, <i>Rewriting the $\mathrm{\LaTeX}$ Parser in Lark</i>.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25364">
-        <span class="closed-issue-list-item-icon"></span>
-        #25364: Adding features to the Lark $\mathrm{\LaTeX}$ Parser.
+        <span class="closed-issue-list-item-icon"></span>#25364: Adding features to the Lark $\mathrm{\LaTeX}$ Parser.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25366">
-        <span class="open-issue-list-item-icon"></span>
-        #25366: Improve the $\mathrm{\LaTeX}$ Parser tests.
+        <span class="open-issue-list-item-icon"></span>#25366: Improve the $\mathrm{\LaTeX}$ Parser tests.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25419">
-        <span class="open-issue-list-item-icon"></span>
-        #25419: <code>\leqq</code> and <code>\leqslant</code> for $\leq$, <code>\geqq</code> and <code>\geqslant</code> for $\geq$.
+        <span class="open-issue-list-item-icon"></span>#25419: <code>\leqq</code> and <code>\leqslant</code> for $\leq$, <code>\geqq</code> and <code>\geqslant</code> for $\geq$.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25420">
-        <span class="open-issue-list-item-icon"></span>
-        #25420: Logarithm bases for <code>\lg</code> and <code>\log</code>.
+        <span class="open-issue-list-item-icon"></span>#25420: Logarithm bases for <code>\lg</code> and <code>\log</code>.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25482">
-        <span class="open-issue-list-item-icon"></span>
-        #25482: Ambiguous Expressions in the Lark-based $\mathrm{\LaTeX}$ Parser.
+        <span class="open-issue-list-item-icon"></span>#25482: Ambiguous Expressions in the Lark-based $\mathrm{\LaTeX}$ Parser.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25484">
-        <span class="open-issue-list-item-icon"></span>
-        #25484: Documenting the Lark $\mathrm{\LaTeX}$ Parser.
+        <span class="open-issue-list-item-icon"></span>#25484: Documenting the Lark $\mathrm{\LaTeX}$ Parser.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/25676">
-        <span class="open-issue-list-item-icon"></span>
-        #25676: Adding features to the Lark $\mathrm{\LaTeX}$ Parser.
+        <span class="open-issue-list-item-icon"></span>#25676: Adding features to the Lark $\mathrm{\LaTeX}$ Parser.
       </a>
     </li>
   </ul>
 </div>
-<!-- markdownlint-enable MD033 -->
 
 Since most of these issues are self-explanatory, I won't be adding a separate breakdown section. If any reader is interested in any of the issues, they can simply go and check out the issue, which will have a detailed description.
 
@@ -361,36 +328,30 @@ As I had mentioned above, solving existing issues that were opened for the ANTLR
 
 Here's a list of the things which are fixed in the Lark-based parser. Most of these issues are still not marked as resolved because they still exist in the ANTLR-based parser.
 
-<!-- markdownlint-disable MD033 -->
 <div class="list-section">
   <ul>
     <li>
       <a href="https://github.com/sympy/sympy/issues/19127">
-        <span class="closed-issue-list-item-icon"></span>
-        #19127: Please add <code>Min</code>, <code>Max</code> and <code>Abs</code> to $\mathrm{\LaTeX}$ capability.
+        <span class="closed-issue-list-item-icon"></span>#19127: Please add <code>Min</code>, <code>Max</code> and <code>Abs</code> to $\mathrm{\LaTeX}$ capability.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/21517">
-        <span class="closed-issue-list-item-icon"></span>
-        #21517: <code>parse_latex</code> introduces unnecessary factor of $-1$.
+        <span class="closed-issue-list-item-icon"></span>#21517: <code>parse_latex</code> introduces unnecessary factor of $-1$.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/23551">
-        <span class="closed-issue-list-item-icon"></span>
-        #23551: Support parsing <code>\text</code> and <code>\mathrm</code> forms of differential operator.
+        <span class="closed-issue-list-item-icon"></span>#23551: Support parsing <code>\text</code> and <code>\mathrm</code> forms of differential operator.
       </a>
     </li>
     <li>
       <a href="https://github.com/sympy/sympy/issues/24290">
-        <span class="closed-issue-list-item-icon"></span>
-        #24290: Greek letters with indices are not considered on parsing latex.
+        <span class="closed-issue-list-item-icon"></span>#24290: Greek letters with indices are not considered on parsing latex.
       </a>
     </li>
   </ul>
 </div>
-<!-- markdownlint-enable MD033 -->
 
 Once again, these issues are mostly self-explanatory so I won't add a separate breakdown section for this.
 
