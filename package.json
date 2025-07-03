@@ -7,12 +7,13 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "check": "npm run lint:astro && npm run lint:ts",
-    "lint:astro": "eslint \"src/**/*.astro\"",
+
+    "check": "npm run lint:ts",
     "lint:ts": "oxlint \"src/**/*.{ts,tsx}\" --ignore \"src/components/ui/**\"",
-    "fix": "npm run format && npm run fix:astro && npm run fix:ts",
-    "fix:astro": "eslint \"src/**/*.astro\" --fix",
+
+    "fix": "npm run format && npm run fix:ts",
     "fix:ts": "oxlint \"src/**/*.{ts,tsx}\" --fix --ignore \"src/components/ui/**\"",
+
     "format": "prettier . --write"
   },
   "dependencies": {
@@ -52,10 +53,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.35.1",
-    "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-astro": "^1.3.1",
     "eslint-plugin-mdx": "^3.5.0",
     "gh-pages": "^6.3.0",
     "oxlint": "^1.5.0",
