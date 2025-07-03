@@ -9,10 +9,10 @@
     "preview": "astro preview",
 
     "check": "npm run lint:ts",
-    "lint:ts": "oxlint \"src/**/*.{ts,tsx}\" --ignore \"src/components/ui/**\"",
+    "lint:ts": "oxlint \"src/**/*.{ts,tsx}\"",
 
     "fix": "npm run format && npm run fix:ts",
-    "fix:ts": "oxlint \"src/**/*.{ts,tsx}\" --fix --ignore \"src/components/ui/**\"",
+    "fix:ts": "oxlint \"src/**/*.{ts,tsx}\" --fix",
 
     "format": "prettier . --write"
   },
