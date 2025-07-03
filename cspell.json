@@ -1,0 +1,100 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [],
+  "import": ["@cspell/dict-latex/cspell-ext.json"],
+  "dictionaries": [
+    "typescript",
+    "node",
+    "html",
+    "css",
+    "bash",
+    "en_US",
+    "latex",
+    "tech-terms",
+    "brand-names",
+    "personal-names",
+    "misc",
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "tech-terms",
+      "path": "./dictionaries/tech-terms.txt",
+      "addWords": true,
+      "description": "Technical terminology and programming concepts"
+    },
+    {
+      "name": "brand-names",
+      "path": "./dictionaries/brand-names.txt",
+      "addWords": true,
+      "description": "Company names, product names, brand names"
+    },
+    {
+      "name": "personal-names",
+      "path": "./dictionaries/personal-names.txt",
+      "addWords": true,
+      "description": "People names, usernames, author names"
+    },
+    {
+      "name": "misc",
+      "path": "./dictionaries/misc.txt",
+      "addWords": true,
+      "description": "Miscellaneous terms and names, one-off words"
+    }
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    "dist/**",
+    ".astro/**",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "*.min.js",
+    "*.min.css"
+  ],
+  "ignoreRegExpList": [
+    "\\b[A-Z]{2,}\\b",
+    "\\b\\d+px\\b",
+    "\\b#[0-9a-fA-F]{3,8}\\b",
+    "\\bhttps?://\\S+\\b",
+    "\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\b",
+    "\\$\\$[\\s\\S]*?\\$\\$",
+    "\\$[^$\\n]*\\$",
+    "\\\\[a-zA-Z]+\\{[^}]*\\}",
+    "\\\\[a-zA-Z]+",
+    "\\\\begin\\{[^}]*\\}[\\s\\S]*?\\\\end\\{[^}]*\\}",
+    "\\{\\\\[^}]*\\}"
+  ],
+  "overrides": [
+    {
+      "filename": "**/*.{md,mdx}",
+      "ignoreRegExpList": [
+        "^---[\\s\\S]*?^---",
+        "``````",
+        "`[^`]*`",
+        "\\[.*?\\]\\(.*?\\)",
+        "!\\[.*?\\]\\(.*?\\)",
+        "\\$\\$[\\s\\S]*?\\$\\$",
+        "\\$[^$\\n]*\\$",
+        "\\\\[a-zA-Z]+\\{[^}]*\\}",
+        "\\\\[a-zA-Z]+(?:\\[[^\\]]*\\])?(?:\\{[^}]*\\})*",
+        "\\\\begin\\{[^}]*\\}[\\s\\S]*?\\\\end\\{[^}]*\\}",
+        "\\{\\\\[^}]*\\}"
+      ]
+    },
+    {
+      "filename": "**/*.{js,ts,jsx,tsx,astro}",
+      "dictionaries": ["typescript", "node", "html", "css", "tech-terms", "project-specific"]
+    },
+    {
+      "filename": "**/*.tex",
+      "dictionaries": ["latex", "en_US", "tech-terms"],
+      "ignoreRegExpList": [
+        "\\\\[a-zA-Z]+(?:\\[[^\\]]*\\])?(?:\\{[^}]*\\})*",
+        "\\\\begin\\{[^}]*\\}[\\s\\S]*?\\\\end\\{[^}]*\\}",
+        "\\{\\\\[^}]*\\}",
+        "%.*$"
+      ]
+    }
+  ]
+}
