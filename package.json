@@ -5,11 +5,15 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "format": "prettier --write \"**/*.{astro,js,jsx,ts,tsx,md,mdx,json,html,css,yaml,yml}\""
+    "check": "npm run lint:astro && npm run lint:ts",
+    "lint:astro": "eslint \"src/**/*.astro\"",
+    "lint:ts": "oxlint \"src/**/*.{ts,tsx}\" --ignore \"src/components/ui/**\"",
+    "fix": "npm run format && npm run fix:astro && npm run fix:ts",
+    "fix:astro": "eslint \"src/**/*.astro\" --fix",
+    "fix:ts": "oxlint \"src/**/*.{ts,tsx}\" --fix --ignore \"src/components/ui/**\"",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -21,6 +25,7 @@
     "@expressive-code/plugin-collapsible-sections": "^0.41.2",
     "@expressive-code/plugin-line-numbers": "^0.41.2",
     "@iconify-json/lucide": "^1.2.54",
+    "@playform/compress": "^0.2.0",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
@@ -53,6 +58,7 @@
     "eslint-plugin-astro": "^1.3.1",
     "eslint-plugin-mdx": "^3.5.0",
     "gh-pages": "^6.3.0",
+    "oxlint": "^1.5.0",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-astro-organize-imports": "^0.4.11",
