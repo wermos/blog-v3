@@ -3,7 +3,6 @@ title: 'Test Markdown Features Post'
 description: 'Testing MathJax rendering inside an Astro blog post'
 date: 2025-06-29
 tags: ['test']
-image: 'callouts-component/banner.png'
 mathjax: true
 ---
 
