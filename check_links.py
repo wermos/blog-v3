@@ -8,8 +8,29 @@ import random
 from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-EXTERNAL_LINK_REGEX = re.compile(r'\[.*?\]\((https?://[^\s)]+)\)')
-INTERNAL_LINK_REGEX = re.compile(r'\[.*?\]\(([^)]+)\)')
+EXTERNAL_LINK_REGEX = re.compile(
+    r'''
+    \[                             # opening square bracket
+      (?P<text>[^\]]+)             # link text (non-greedy)
+    \]                             # closing square bracket
+    \(                             # opening parenthesis for URL
+      <?                           # optional angle bracket
+      (?P<url>
+        https?://                 # http or https
+        (?:                       # non-capturing group for the main part
+          [^()\s<>]++             # any non-paren/space/bracket chars
+          |                       # OR
+          \([^\s()<>]*\)          # balanced parens (1-level deep)
+        )+
+      )
+      >?                           # optional closing angle bracket
+    \)                             # closing parenthesis
+    ''',
+    re.VERBOSE
+)
+
+INTERNAL_LINK_REGEX = re.compile(r'\[.*?\]\(<?(?!https?://)([^<>)]+?)>?\)')
+
 
 print_lock = threading.Lock()
 
@@ -101,18 +122,17 @@ def extract_links_from_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Get external links (http/https)
-    external_links = EXTERNAL_LINK_REGEX.findall(content)
+    # Extract external links (handles URLs with parentheses)
+    external_links = [match.group("url") for match in EXTERNAL_LINK_REGEX.finditer(content)]
     
-    # Get all links, then filter out external ones to get internal links
-    all_links = INTERNAL_LINK_REGEX.findall(content)
-    internal_links = [link for link in all_links if not link.startswith(('http://', 'https://'))]
+    # Extract internal links (negative lookahead to exclude http/https)
+    internal_links = INTERNAL_LINK_REGEX.findall(content)
+    print(f"{internal_links} in {filepath}")
     
     return external_links, internal_links
 
 def check_internal_link(link, source_file, root_path):
     """Check if an internal link exists"""
-    global total_internal_links_checked
     
     # Skip anchor-only links and mailto/tel links
     if link.startswith('#') or link.startswith(('mailto:', 'tel:')):
@@ -230,7 +250,7 @@ def check_external_link(url, timeout, delay):
 
     return url, 0, True
 
-def process_file(filepath, timeout, ci_mode, threads, delay, root_path, check_internal, check_external):
+def process_file(filepath, timeout, show_progress, ci_mode, threads, delay, root_path, check_internal, check_external):
     global total_links_checked, total_internal_links_checked
     
     external_links, internal_links = extract_links_from_file(filepath)
@@ -293,9 +313,11 @@ def main():
     parser.add_argument("--timeout", "-t", type=int, default=DEFAULT_TIMEOUT, help="Timeout per request (seconds)")
     parser.add_argument("--threads", "-j", type=int, default=DEFAULT_THREADS, help="Number of threads")
     parser.add_argument("--delay", "-d", type=float, default=DEFAULT_DELAY, help="Delay between requests (seconds)")
+    parser.add_argument("--no-progress", action="store_true", help="Disable progress bar")
     parser.add_argument("--ci", action="store_true", help="CI-friendly output (summary only)")
     parser.add_argument("--external-only", action="store_true", help="Check only external links")
     parser.add_argument("--internal-only", action="store_true", help="Check only internal links")
+    parser.add_argument("--debug", action="store_true", help="Show debug information about link extraction")
     args = parser.parse_args()
 
     # Determine what to check
@@ -314,8 +336,18 @@ def main():
             print(f"Threads: {args.threads}, Timeout: {args.timeout}s")
         print()
 
+    # Debug mode to show what links are being extracted
+    if args.debug:
+        print(f"{TerminalColors.BOLD}DEBUG MODE: Showing link extraction{TerminalColors.ENDC}")
+        for filepath in files[:3]:  # Just show first 3 files
+            external_links, internal_links = extract_links_from_file(filepath)
+            print(f"\n{filepath}:")
+            print(f"  External: {external_links}")
+            print(f"  Internal: {internal_links}")
+        return
+
     for filepath in files:
-        process_file(filepath, args.timeout, args.ci, args.threads, args.delay, root_path, check_internal, check_external)
+        process_file(filepath, args.timeout, not args.no_progress, args.ci, args.threads, args.delay, root_path, check_internal, check_external)
 
     elapsed = time.time() - start_time
     print()
