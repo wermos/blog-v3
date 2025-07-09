@@ -28,8 +28,11 @@ export default defineConfig({
   integrations: [mermaid({
     theme: 'default', // Default light theme
     autoTheme: true, // Automatically switches based on data-theme
+    mermaidConfig: {
+      startOnLoad: true, // Ensures Mermaid is loaded on page load
+    }
   }), expressiveCode({
-    themes: ['one-dark-pro'],
+    themes: ['catppuccin-latte', 'catppuccin-macchiato'],
     plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
     useDarkModeMediaQuery: false,
     themeCssSelector: (theme) => `[data-theme="${theme.name.split('-')[1]}"]`,
@@ -37,6 +40,13 @@ export default defineConfig({
       wrap: true,
       collapseStyle: 'collapsible-auto',
       showLineNumbers: false,
+      // overridesByLang: {
+      //   'mermaid': { 
+      //     // This effectively disables Expressive Code for mermaid
+      //     frame: "none",
+      //     wrap: false
+      //   },
+      // },
       // overridesByLang: {
       //   'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
       //     {
