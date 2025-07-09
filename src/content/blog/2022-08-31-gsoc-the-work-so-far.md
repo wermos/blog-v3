@@ -1,50 +1,9 @@
 ---
-layout: single 
-title:  "GSoC --- The Work So Far"
+title:  "GSoC — The Work So Far"
 date:   2022-08-31 16:16:37 +0530
-toc: true
-classes: wide
-usecodehl: true
-usemathjax: true
-gallery1:
-  - url: /assets/images/gsoc/gemm_plot_float.png
-    image_path: /assets/images/gsoc/gemm_plot_float.png
-    title: "Benchmark plot for GEMM with <code>float</code> matrices."
-  - url: /assets/images/gsoc/gemm_plot_double.png
-    image_path: /assets/images/gsoc/gemm_plot_double.png
-    title: "Benchmark plot for GEMM with <code>double</code> matrices."
-gallery2:
-  - url: /assets/images/gsoc/inversion_plot_float.png
-    image_path: /assets/images/gsoc/inversion_plot_float.png
-    title: "Benchmark plot for matrix inversion with <code>float</code> matrices."
-  - url: /assets/images/gsoc/inversion_plot_double.png
-    image_path: /assets/images/gsoc/inversion_plot_double.png
-    title: "Benchmark plot for matrix inversion with <code>double</code> matrices."
-gallery3:
-  - url: /assets/images/gsoc/similarity_plot_float.png
-    image_path: /assets/images/gsoc/similarity_plot_float.png
-    title: "Benchmark plot for matrix similarity with <code>float</code> matrices."
-  - url: /assets/images/gsoc/similarity_plot_double.png
-    image_path: /assets/images/gsoc/similarity_plot_double.png
-    title: "Benchmark plot for matrix similarity with <code>double</code> matrices."
-gallery4:
-  - url: /assets/images/gsoc/freeToBound_plot_float.png
-    image_path: /assets/images/gsoc/freeToBound_plot_float.png
-    title: "Benchmark plot for free coordinates to bound coordinates with <code>float</code> matrices."
-  - url: /assets/images/gsoc/freeToBound_plot_double.png
-    image_path: /assets/images/gsoc/freeToBound_plot_double.png
-    title: "Benchmark plot for free coordinates to bound coordinates with <code>double</code> matrices."
-gallery5:
-  - url: /assets/images/gsoc/boundToFree_plot_float.png
-    image_path: /assets/images/gsoc/boundToFree_plot_float.png
-    title: "Benchmark plot for bound coordinates to free coordinates with <code>float</code> matrices."
-  - url: /assets/images/gsoc/boundToFree_plot_double.png
-    image_path: /assets/images/gsoc/boundToFree_plot_double.png
-    title: "Benchmark plot for bound coordinates to free coordinates with <code>double</code> matrices."
-categories: gsoc cern-hsf
+description: 'In this blog post, I discuss the work I have done so far, and what our future direction will be.'
+tags: ['gsoc', 'cern-hsf']
 ---
-
-In this blog post, I will discuss the work I have done so far, and what our future direction will be.
 
 # Fast 5×5
 
@@ -64,7 +23,7 @@ The original directory structure was quite flat. However, it was not amenable to
 
 The original directory structure was:
 <!-- cspell:disable -->
-{% noln plaintext %}
+```plaintext
 .
 ├── README.md
 ├── CMakeLists.txt
@@ -92,11 +51,11 @@ The original directory structure was:
     ├── unit_operator.cpp
     ├── unit_vector.cpp
     └── run_all.cpp
-{% endnoln %}
+```
 <!-- cspell:enable -->
 
 The current (at the time of writing) file structure is as follows:
-{% noln plaintext %}
+```plaintext
 .
 ├── README.md
 ├── CMakeLists.txt
@@ -136,7 +95,7 @@ The current (at the time of writing) file structure is as follows:
         ├── unit_operator.cpp
         ├── unit_vector.cpp
         └── run_all.cpp
-{% endnoln %}
+```
 
 The advantage of the new hierarchical directory structure is that it allows others to get up to speed with respect to where everything is faster, and it also allows me to easily add more benchmarks and backends.
 
@@ -167,7 +126,7 @@ For these reasons, I decided to move away from `/usr/bin/time` and switched the 
 ### Matrix Generation
 
 A key part of the benchmarking code is the random matrix generation. Doing this properly is essential because otherwise, the compiler might figure out the fact that we have precomputed matrices. Once it does so, it is free to calculate the results ahead of time, which would defeat the point of the benchmark. The original Fast 5×5 code was using index-based operations to fill up the matrix, like so:
-{% highlight cpp %}
+```cpp
 float a[SIZE * SIZE];
 float b[SIZE * SIZE];
 
@@ -193,10 +152,10 @@ for (int i = 0; i < SIZE; i++) {
         b[i * SIZE + j] = val;
     }
 }
-{% endhighlight %}
+```
 I rewrote the matrix generation code using the random number generators in the `<random>` header, and mimicked `Eigen`'s `Random()` implementation, which generates a random float in the range $[-1, 1]$:
-<!-- markdownlint-disable MD033 MD018 -->
-{% highlight cpp %}
+
+```cpp
 // random.hpp
 #include <random>
 #include <limits>
@@ -222,8 +181,7 @@ for (int i = 0; i < SIZE; i++) {
         a[i * SIZE + j] = randomFloat(-1.0, 1.0);
     }
 }
-{% endhighlight %}
-<!-- markdownlint-enable MD033 MD018 -->
+```
 
 This change was made in [`ff821df`](https://github.com/wermos/Fast5x5/commit/ff821df8906a226749408e24b40e627d21fa3894).
 
@@ -239,7 +197,6 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
 {% include gallery id="gallery4" caption="Free coordinates to bound coordinates benchmark plots." %}
 {% include gallery id="gallery5" caption="Bound coordinates to free coordinates benchmark plots." %}
 
-<!-- markdown-link-check-disable-next-line -->
 Note that the bar graphs for the `custom` backend and `double` matrices do not exist for the 6×6 and 8×8 dimensions. This is an intentional and recurring theme: The `custom` backend has a size limitation which prevents it from being usable for 6×6 and 8×8 matrices without the AVX512 instruction set, which [my processor](https://ark.intel.com/content/www/us/en/ark/products/132228/intel-core-i712700h-processor-24m-cache-up-to-4-70-ghz.html) (at the time of writing) does not support. For this reason, the `custom` 6×6 and 8×8 data is missing from all of my benchmark plots.
 
 After gathering the data, my mentors and I analyzed the performance of each backend. After a deep look into the assembly generated by each backend, as well as a look at the performance each library brought to the table, we decided to use Fastor because it was consistently first or second in all the benchmarks we threw at it, and its assembly generation was the cleanest (i.e. free of cruft and the pointless register shuffling that plagued a few of the other backends).

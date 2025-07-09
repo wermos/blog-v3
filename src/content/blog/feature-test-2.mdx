@@ -1,0 +1,73 @@
+---
+title: 'Feature Test 2'
+description: 'Testing features in an mdx post'
+date: 2025-07-05
+tags: ['test']
+mathjax: true
+---
+import { Image } from 'astro:assets'
+import royalFlora from '../../assets/images/genshin/artifacts/Royal_Flora.png'
+
+## Checking Math ($x$, $y$)
+
+Here is some inline math: $x^2 + y^2 = z^2$.
+
+$$
+L_1 = \frac{1}{3} \rho v^2 S C_L
+$$
+
+This is an integral:
+
+$$
+\int\limits_\mathclap{-\infty}^\mathclap{\infty} \! e^{-x^2}\,\mathrm{d}x = \sqrt{2\pi}
+$$
+
+This is the Binomial Theorem:
+
+$$
+(1 + x)^n = \sum\limits_{k\,=\,0}^n \binom{n}{k}x^k
+$$
+
+$$
+(1 - x)^n = \sum\limits_{k\,=\,0}^n (-1)^k\binom{n}{k}x^k
+$$
+
+## Checking gemoji
+
+:+1:
+
+## Checking Code
+
+Basic code snippet:
+
+```cpp
+#include <iostream>
+
+int main() {
+  std::cout << "Hello World!\n";
+}
+```
+
+With line numbers:
+
+```js showLineNumbers=true
+let a1
+let a2
+let a3
+```
+
+## Checking External Links
+
+Let's check a link [like this](https://www.mathjax.org/).
+
+## Image Testing
+
+<Image 
+  src={royalFlora} 
+  alt="The flower from the Noblesse Oblige artifact set"
+  width={200}
+  class="align-left"
+/>
+
+This paragraph will flow around the left-aligned image, just like in Jekyll's Minimal Mistakes theme. The text wraps naturally around the floated image.
+
