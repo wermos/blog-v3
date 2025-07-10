@@ -5,6 +5,24 @@ description: 'In this blog post, I discuss the work I have done so far, and what
 tags: ['gsoc', 'cern-hsf']
 ---
 
+import ImageGalleryWrapper from '@/components/ImageGalleryWrapper.astro';
+
+import img1 from '@/assets/images/gsoc/gemm_plot_float.png';
+import img2 from '@/assets/images/gsoc/gemm_plot_double.png';
+
+
+import img3 from '@/assets/images/gsoc/inversion_plot_float.png';
+import img4 from '@/assets/images/gsoc/inversion_plot_double.png';
+
+import img5 from '@/assets/images/gsoc/similarity_plot_float.png';
+import img6 from '@/assets/images/gsoc/similarity_plot_double.png';
+
+import img7 from '@/assets/images/gsoc/freeToBound_plot_float.png';
+import img8 from '@/assets/images/gsoc/freeToBound_plot_double.png';
+
+import img9 from '@/assets/images/gsoc/boundToFree_plot_float.png';
+import img10 from '@/assets/images/gsoc/boundToFree_plot_double.png';
+
 # Fast 5×5
 
 In 2019, Hadrien worked with a Masters student to create [Fast 5×5](https://gitlab.in2p3.fr/CodeursIntensifs/Fast5x5), which was supposed to be a proof-of-concept demonstrating that the existing matrix routines in `Eigen` could be better optimized for small dimensions like 5×5.
@@ -22,7 +40,7 @@ After making a few changes, it became apparent that I needed somewhere to push m
 The original directory structure was quite flat. However, it was not amenable to the amount and volume of changes I needed to make. For this reason, I reorganized the entire repository multiple times (for example, in [`85ad3fd`](https://github.com/wermos/Fast5x5/commit/85ad3fd1de82ee6313bb2685e2a02f368d7e5e6a), [`20d4fb9`](https://github.com/wermos/Fast5x5/commit/20d4fb9940f01c547272cb3b2e775335992d8ea6), [`125a084`](https://github.com/wermos/Fast5x5/commit/125a084f374c92936a2bc9f8e41d561c31346588), and [`69bd4d8`](https://github.com/wermos/Fast5x5/commit/69bd4d8cc3f6e3aeb0c6baf21d9510b931984799)).
 
 The original directory structure was:
-<!-- cspell:disable -->
+{/* cSpell:disable */}
 ```plaintext
 .
 ├── README.md
@@ -52,7 +70,8 @@ The original directory structure was:
     ├── unit_vector.cpp
     └── run_all.cpp
 ```
-<!-- cspell:enable -->
+{/* cSpell:enable */}
+
 
 The current (at the time of writing) file structure is as follows:
 ```plaintext
@@ -191,11 +210,27 @@ I wrote benchmarks for testing the performance of `Eigen`, `fast5x5`, `blaze`, a
 
 I ran the benchmarks on my own machine, gathered the data, and then plotted it using a Python script I wrote:
 
-{% include gallery id="gallery1" caption="GEMM benchmark plots." %}
-{% include gallery id="gallery2" caption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)" %}
+{/* {% include gallery id="gallery1" caption="GEMM benchmark plots." %} */}
+<ImageGalleryWrapper
+  groupCaption="Performance Analysis Graphs"
+  images={[
+    {
+      src: img1,
+      alt: "placeholder",
+      caption: "Benchmark plot for GEMM with <code>float</code> matrices."
+    },
+    {
+      src: img2,
+      alt: "placeholder",
+      caption: "Benchmark plot for GEMM with <code>double</code> matrices."
+    }
+  ]}
+/>
+
+{/* {% include gallery id="gallery2" caption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)" %}
 {% include gallery id="gallery3" caption="Similarity transform (i.e. computing $ABA^\top$) benchmark plots." %}
-{% include gallery id="gallery4" caption="Free coordinates to bound coordinates benchmark plots." %}
-{% include gallery id="gallery5" caption="Bound coordinates to free coordinates benchmark plots." %}
+{% include gallery id="gallery4" caption="Free coordinates to bound coordinates benchmark plots." %} */}
+{/* {% include gallery id="gallery5" caption="Bound coordinates to free coordinates benchmark plots." %} */}
 
 Note that the bar graphs for the `custom` backend and `double` matrices do not exist for the 6×6 and 8×8 dimensions. This is an intentional and recurring theme: The `custom` backend has a size limitation which prevents it from being usable for 6×6 and 8×8 matrices without the AVX512 instruction set, which [my processor](https://ark.intel.com/content/www/us/en/ark/products/132228/intel-core-i712700h-processor-24m-cache-up-to-4-70-ghz.html) (at the time of writing) does not support. For this reason, the `custom` 6×6 and 8×8 data is missing from all of my benchmark plots.
 

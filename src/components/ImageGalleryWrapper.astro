@@ -1,0 +1,52 @@
+---
+// src/components/ImageGalleryWrapper.astro
+import { Image } from 'astro:assets';
+
+export interface Props {
+  images: Array<{
+    src: ImageMetadata;
+    alt?: string;
+    caption?: string;
+  }>;
+  groupCaption?: string;
+}
+
+const { images, groupCaption } = Astro.props;
+
+// Convert Astro Image metadata to URLs
+const imageData = images.map(img => ({
+  src: img.src.src,
+  alt: img.alt,
+  caption: img.caption
+}));
+---
+
+<div id="image-gallery-container" data-images={JSON.stringify(imageData)} data-group-caption={groupCaption}>
+  <!-- Fallback content for non-JS users -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {images.map((img) => (
+      <Image
+        src={img.src}
+        alt={img.alt || ''}
+        class="w-full h-32 object-cover rounded-lg shadow-md"
+        width={200}
+        height={128}
+      />
+    ))}
+  </div>
+</div>
+
+<script>
+  import ImageGallery from './ImageGallery.tsx';
+  import { createRoot } from 'react-dom/client';
+  import React from 'react';
+
+  const container = document.getElementById('image-gallery-container');
+  if (container) {
+    const images = JSON.parse(container.dataset.images || '[]');
+    const groupCaption = container.dataset.groupCaption;
+    
+    const root = createRoot(container);
+    root.render(React.createElement(ImageGallery, { images, groupCaption }));
+  }
+</script>
