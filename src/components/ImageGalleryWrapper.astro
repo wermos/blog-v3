@@ -1,6 +1,6 @@
 ---
-// src/components/ImageGalleryWrapper.astro
 import { Image } from 'astro:assets';
+import { processCaption } from '@/lib/caption-processor'
 
 export interface Props {
   images: Array<{
@@ -13,26 +13,46 @@ export interface Props {
 
 const { images, groupCaption } = Astro.props;
 
-// Convert Astro Image metadata to URLs
-const imageData = images.map(img => ({
-  src: img.src.src,
-  alt: img.alt,
-  caption: img.caption
-}));
+// Process captions for all images
+const processedImages = await Promise.all(
+  images.map(async (img) => ({
+    src: img.src.src,
+    alt: img.alt,
+    caption: img.caption ? await processCaption(img.caption) : undefined
+  }))
+);
+
+// Process group caption
+const processedGroupCaption = groupCaption ? await processCaption(groupCaption) : undefined;
+
+// Dynamic grid classes function
+const getGridClasses = (numImages: number): string => {
+  const colsDefault = Math.min(2, numImages);
+  const colsMd = Math.min(3, numImages);
+  const colsLg = Math.min(4, numImages);
+  
+  return `grid gap-4 grid-cols-${colsDefault} md:grid-cols-${colsMd} lg:grid-cols-${colsLg}`;
+};
 ---
 
-<div id="image-gallery-container" data-images={JSON.stringify(imageData)} data-group-caption={groupCaption}>
-  <!-- Fallback content for non-JS users -->
-  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {images.map((img) => (
-      <Image
-        src={img.src}
-        alt={img.alt || ''}
-        class="w-full h-32 object-cover rounded-lg shadow-md"
-        width={200}
-        height={128}
-      />
-    ))}
+<div class="not-prose mb-8">
+  <div id="image-gallery-container" data-images={JSON.stringify(processedImages)} data-group-caption={processedGroupCaption}>
+    <!-- Fallback content for non-JS users -->
+    <div class={getGridClasses(images.length)}>
+      {images.map((img) => (
+        <Image
+          src={img.src}
+          alt={img.alt || ''}
+          class="w-full object-contain border border-border rounded-md"
+          width={300}
+          height={200}
+        />
+      ))}
+    </div>
+
+    {processedGroupCaption && (
+      <div class="text-center text-muted-foreground text-sm mt-4" set:html={processedGroupCaption} />
+    )}
   </div>
 </div>
 
@@ -41,12 +61,15 @@ const imageData = images.map(img => ({
   import { createRoot } from 'react-dom/client';
   import React from 'react';
 
-  const container = document.getElementById('image-gallery-container');
-  if (container) {
-    const images = JSON.parse(container.dataset.images || '[]');
-    const groupCaption = container.dataset.groupCaption;
-    
-    const root = createRoot(container);
-    root.render(React.createElement(ImageGallery, { images, groupCaption }));
-  }
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('image-gallery-container');
+    if (container && !container.hasAttribute('data-hydrated')) {
+      const images = JSON.parse(container.dataset.images || '[]');
+      const groupCaption = container.dataset.groupCaption;
+      
+      const root = createRoot(container);
+      root.render(React.createElement(ImageGallery, { images, groupCaption }));
+      container.setAttribute('data-hydrated', 'true');
+    }
+  });
 </script>

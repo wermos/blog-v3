@@ -1,7 +1,9 @@
 // src/components/ImageGallery.tsx
 import React, { useState } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
+import Captions from 'yet-another-react-lightbox/plugins/captions';
 import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/captions.css';
 
 interface ImageItem {
   src: string;
@@ -14,42 +16,52 @@ interface ImageGalleryProps {
   groupCaption?: string;
 }
 
+const getGridClasses = (numImages: number): string => {
+  const colsDefault = Math.min(2, numImages);
+  const colsMd = Math.min(3, numImages);
+  const colsLg = Math.min(4, numImages);
+  
+  return `grid gap-4 grid-cols-${colsDefault} md:grid-cols-${colsMd} lg:grid-cols-${colsLg}`;
+};
+
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => {
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // In your ImageGallery.tsx
   const slides = images.map(img => ({
-    src: img.src,
-    alt: img.alt || '',
-    title: img.caption || '',
+  src: img.src,
+  alt: img.alt || '',
+  description: img.caption ? img.caption.replace(/^<p>(.*)<\/p>$/s, '$1') : '',
   }));
 
   return (
-    <div className="image-gallery my-6">
-      {groupCaption && (
-        <div className="mb-4 text-center text-sm text-muted-foreground font-medium">
-          {groupCaption}
-        </div>
-      )}
-      
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((img, index) => (
+    <div className="image-gallery">
+      <div className={getGridClasses(images.length)}>
+          {images.map((img, index) => (
           <div
-            key={index}
-            className="cursor-pointer group"
-            onClick={() => {
+              key={index}
+              className="cursor-pointer"
+              onClick={() => {
               setCurrentIndex(index);
               setOpen(true);
-            }}
+              }}
           >
-            <img
+              <img
               src={img.src}
               alt={img.alt || ''}
-              className="w-full h-32 object-cover rounded-lg shadow-md hover:shadow-lg transition-all duration-200 group-hover:scale-105"
-            />
+              className="w-full object-contain border border-border rounded-md"
+              />
           </div>
-        ))}
+          ))}
       </div>
+
+      {groupCaption && (
+        <div 
+          className="text-center text-muted-foreground text-sm mt-4"
+          dangerouslySetInnerHTML={{ __html: groupCaption }}
+        />
+      )}
 
       {open && (
         <Lightbox
@@ -58,18 +70,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => 
           slides={slides}
           index={currentIndex}
           onIndexChange={setCurrentIndex}
-          animation={{ fade: 300 }}
+          plugins={[Captions]}
           controller={{
             finite: false, // Enables cyclic navigation
           }}
-          render={{
-            slideCaption: ({ slide }) => (
-              slide.title ? (
-                <div className="text-center text-sm text-white/80 p-4 bg-black/20 rounded-md mx-4 mb-4">
-                  {slide.title}
-                </div>
-              ) : null
-            ),
+          styles={{
+            container: {
+              backgroundColor: 'var(--background)',
+            },
           }}
         />
       )}

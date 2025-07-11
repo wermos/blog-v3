@@ -1,11 +1,6 @@
 ---
 import { Image } from 'astro:assets'
-import rehypeMathjax from 'rehype-mathjax/browser'
-import rehypeStringify from 'rehype-stringify'
-import remarkMath from 'remark-math'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import { unified } from 'unified'
+import { processCaption } from '@/utils/caption-processor'
 
 interface FigureImageProps {
   caption?: string
@@ -21,18 +16,7 @@ const {
   ...imageProps
 } = Astro.props as FigureImageProps
 
-let processedCaption = ''
-if (caption) {
-  const processor = unified()
-    .use(remarkParse) // Parses markdown
-    .use(remarkMath) // Identifies math syntax
-    .use(remarkRehype) // Converts remark tree to rehype tree
-    .use(rehypeMathjax) // Processes math in rehype tree
-    .use(rehypeStringify) // Converts rehype tree to HTML string
-
-  const result = await processor.process(caption)
-  processedCaption = String(result)
-}
+const processedCaption = caption ? await processCaption(caption) : ''
 ---
 
 <figure class={figureClass}>
