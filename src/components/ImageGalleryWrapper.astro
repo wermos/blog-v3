@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets';
+// src/components/ImageGalleryWrapper.astro
 import { processCaption } from '@/lib/caption-processor'
-import ImageGallery from '@/components/ImageGalleryReact.tsx';
+import ImageGallery from '@/components/ImageGallery.tsx';
 
 export interface Props {
   images: Array<{
@@ -10,11 +10,11 @@ export interface Props {
     caption?: string;
   }>;
   groupCaption?: string;
+  id?: string; // Add unique ID for multiple galleries
 }
 
-const { images, groupCaption } = Astro.props;
+const { images, groupCaption, id } = Astro.props;
 
-// Process captions for all images
 const processedImages = await Promise.all(
   images.map(async (img) => ({
     src: img.src.src,
@@ -26,8 +26,7 @@ const processedImages = await Promise.all(
 const processedGroupCaption = groupCaption ? await processCaption(groupCaption) : undefined;
 ---
 
-<div class="not-prose mb-8">
-  <!-- Use client:load to automatically hydrate each instance -->
+<div class="not-prose mb-8" id={id}>
   <ImageGallery 
     client:load
     images={processedImages} 

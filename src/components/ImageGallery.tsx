@@ -28,59 +28,58 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => 
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // In your ImageGallery.tsx
   const slides = images.map(img => ({
-  src: img.src,
-  alt: img.alt || '',
-  description: img.caption ? img.caption.replace(/^<p>(.*)<\/p>$/s, '$1') : '',
+    src: img.src,
+    alt: img.alt || '',
+    description: img.caption ? img.caption.replace(/^<p>(.*)<\/p>$/s, '$1') : '',
   }));
 
   return (
     <div className="image-gallery">
       <div className={getGridClasses(images.length)}>
-          {images.map((img, index) => (
+        {images.map((img, index) => (
           <div
-              key={index}
-              className="cursor-pointer"
-              onClick={() => {
+            key={index}
+            className="cursor-pointer transition-transform hover:scale-105"
+            onClick={() => {
               setCurrentIndex(index);
               setOpen(true);
-              }}
+            }}
           >
-              <img
+            <img
               src={img.src}
               alt={img.alt || ''}
               className="w-full object-contain border border-border rounded-md"
-              />
+              loading="lazy"
+            />
           </div>
-          ))}
+        ))}
       </div>
 
       {groupCaption && (
         <div 
           className="text-center text-muted-foreground text-sm mt-4"
           dangerouslySetInnerHTML={{ __html: groupCaption }}
+          suppressHydrationWarning={true}
         />
       )}
 
-      {open && (
-        <Lightbox
-          open={open}
-          close={() => setOpen(false)}
-          slides={slides}
-          index={currentIndex}
-          onIndexChange={setCurrentIndex}
-          plugins={[Captions]}
-          controller={{
-            finite: false, // Enables cyclic navigation
-          }}
-          styles={{
-            container: {
-              backgroundColor: 'var(--background)',
-            },
-          }}
-        />
-      )}
+      <Lightbox
+        open={open}
+        close={() => setOpen(false)}
+        slides={slides}
+        index={currentIndex}
+        onIndexChange={setCurrentIndex}
+        plugins={[Captions]}
+        controller={{
+          finite: false,
+        }}
+        styles={{
+          container: {
+            backgroundColor: 'var(--background)',
+          },
+        }}
+      />
     </div>
   );
 };

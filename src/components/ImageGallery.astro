@@ -1,6 +1,6 @@
 ---
 // This wrapper allows us to use the React component with client directives
-import ImageGalleryReact from './ImageGalleryReact.tsx'
+import ImageGalleryReact from './ImageGallery.tsx'
 
 export interface Props {
   images: Array<{
@@ -14,4 +14,4 @@ export interface Props {
 const { images, groupCaption } = Astro.props;
 ---
 
-<ImageGalleryReact images={images} groupCaption={groupCaption} />
+<ImageGallery images={images} groupCaption={groupCaption} />
