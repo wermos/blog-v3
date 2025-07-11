@@ -163,17 +163,14 @@ const tocSections = await getTOCSections(currentPostId)
           }
 
           <!-- Published date with hover tooltip -->
-          <div
-            class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
-          >
-            <Icon name="lucide:calendar" class="size-3" />
-            <span>Posted </span>
-            <span
+          <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+          <Icon name="lucide:calendar" class="size-3" />
+          <span>
+            Posted <span
               class="relative cursor-help"
               data-full-date={(() => {
                 const date = post.data.date
                 const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0
-
                 return date.toLocaleString('en-US', {
                   weekday: 'short',
                   year: 'numeric',
@@ -186,38 +183,40 @@ const tocSections = await getTOCSections(currentPostId)
                   }),
                 })
               })()}
-            >
-              {formatDate(post.data.date)}
-            </span>
-          </div>
+            >{formatDate(post.data.date)}</span>
+          </span>
+        </div>
+
+
 
           <!-- Last modified date with hover tooltip (if exists) -->
           {
             post.data.lastModified && (
               <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
                 <Icon name="lucide:edit" class="size-3" />
-                <span>Updated </span>
-                <span
-                  class="relative cursor-help"
-                  data-full-date={(() => {
-                    const date = post.data.lastModified
-                    const hasTime =
-                      date.getHours() !== 0 || date.getMinutes() !== 0
+                <span>
+                  Updated <span
+                    class="relative cursor-help"
+                    data-full-date={(() => {
+                      const date = post.data.lastModified
+                      const hasTime =
+                        date.getHours() !== 0 || date.getMinutes() !== 0
 
-                    return date.toLocaleString('en-US', {
-                      weekday: 'short',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      ...(hasTime && {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        timeZoneName: 'short',
-                      }),
-                    })
-                  })()}
-                >
-                  {formatDate(post.data.lastModified)}
+                      return date.toLocaleString('en-US', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        ...(hasTime && {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          timeZoneName: 'short',
+                        }),
+                      })
+                    })()}
+                  >
+                    {formatDate(post.data.lastModified)}
+                  </span>
                 </span>
               </div>
             )
