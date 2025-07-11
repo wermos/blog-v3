@@ -1,10 +1,11 @@
 ---
-// This wrapper allows us to use the React component with client directives
-import ImageGalleryReact from './ImageGallery.tsx'
+// src/components/ImageGallery.astro
+import { processCaption } from '@/lib/caption-processor'
+import ImageGalleryImpl from '@/components/ImageGallery.tsx';
 
 export interface Props {
   images: Array<{
-    src: string;
+    src: ImageMetadata;
     alt?: string;
     caption?: string;
   }>;
@@ -12,6 +13,22 @@ export interface Props {
 }
 
 const { images, groupCaption } = Astro.props;
+
+const processedImages = await Promise.all(
+  images.map(async (img) => ({
+    src: img.src.src,
+    alt: img.alt,
+    caption: img.caption ? await processCaption(img.caption) : undefined
+  }))
+);
+
+const processedGroupCaption = groupCaption ? await processCaption(groupCaption) : undefined;
 ---
 
-<ImageGallery images={images} groupCaption={groupCaption} />
+<div class="not-prose mb-8">
+  <ImageGalleryImpl
+    client:load
+    images={processedImages} 
+    groupCaption={processedGroupCaption}
+  />
+</div>
