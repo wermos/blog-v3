@@ -2,6 +2,7 @@
 title:  "GSoC — The Work So Far"
 date:   2022-08-31 16:16:37 +0530
 description: 'In this blog post, I discuss the work I have done so far, and what our future direction will be.'
+mathjax: true
 tags: ['gsoc', 'cern-hsf']
 ---
 
@@ -212,7 +213,7 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
 
 {/* {% include gallery id="gallery1" caption="GEMM benchmark plots." %} */}
 <ImageGalleryWrapper
-  groupCaption="Performance Analysis Graphs"
+  groupCaption="GEMM benchmark plots."
   images={[
     {
       src: img1,
@@ -227,10 +228,73 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
   ]}
 />
 
-{/* {% include gallery id="gallery2" caption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)" %}
-{% include gallery id="gallery3" caption="Similarity transform (i.e. computing $ABA^\top$) benchmark plots." %}
-{% include gallery id="gallery4" caption="Free coordinates to bound coordinates benchmark plots." %} */}
+{/* {% include gallery id="gallery2" caption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)" %} */}
+<ImageGalleryWrapper
+  groupCaption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)"
+  images={[
+    {
+      src: img3,
+      alt: "placeholder",
+      caption: "Benchmark plot for matrix inversion with <code>float</code> matrices."
+    },
+    {
+      src: img4,
+      alt: "placeholder",
+      caption: "Benchmark plot for matrix inversion with <code>double</code> matrices."
+    }
+  ]}
+/>
+
+{/* {% include gallery id="gallery3" caption="Similarity transform (i.e. computing $ABA^\top$) benchmark plots." %} */}
+<ImageGalleryWrapper
+  groupCaption="Similarity transform (i.e. computing $ABA^\top$) benchmark plots."
+  images={[
+    {
+      src: img5,
+      alt: "placeholder",
+      caption: "Benchmark plot for similarity transform with <code>float</code> matrices."
+    },
+    {
+      src: img6,
+      alt: "placeholder",
+      caption: "Benchmark plot for similarity transform with <code>double</code> matrices."
+    }
+  ]}
+/>
+
+{/* {% include gallery id="gallery4" caption="Free coordinates to bound coordinates benchmark plots." %} */}
+<ImageGalleryWrapper
+  groupCaption="Free coordinates to bound coordinates benchmark plots."
+  images={[
+    {
+      src: img7,
+      alt: "placeholder",
+      caption: "Benchmark plot for free coordinates to bound coordinates with <code>float</code> matrices."
+    },
+    {
+      src: img8,
+      alt: "placeholder",
+      caption: "Benchmark plot for free coordinates to bound coordinates with <code>double</code> matrices."
+    }
+  ]}
+/>
+
 {/* {% include gallery id="gallery5" caption="Bound coordinates to free coordinates benchmark plots." %} */}
+<ImageGalleryWrapper
+  groupCaption="Bound coordinates to free coordinates benchmark plots."
+  images={[
+    {
+      src: img9,
+      alt: "placeholder",
+      caption: "Benchmark plot for bound coordinates to free coordinates with <code>float</code> matrices."
+    },
+    {
+      src: img10,
+      alt: "placeholder",
+      caption: "Benchmark plot for bound coordinates to free coordinates with <code>double</code> matrices."
+    }
+  ]}
+/>
 
 Note that the bar graphs for the `custom` backend and `double` matrices do not exist for the 6×6 and 8×8 dimensions. This is an intentional and recurring theme: The `custom` backend has a size limitation which prevents it from being usable for 6×6 and 8×8 matrices without the AVX512 instruction set, which [my processor](https://ark.intel.com/content/www/us/en/ark/products/132228/intel-core-i712700h-processor-24m-cache-up-to-4-70-ghz.html) (at the time of writing) does not support. For this reason, the `custom` 6×6 and 8×8 data is missing from all of my benchmark plots.
 

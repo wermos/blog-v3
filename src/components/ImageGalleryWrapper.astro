@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { processCaption } from '@/lib/caption-processor'
+import ImageGallery from '@/components/ImageGallery.astro';
 
 export interface Props {
   images: Array<{
@@ -22,54 +23,14 @@ const processedImages = await Promise.all(
   }))
 );
 
-// Process group caption
 const processedGroupCaption = groupCaption ? await processCaption(groupCaption) : undefined;
-
-// Dynamic grid classes function
-const getGridClasses = (numImages: number): string => {
-  const colsDefault = Math.min(2, numImages);
-  const colsMd = Math.min(3, numImages);
-  const colsLg = Math.min(4, numImages);
-  
-  return `grid gap-4 grid-cols-${colsDefault} md:grid-cols-${colsMd} lg:grid-cols-${colsLg}`;
-};
 ---
 
 <div class="not-prose mb-8">
-  <div id="image-gallery-container" data-images={JSON.stringify(processedImages)} data-group-caption={processedGroupCaption}>
-    <!-- Fallback content for non-JS users -->
-    <div class={getGridClasses(images.length)}>
-      {images.map((img) => (
-        <Image
-          src={img.src}
-          alt={img.alt || ''}
-          class="w-full object-contain border border-border rounded-md"
-          width={300}
-          height={200}
-        />
-      ))}
-    </div>
-
-    {processedGroupCaption && (
-      <div class="text-center text-muted-foreground text-sm mt-4" set:html={processedGroupCaption} />
-    )}
-  </div>
+  <!-- Use client:load to automatically hydrate each instance -->
+  <ImageGallery 
+    client:load
+    images={processedImages} 
+    groupCaption={processedGroupCaption}
+  />
 </div>
-
-<script>
-  import ImageGallery from './ImageGallery.tsx';
-  import { createRoot } from 'react-dom/client';
-  import React from 'react';
-
-  document.addEventListener('astro:page-load', () => {
-    const container = document.getElementById('image-gallery-container');
-    if (container && !container.hasAttribute('data-hydrated')) {
-      const images = JSON.parse(container.dataset.images || '[]');
-      const groupCaption = container.dataset.groupCaption;
-      
-      const root = createRoot(container);
-      root.render(React.createElement(ImageGallery, { images, groupCaption }));
-      container.setAttribute('data-hydrated', 'true');
-    }
-  });
-</script>
