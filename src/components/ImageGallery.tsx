@@ -17,12 +17,13 @@ interface ImageGalleryProps {
 }
 
 const getGridClasses = (numImages: number): string => {
-  const colsDefault = Math.min(2, numImages);
-  const colsMd = Math.min(3, numImages);
-  const colsLg = Math.min(4, numImages);
-  
-  return `grid gap-4 grid-cols-${colsDefault} md:grid-cols-${colsMd} lg:grid-cols-${colsLg}`;
+  // Use static classes that Tailwind can detect during build
+  if (numImages === 1) return 'grid gap-4 grid-cols-1';
+  if (numImages === 2) return 'grid gap-4 grid-cols-1 md:grid-cols-2';
+  if (numImages === 3) return 'grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+  return 'grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4';
 };
+
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => {
   const [open, setOpen] = useState(false);
@@ -34,31 +35,43 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => 
     description: img.caption ? img.caption.replace(/^<p>(.*)<\/p>$/s, '$1') : '',
   }));
 
+  // Only center last row if we have more than 4 images AND an incomplete last row
+  const hasIncompleteLastRow = images.length > 4 && images.length % 4 !== 0;
+  // const lastRowItemCount = images.length % 4;
+  const numCompleteRows = Math.trunc(images.length / 4);
+
   return (
-    <div className="image-gallery">
+    <div className="image-gallery w-full">
       <div className={getGridClasses(images.length)}>
-        {images.map((img, index) => (
-          <div
-            key={index}
-            className="cursor-pointer transition-transform hover:scale-105"
-            onClick={() => {
-              setCurrentIndex(index);
-              setOpen(true);
-            }}
-          >
+        {images.map((img, index) => {
+          const isLastRowItem = hasIncompleteLastRow && index > (4 * numCompleteRows - 1);
+          console.log(`Image Index: ${index}:`, 'isLastRowItem:', isLastRowItem);
+          
+          return (
+            <div
+              key={index}
+              className={`cursor-pointer transition-transform hover:scale-105 ${
+                isLastRowItem ? 'xl:justify-self-center' : ''
+              }`}
+              onClick={() => {
+                setCurrentIndex(index);
+                setOpen(true);
+              }}
+            >
             <img
               src={img.src}
               alt={img.alt || ''}
-              className="w-full object-contain border border-border rounded-md"
+              className="w-full h-auto object-contain border border-border rounded-md"
               loading="lazy"
             />
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
 
       {groupCaption && (
         <div 
-          className="text-center text-muted-foreground text-sm mt-4"
+          className="text-center text-muted-foreground text-sm mt-2"
           dangerouslySetInnerHTML={{ __html: groupCaption }}
           suppressHydrationWarning={true}
         />
