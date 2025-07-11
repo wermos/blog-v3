@@ -128,10 +128,40 @@ h6 code {
   border-radius: 6px;
 }
 
-/* Clear floats */
-.clearfix::after {
-  content: "";
-  display: table;
+.clear-float {
   clear: both;
 }
 
+/* Custom tooltip for data-full-date */
+[data-full-date] {
+  position: relative;
+}
+
+[data-full-date]:hover::before {
+  content: attr(data-full-date);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-foreground);
+  color: var(--color-background);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  z-index: 50;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+[data-full-date]:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--color-foreground);
+  margin-bottom: 4px;
+  z-index: 50;
+}
