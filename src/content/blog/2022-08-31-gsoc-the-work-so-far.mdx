@@ -6,7 +6,7 @@ mathjax: true
 tags: ['gsoc', 'cern-hsf']
 ---
 
-import ImageGalleryWrapper from '@/components/ImageGalleryWrapper.astro';
+import ImageGallery from '@/components/ImageGallery.astro';
 
 import img1 from '@/assets/images/gsoc/gemm_plot_float.png';
 import img2 from '@/assets/images/gsoc/gemm_plot_double.png';
@@ -212,7 +212,7 @@ I wrote benchmarks for testing the performance of `Eigen`, `fast5x5`, `blaze`, a
 I ran the benchmarks on my own machine, gathered the data, and then plotted it using a Python script I wrote:
 
 {/* {% include gallery id="gallery1" caption="GEMM benchmark plots." %} */}
-<ImageGalleryWrapper
+<ImageGallery
   groupCaption="GEMM benchmark plots."
   images={[
     {
@@ -229,7 +229,7 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
 />
 
 {/* {% include gallery id="gallery2" caption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)" %} */}
-<ImageGalleryWrapper
+<ImageGallery
   groupCaption="Matrix inversion benchmark plots. (Note that the $y$-axis is in log scale.)"
   images={[
     {
@@ -246,7 +246,7 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
 />
 
 {/* {% include gallery id="gallery3" caption="Similarity transform (i.e. computing $ABA^\top$) benchmark plots." %} */}
-<ImageGalleryWrapper
+<ImageGallery
   groupCaption="Similarity transform (i.e. computing $ABA^\top$) benchmark plots."
   images={[
     {
@@ -263,7 +263,7 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
 />
 
 {/* {% include gallery id="gallery4" caption="Free coordinates to bound coordinates benchmark plots." %} */}
-<ImageGalleryWrapper
+<ImageGallery
   groupCaption="Free coordinates to bound coordinates benchmark plots."
   images={[
     {
@@ -280,7 +280,7 @@ I ran the benchmarks on my own machine, gathered the data, and then plotted it u
 />
 
 {/* {% include gallery id="gallery5" caption="Bound coordinates to free coordinates benchmark plots." %} */}
-<ImageGalleryWrapper
+<ImageGallery
   groupCaption="Bound coordinates to free coordinates benchmark plots."
   images={[
     {

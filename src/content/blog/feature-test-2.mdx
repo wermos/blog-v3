@@ -8,6 +8,24 @@ mathjax: true
 import { Image } from 'astro:assets'
 import royalFlora from '../../assets/images/genshin/artifacts/Royal_Flora.png'
 
+import ImageGallery from '@/components/ImageGallery.astro';
+
+import img1 from '@/assets/images/gsoc/gemm_plot_float.png';
+import img2 from '@/assets/images/gsoc/gemm_plot_double.png';
+
+
+import img3 from '@/assets/images/gsoc/inversion_plot_float.png';
+import img4 from '@/assets/images/gsoc/inversion_plot_double.png';
+
+import img5 from '@/assets/images/gsoc/similarity_plot_float.png';
+import img6 from '@/assets/images/gsoc/similarity_plot_double.png';
+
+import img7 from '@/assets/images/gsoc/freeToBound_plot_float.png';
+import img8 from '@/assets/images/gsoc/freeToBound_plot_double.png';
+
+import img9 from '@/assets/images/gsoc/boundToFree_plot_float.png';
+import img10 from '@/assets/images/gsoc/boundToFree_plot_double.png';
+
 ## Checking Math ($x$, $y$)
 
 Here is some inline math: $x^2 + y^2 = z^2$.
@@ -70,4 +88,64 @@ Let's check a link [like this](https://www.mathjax.org/).
 />
 
 This paragraph will flow around the left-aligned image, just like in Jekyll's Minimal Mistakes theme. The text wraps naturally around the floated image.
+
+<div class="clear-float"></div>
+
+## Image Gallery Testing
+
+<ImageGallery
+  groupCaption="Benchmark plots."
+  images={[
+    {
+      src: img1,
+      alt: "placeholder",
+      caption: "Benchmark plot for GEMM with <code>float</code> matrices."
+    },
+    {
+      src: img2,
+      alt: "placeholder",
+      caption: "Benchmark plot for GEMM with <code>double</code> matrices."
+    },
+    {
+      src: img3,
+      alt: "placeholder",
+      caption: "Benchmark plot for matrix inversion with <code>float</code> matrices."
+    },
+    {
+      src: img4,
+      alt: "placeholder",
+      caption: "Benchmark plot for matrix inversion with <code>double</code> matrices."
+    },
+    {
+      src: img5,
+      alt: "placeholder",
+      caption: "Benchmark plot for similarity transform with <code>float</code> matrices."
+    },
+    {
+      src: img6,
+      alt: "placeholder",
+      caption: "Benchmark plot for similarity transform with <code>double</code> matrices."
+    },
+    {
+      src: img7,
+      alt: "placeholder",
+      caption: "Benchmark plot for free coordinates to bound coordinates with <code>float</code> matrices."
+    },
+    {
+      src: img8,
+      alt: "placeholder",
+      caption: "Benchmark plot for free coordinates to bound coordinates with <code>double</code> matrices."
+    },
+    {
+      src: img9,
+      alt: "placeholder",
+      caption: "Benchmark plot for bound coordinates to free coordinates with <code>float</code> matrices."
+    },
+    {
+      src: img10,
+      alt: "placeholder",
+      caption: "Benchmark plot for bound coordinates to free coordinates with <code>double</code> matrices."
+    }
+  ]}
+/>
 
