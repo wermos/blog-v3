@@ -1,7 +1,7 @@
 ---
 // src/components/ImageGallery.astro
 import { processCaption } from '@/lib/caption-processor'
-import ImageGalleryImpl from '@/components/ImageGallery.tsx';
+import GalleryImpl from '@/components/Gallery';
 
 export interface Props {
   images: Array<{
@@ -26,7 +26,7 @@ const processedGroupCaption = groupCaption ? await processCaption(groupCaption) 
 ---
 
 <div class="not-prose mb-8">
-  <ImageGalleryImpl
+  <GalleryImpl
     client:load
     images={processedImages} 
     groupCaption={processedGroupCaption}

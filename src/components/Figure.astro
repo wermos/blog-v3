@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets'
 import { processCaption } from '@/lib/caption-processor'
 
-interface FigureImageProps {
+interface FigureProps {
   caption?: string
   figureClass?: string
   captionClass?: string
@@ -14,7 +14,7 @@ const {
   figureClass,
   captionClass = 'text-center mt-2 text-sm text-muted-foreground',
   ...imageProps
-} = Astro.props as FigureImageProps
+} = Astro.props as FigureProps
 
 const processedCaption = caption ? await processCaption(caption) : ''
 ---

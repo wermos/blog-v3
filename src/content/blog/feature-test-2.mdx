@@ -8,7 +8,7 @@ mathjax: true
 import { Image } from 'astro:assets'
 import royalFlora from '../../assets/images/genshin/artifacts/Royal_Flora.png'
 
-import ImageGallery from '@/components/ImageGallery.astro';
+import Gallery from '@/components/Gallery.astro';
 
 import img1 from '@/assets/images/gsoc/gemm_plot_float.png';
 import img2 from '@/assets/images/gsoc/gemm_plot_double.png';
@@ -93,7 +93,7 @@ This paragraph will flow around the left-aligned image, just like in Jekyll's Mi
 
 ## Image Gallery Testing
 
-<ImageGallery
+<Gallery
   groupCaption="Benchmark plots."
   images={[
     {

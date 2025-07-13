@@ -17,7 +17,7 @@ interface ImageGalleryProps {
   groupCaption?: string;
 }
 
-const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => {
+const Gallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => {
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -82,4 +82,4 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => 
   );
 };
 
-export default ImageGallery;
+export default Gallery;
