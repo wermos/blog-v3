@@ -1,4 +1,3 @@
-// src/lib/caption-processor.ts
 import rehypeMathjax from 'rehype-mathjax/browser';
 import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';

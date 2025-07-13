@@ -1,4 +1,3 @@
-// src/components/ImageGallery.tsx
 import React, { useState, useMemo } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
@@ -71,7 +70,7 @@ const Gallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => {
         index={currentIndex}
         onIndexChange={setCurrentIndex}
         plugins={[Captions]}
-        controller={{ finite: false }}
+        // controller={{ finite: false }}
         styles={{
           container: {
             backgroundColor: 'var(--background)',

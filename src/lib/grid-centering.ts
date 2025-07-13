@@ -1,5 +1,3 @@
-// src/lib/grid-centering.ts
-
 interface GridLayout {
   containerClass: string;
   itemClasses: string[];
