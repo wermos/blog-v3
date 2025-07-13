@@ -37,7 +37,7 @@
 
 @font-face {
   font-family: 'Geist';
-  src: url('/blog-v3/fonts/GeistVF.woff2') format('woff2-variations');
+  src: url('/fonts/GeistVF.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -45,7 +45,7 @@
 
 @font-face {
   font-family: 'Geist Mono';
-  src: url('/blog-v3/fonts/GeistMonoVF.woff2') format('woff2-variations');
+  src: url('/fonts/GeistMonoVF.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
