@@ -8,6 +8,7 @@ import icon from 'astro-icon'
 import expressiveCode from 'astro-expressive-code'
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import rehypeExternalLinks from 'rehype-external-links'
+import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeMathjax from 'rehype-mathjax/browser'
 import remarkEmoji from 'remark-emoji'
 import remarkMath from 'remark-math'
@@ -104,6 +105,15 @@ export default defineConfig({
       ],
       rehypeHeadingIds,
       rehypeMathjax,
+      [
+        rehypePrettyCode,
+        {
+          theme: {
+            light: 'github-light',
+            dark: 'github-dark',
+          },
+        },
+      ],
     ],
     remarkPlugins: [remarkMath, remarkEmoji, remarkGemoji],
   },
