@@ -68,15 +68,17 @@ const Gallery: React.FC<ImageGalleryProps> = ({ images, groupCaption }) => {
         close={() => setOpen(false)}
         slides={slides}
         index={currentIndex}
-        onIndexChange={setCurrentIndex}
+        on={{
+          view: ({ index }) => setCurrentIndex(index),
+        }}
         plugins={[Captions]}
-        // controller={{ finite: false }}
         styles={{
           container: {
             backgroundColor: 'var(--background)',
           },
         }}
       />
+
     </div>
   );
 };
