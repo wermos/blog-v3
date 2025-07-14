@@ -1,0 +1,1 @@
+import{a as r}from"./graph.BnUrNHf9.js";var a=4;function n(n){return r(n,a)}export{n as c};
