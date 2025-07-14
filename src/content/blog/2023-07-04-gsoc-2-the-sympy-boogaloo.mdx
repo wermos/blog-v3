@@ -9,7 +9,7 @@ tags: ['gsoc', 'sympy']
 
 import Callout from '@/components/Callout.astro'
 
-# GSoC with SymPy
+## GSoC with SymPy
 
 In 2023, I decided to apply to just one organization for GSoC: SymPy. I was interested in the parsing, codegen, and printing modules as I had worked with all 3, and solved some interesting bugs in the parsing and printing submodules.
 
@@ -19,7 +19,7 @@ I chose to ask about these two submodules specifically, because out of the three
 
 In response to my email, [Aaron Meurer](https://www.asmeurer.com/blog/about/) replied with a few potential GSoC project ideas. Of those ideas, I ended up choosing to write a proposal about rewriting the LaTeX parser, because it is widely used by the community.
 
-## Wait, what is SymPy?
+### Wait, what is SymPy?
 
 As the About section on [SymPy's GitHub](https://github.com/sympy/sympy) says, SymPy is
 
@@ -62,15 +62,15 @@ In MATLAB's case, I got the approximate numerical value, whereas in SymPy's case
   above example is simplistic, but it helps me get the point across.
 </Callout>
 
-# The Project
+## The Project
 
 My project, as I briefly mentioned, is to rewrite the LaTeX parser using [Lark](https://github.com/lark-parser/lark.git) as the parser generator, instead of [ANTLR](https://www.antlr.org/).
 
-## My GSoC Proposal
+### My GSoC Proposal
 
 My proposal can be found [here](https://docs.google.com/document/d/1QgOpu5xwl-i1TBa_TA_qtyvUEc-o_1UBR4SsM-VZmS0/edit?usp=sharing). As such, my proposal doesn't deviate much from the original plan, unlike [last time](/blog/2022-08-30-gsoc-the-details-of-my-project#my-project-proposal).
 
-## What is the LaTeX Parser?
+### What is the LaTeX Parser?
 
 The [LaTeX parser](https://docs.sympy.org/latest/modules/parsing.html#experimental-mathrm-latex-parsing) is one of the submodules in SymPy which allows you to convert a LaTeX expression into a SymPy expression. For example, if I have some LaTeX code like `\int\! x^2 \,dx`, I can convert it into a SymPy expression by running:
 
@@ -82,11 +82,11 @@ expr = parse_latex(r"2ab")
 
 Once you have this expression, you can do things like substituting values. For example, running `expr.evalf(subs=dict(a=5, b=2))` after running the above snippet, will give us `20.0000000000000` as the output.
 
-## Why Does It Need a Rewrite?
+### Why Does It Need a Rewrite?
 
 To get the full picture, we first need to understand the history of the LaTeX parser in SymPy, and how it came to be.
 
-### Some History
+#### Some History
 
 Here is a snippet from the [documentation for the LaTeX parser](https://docs.sympy.org/latest/modules/parsing.html#experimental-mathrm-latex-parsing):
 
@@ -104,7 +104,7 @@ The reason the history is important is to understand why ANTLR was used: Origina
 
 However, after the code became a part of SymPy (and even while that process was happening), there were [some concerns](https://github.com/sympy/sympy/pull/13706#issuecomment-360930090) about having ANTLR as an optional dependency. The priority at the time, however, was to get a LaTeX parser into SymPy as a sort of reference implementation or a baseline, and worry about the rest later.
 
-### Issues
+#### Issues
 
 There were a few issues with ANTLR, which is the reason other alternatives were being considered:
 
@@ -123,7 +123,7 @@ All of the above shortcomings are reasons to move away from ANTLR and towards a 
 
 One advantage of ANTLR is its performance, which [isn't that important for this use-case](https://github.com/sympy/sympy/issues/19528#issuecomment-662026674).
 
-## Alternatives to ANTLR
+### Alternatives to ANTLR
 
 There are multiple viable alternatives that were originally considered:
 
@@ -136,7 +136,7 @@ Note that all the libraries in the list are Python libraries.
 
 Of these libraries, Lark was chosen as the library that fits SymPy's needs best.
 
-## Why Lark?
+### Why Lark?
 
 Numerous advantages to using Lark [were identified](https://github.com/sympy/sympy/issues/19528#issuecomment-662430318):
 
@@ -154,7 +154,7 @@ Numerous advantages to using Lark [were identified](https://github.com/sympy/sym
 7. has a "standard library" of useful tokens and expressions which can be imported into a grammar.
 8. Lark can generate an standalone `.py` file. In this case, this is not a big advantage since one of the reasons for moving away from ANTLR was to remove compiled components.
 
-# Prior Work
+## Prior Work
 
 There was already some prior work done (before this GSoC project) in rewriting the LaTeX parser: In [#19825](https://github.com/sympy/sympy/pull/19825), [costrouc](https://github.com/costrouc) started working on removing the ANTLR-based parser and started implementing the Lark-based parser.
 

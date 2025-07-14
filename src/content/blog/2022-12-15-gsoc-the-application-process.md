@@ -8,7 +8,7 @@ tags: ['gsoc']
 
 This post is aimed towards people who want to try out GSoC for the first time, and are new to Open Source. I assume no prior knowledge, other than a basic understanding of what GSoC is.
 
-# Eligibility
+## Eligibility
 
 Before starting on your GSoC journey, it makes sense to check if you are eligible, right? The good news is that if you are a college student in India, you are most likely eligible for GSoC.
 
@@ -22,7 +22,7 @@ The [GSoC FAQ](https://developers.google.com/open-source/gsoc/rules) states that
 
 Like the excerpt says, you can refer to the [Program Rules](https://summerofcode.withgoogle.com/rules) for a full description of everything relating to the program, in lawyer-y language.
 
-## Changes in Eligibility Over Previous Years
+### Changes in Eligibility Over Previous Years
 
 Up until (but not including) 2022, the eligibility rules only allowed current students and recent graduates to apply for GSoC.
 
@@ -34,7 +34,7 @@ The immediate consequence of this change, for an aspiring GSoC applicant, is tha
 
 However, there is nothing to fear! If you read this guide on the application process and follow the steps given here, you will have a pretty high chance of getting selected.
 
-# Willingness to Learn Things
+## Willingness to Learn Things
 
 An oft-overlooked aspect to think about when applying to GSoC is your willingness to learn things. For example, are you willing to learn a new language to work with a specific organization? Are you willing to learn an entirely new topic to work on a specific project?
 
@@ -42,13 +42,13 @@ Let's say I know C++ but don't know Python. However, I am really interested in C
 
 However, I might not be that interested in CASes, and not willing to learn a new language. In that case, I would be limited to choosing an organization which has available projects in C++. If I am interested in compilers, I might want to contribute to [LLVM](https://summerofcode.withgoogle.com/programs/2022/organizations/llvm-compiler-infrastructure), and if I'm interested in OS development, I might look into working with [Haiku](https://summerofcode.withgoogle.com/programs/2022/organizations/haiku).
 
-## My Experience
+### My Experience
 
 I knew C++ and Python before starting off on my GSoC journey, and I didn't have a preference for either language, as I view them as a means to an end. The two main organizations I looked at were [SymPy](https://summerofcode.withgoogle.com/programs/2022/organizations/sympy) and [CERN-HSF](https://summerofcode.withgoogle.com/programs/2022/organizations/cern-hsf). The former uses Python, while the latter primarily uses C++ for its projects (and languages like HTML5 for the web dev-oriented ones).
 
 That being said, the CERN-HSF project I was most interested in had to do with SIMD, and knowledge about computer architecture in general would help a lot. I did not know these topics that well at the time, but I was willing to learn. Ultimately, [this was the project I was selected for](https://summerofcode.withgoogle.com/programs/2022/projects/H0ek5yGF), and I learned a lot about vectorization and computer architecture during the project.
 
-# Choosing an Organization
+## Choosing an Organization
 
 The first step for applying to GSoC is to choose an Organization. To that end, the [official GSoC Student Guide](https://google.github.io/gsocguides/student/choosing-an-organization) does a great job explaining what to look for when choosing an organization.
 
@@ -60,7 +60,7 @@ Apart from the points mentioned in the Student Guide, here are some alternative 
 
 In the end, I chose my organization based on how interested I was in the projects they had: I found [this project](https://hepsoftwarefoundation.org/gsoc/2022/proposal_Acts-vectorized-LA-backend.html) very interesting and wanted to help them make their math backend faster. For me, the fact that I was also getting to work with CERN was just an added bonus.
 
-## How Do I Know That The Organization Will Come Next Year?
+### How Do I Know That The Organization Will Come Next Year?
 
 The short answer is that before the Organization List comes out (which is [February 22, 2023](https://developers.google.com/open-source/gsoc/timeline#february_22_-_1800_utc) for next year), you don't know for sure.
 
@@ -72,11 +72,11 @@ The good news is that all is not lost if the organization does not come as a GSo
 
 Let's say that I start working with SymPy, and had to learn Git and GitHub to be an effective contributor. If SymPy does not come next year as a GSoC organization, and I end up applying to [OpenCV](https://summerofcode.withgoogle.com/programs/2022/organizations/opencv), which also uses GitHub, the knowledge I gained while working with SymPy did not go to waste because I already learned how Git and GitHub works.
 
-## The Two Types of Organizations
+### The Two Types of Organizations
 
 There are two types of organizations; I like to call them PR-based[^pr] organizations and qualification task-based organizations. They work slightly differently.
 
-### PR-based Organizations
+#### PR-based Organizations
 
 These organizations primarily choose their GSoC students based on their prior work with the organizations, namely their PRs. To increase your chances of being selected, it is wise to start as early as possible, and get as many meaningful PRs in as possible.
 
@@ -87,7 +87,7 @@ Examples of popular PR-based organizations include
 - [SymPy](https://github.com/sympy/sympy/wiki/GSoC-Student-Instructions)
 - [SciPy](https://github.com/scipy/scipy/wiki/GSoC-2022-project-ideas)
 
-#### Getting Started with PR-based Organizations
+##### Getting Started with PR-based Organizations
 
 A question many people have is, "How do I get started with PRs if I have no prior experience?" The good news is that it's quite straightforward: Most projects have issues labeled "Easy to Fix" or "Good First Issue" or some variant of it. These are issues that the community has labeled as such for not requiring too much knowledge to fix.
 
@@ -97,7 +97,7 @@ For example,
 2. [SymPy](https://github.com/sympy/sympy) has the ["Easy to Fix" tag](https://github.com/sympy/sympy/issues?q=is%3Aopen+is%3Aissue+label%3A%22Easy+to+Fix%22).
 3. [SciPy](https://github.com/scipy/scipy) has the ["good first issue" tag](https://github.com/scipy/scipy/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 
-### Qualification Task-based Organizations
+#### Qualification Task-based Organizations
 
 If you wish to apply to one of these organizations, you typically have to email the mentor assigned to the project you are interested in (their contact details will be on the project page). After that, they will send you a qualification task, which is usually a smaller version of the actual project. After you are done with the task, you might have to write up a small report on your work (this varies from organization to organization), and send them the code.
 
@@ -112,7 +112,7 @@ Examples of qualification task-based organizations include
 - [CERN-HSF](https://summerofcode.withgoogle.com/programs/2022/organizations/cern-hsf)
 - [FFmpeg](https://summerofcode.withgoogle.com/programs/2022/organizations/ffmpeg)
 
-#### My Experience
+##### My Experience
 
 I emailed the mentors for both [this project (Vectorized Linear Algebra Backend)](https://hepsoftwarefoundation.org/gsoc/2022/proposal_Acts-vectorized-LA-backend.html) and [this project (Symplectic Integrators)](https://hepsoftwarefoundation.org/gsoc/2022/proposal_Geant4-Symplectic-integrators.html). I took 4 days on the qualification task for the first project, and 7 days on the qualification task for the second one.
 
@@ -120,11 +120,11 @@ My write-up for the Vectorized Linear Algebra Backend project can be found [here
 
 I ultimately got selected for the Vectorized Linear Algebra Backend project.
 
-# Choosing a Project
+## Choosing a Project
 
 So at this point, you probably have a specific organization in mind. (Or maybe not, if you are choosing your organization based on your project interest.)
 
-## Changes Made in 2022
+### Changes Made in 2022
 
 In 2022, Google [made a couple of changes](https://opensource.googleblog.com/2021/11/expanding-google-summer-of-code-in-2022.html) to the way projects work:
 
@@ -133,21 +133,21 @@ In 2022, Google [made a couple of changes](https://opensource.googleblog.com/202
 
   > You can spread the project out over a longer period of time and you can even switch to a longer timeframe mid-program if life happens. Rather than a mandatory 12-week program that runs from June – August with everyone required to finish their projects by the end of the 12th week, we are opening it up so mentors and their GSoC Contributors can decide together if they want to extend the deadline for the project up to 22 weeks.
 
-## How Do I Choose?
+### How Do I Choose?
 
 The best way to narrow down the list of possibilities is to first choose what length of project you are fine with: If you are fine with a more intensive project, long projects might be the way to go. However, if you want to do a bit less work during the Coding Period, a medium length project might be the way to go.
 
 Apart from these considerations, the [official GSoC Student guide](https://google.github.io/gsocguides/student/finding-the-right-project) does a great job of explaining how to choose the right project for you.
 
-## How Do I Choose The Timeframe?
+### How Do I Choose The Timeframe?
 
 To start off, Google assumes that everyone will be working on the standard 12-week project timeframe, regardless of their project length. This means that people with long projects are expected to work twice as much per week as the people with the medium length project assuming that the timeframes are the same.
 
 If you wish to modify the timeframe (to either extend or shorten it), you have to contact your mentor (after you are selected) and come to an agreement about the project length. Keep in mind that mentors may not always be willing to extend a project because they may have other responsibilities (like, say, teaching).
 
-# Writing A Proposal
+## Writing A Proposal
 
-## What To Write?
+### What To Write?
 
 Now that you have an Organization and project in mind, it is time to write the proposal. But what do you write in it?
 
@@ -157,13 +157,13 @@ However, if the application you are applying to does not have such a template, y
 
 In all seriousness, however, apart from the big things like a section on your previous experience and a proposed list of the GSoC timeline and the milestones you plan on hitting, the format of a GSoC proposal is quite flexible (assuming that your organization doesn't have a template).
 
-## When To Write The Proposal?
+### When To Write The Proposal?
 
 Ideally, it would be best to have a proposal (for each project you are applying to) ready right before the student application period starts. That way, you can contact the project mentors for each project of interest with your proposal, get some feedback, and incorporate those changes in your proposal.
 
 The only thing to remember is to make sure to get mentor feedback while writing the proposal. Doing so greatly increases your chances of being selected, and mentors often point out errors (spelling, grammar, etc.) and ask you to elaborate on points which they feel are important for the project. The latter makes your proposal stronger as a whole, so asking for mentor feedback is highly beneficial.
 
-## My Experience
+### My Experience
 
 I started writing my proposal for the Vectorized Linear Algebra backend project on April 13<sup>th</sup>. For reference, GSoC application window for 2022 was from April 4<sup>th</sup> to April 19<sup>th</sup>. This was quite a bit later than the timeframe I am recommending :see_no_evil:
 
@@ -171,7 +171,7 @@ However, I made sure to get feedback from the mentors and incorporated those cha
 
 You can find my GSoC proposal [here](https://docs.google.com/document/d/1Ick3iDF_2bGbLiR-ZDGWnk06rrP64JBQG8Et4TccxRs/edit?usp=sharing).
 
-# Timeline
+## Timeline
 
 Finally, what is the timeline at which a newcomer should do things?
 
@@ -183,7 +183,7 @@ The three dates of interest are:
 - the date that GSoC application period starts ([March 20<sup>th</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#march_20_-_1800_utc) for next year). This is the day you should ideally have a first draft of your proposal ready, and start asking for mentor feedback.
 - the date that the GSoC application period ends ([April 4<sup>th</sup>, 2023](https://developers.google.com/open-source/gsoc/timeline#april_4_-_1800_utc) for the next year). This is the day by which you should have submitted all your proposals on the portal, and overall be done with everything. **This is a hard deadline.**
 
-## When Should I Start?
+### When Should I Start?
 
 There is no hard and fast date by which you should start. That being said, there are still some tips I can share.
 
@@ -197,21 +197,21 @@ If it is your first time applying to GSoC and contributing to Open Source, the e
 
 In terms of real time, October or November is a great time to start, but you can start a bit later too, like December or even January. The main difference between starting later and earlier, like I said before, is the amount of exploration you can do.
 
-### My Experience
+#### My Experience
 
 I originally planned to start early, but due to various circumstances (read: being lazy), I ended up starting out with SymPy PRs in mid-February.
 
 Since I originally planned to work with SymPy, I spent a lot of time on SymPy until I came across CERN-HSF. After that, I contacted the mentors for the projects I was interested in and completed the qualification tasks given to me. Around halfway through these tasks, I decided to focus on CERN-HSF as I found those projects more interesting than the ones I was looking at for SymPy. Because of that, I stopped working on PRs for SymPy and redirected all my time and energy to CERN-HSF.
 
-# Miscellaneous Tips
+## Miscellaneous Tips
 
-## Project Mentors
+### Project Mentors
 
 One small thing to keep in mind is that it may be difficult to find mentors for the project you are interested in. This is an uncommon but not impossible scenario. In such a case, you have no choice but to choose a different project to apply to, since it is not possible to complete a GSoC project without mentors.
 
 In 2022, a highly qualified GSoC SymPy applicant was unable to find a mentor for the project that he wanted to work on, so he was not selected for GSoC. The story however, has a silver lining, as the creator of SymPy ([Ondřej Certik](https://ondrejcertik.com/)) took an interest in his proposal, and the applicant went on to work with him.
 
-## GSoC Applicant Pre-requisites
+### GSoC Applicant Pre-requisites
 
 Before applying to an Organization, make sure to read their application guideline closely.
 
@@ -227,7 +227,7 @@ SymPy has a [Patch Requirement](https://github.com/sympy/sympy/wiki/GSoC-Applica
 
 > In addition to the written proposal, we require every GSoC applicant to write a patch and get it pushed into the main SymPy repo. Note: even if your project will primarily deal with another repo such as SymEngine or SymPy Live, you must have at least one patch in the [main SymPy repo](https://github.com/sympy/sympy).
 
-## Organization-Specific Tips
+### Organization-Specific Tips
 
 The organizations I was planning on applying to were SymPy and CERN-HSF. For this reason, I am most knowledgeable about how these two organizations work. As such, I have some extra tips to share if you are planning to apply to one of these organizations:
 
@@ -235,7 +235,7 @@ The organizations I was planning on applying to were SymPy and CERN-HSF. For thi
 2. If you are planning to apply to SymPy, around 6 or 7 accepted (code-related) PRs is the sweet-spot for ensuring a high probability of getting selected for GSoC.
 3. Many SymPy GSoC Contributors also write a blog about their experience. (Here are [some](https://sumith1896.github.io/Google-Summer-Of-Code-with-SymPy) [examples](https://0sidharth.github.io/jekyll/2021/05/18/gsoc-acceptance/).) If you want to know what it's like to work with SymPy, you can read these blogs for more information.
 
-## What Would I Have Done Differently?
+### What Would I Have Done Differently?
 
 The biggest thing I struggled with during my GSoC application period was time management. I consistently fell behind self-imposed schedules and did things close to the deadline. If I could redo it, I would make sure to leave lots of time at each stage of the journey by starting out with SymPy earlier, starting with the proposal writing earlier, etc.
 

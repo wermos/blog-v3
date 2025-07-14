@@ -6,7 +6,7 @@ tags: ['test']
 mathjax: true
 ---
 
-## Checking Math ($x$, $y$)
+### Checking Math ($x$, $y$)
 
 <!-- ## Checking Math -->
 
@@ -36,7 +36,7 @@ $$
 (1 - x)^n = \sum\limits_{k\,=\,0}^n (-1)^k\binom{n}{k}x^k
 $$
 
-## Checking Mermaid
+### Checking Mermaid
 
 A mermaid diagram:
 
@@ -68,11 +68,11 @@ flowchart TB
   end
 ```
 
-## Checking gemoji
+### Checking gemoji
 
 :+1:
 
-## Checking Code
+### Checking Code
 
 Basic code snippet:
 
@@ -92,6 +92,6 @@ let a2
 let a3
 ```
 
-## Checking External Links
+### Checking External Links
 
 Let's check a link [like this](https://www.mathjax.org/).

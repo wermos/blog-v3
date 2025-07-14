@@ -24,11 +24,11 @@ import img8 from '@/assets/images/gsoc/freeToBound_plot_double.png';
 import img9 from '@/assets/images/gsoc/boundToFree_plot_float.png';
 import img10 from '@/assets/images/gsoc/boundToFree_plot_double.png';
 
-# Fast 5×5
+## Fast 5×5
 
 In 2019, Hadrien worked with a Masters student to create [Fast 5×5](https://gitlab.in2p3.fr/CodeursIntensifs/Fast5x5), which was supposed to be a proof-of-concept demonstrating that the existing matrix routines in `Eigen` could be better optimized for small dimensions like 5×5.
 
-## My Changes to Fast 5×5
+### My Changes to Fast 5×5
 
 The first thing my mentors recommended doing was to take a closer look at the repository and understand where we stand with respect to the work to be done.
 
@@ -36,7 +36,7 @@ After looking at `fast5x5.hpp` for a while, I decided that I should make some ch
 
 After making a few changes, it became apparent that I needed somewhere to push my changes to, so that it was available for everyone to see and use. However, because the original project was on GitLab, I could not fork it the way projects on GitHub can be forked. Instead, I pushed my copy of the GitLab repository onto GitHub, and made sure to point to the original URL in my repository description. The original repository can be found [here](https://gitlab.in2p3.fr/CodeursIntensifs/Fast5x5), and my fork can be found [here](https://github.com/wermos/Fast5x5/).
 
-### Repository Reorganization
+#### Repository Reorganization
 
 The original directory structure was quite flat. However, it was not amenable to the amount and volume of changes I needed to make. For this reason, I reorganized the entire repository multiple times (for example, in [`85ad3fd`](https://github.com/wermos/Fast5x5/commit/85ad3fd1de82ee6313bb2685e2a02f368d7e5e6a), [`20d4fb9`](https://github.com/wermos/Fast5x5/commit/20d4fb9940f01c547272cb3b2e775335992d8ea6), [`125a084`](https://github.com/wermos/Fast5x5/commit/125a084f374c92936a2bc9f8e41d561c31346588), and [`69bd4d8`](https://github.com/wermos/Fast5x5/commit/69bd4d8cc3f6e3aeb0c6baf21d9510b931984799)).
 
@@ -119,7 +119,7 @@ The current (at the time of writing) file structure is as follows:
 
 The advantage of the new hierarchical directory structure is that it allows others to get up to speed with respect to where everything is faster, and it also allows me to easily add more benchmarks and backends.
 
-### Installed vs. Vendored Libraries
+#### Installed vs. Vendored Libraries
 
 Originally, the repository expected the user to have `Eigen` and `xsimd` installed. However, the existing `CMakeLists.txt` file downloaded Google Test from GitHub, thereby avoiding that library dependency.
 
@@ -129,7 +129,7 @@ I converted the libraries into submodules in [`21aad0e`](https://github.com/werm
 
 Due to the fact that I had converted the libraries into submodules, version upgrades were as simple as checking out a new commit in the submodule repository and then committing that change.
 
-### `/usr/bin/time` vs. Google Benchmark
+#### `/usr/bin/time` vs. Google Benchmark
 
 [Google Benchmark](https://github.com/google/benchmark) is a C++ library dedicated to performing micro-benchmarks.
 
@@ -143,7 +143,7 @@ Apart from these technical considerations, Google Benchmark offers considerable 
 
 For these reasons, I decided to move away from `/usr/bin/time` and switched the Google Benchmark instead.
 
-### Matrix Generation
+#### Matrix Generation
 
 A key part of the benchmarking code is the random matrix generation. Doing this properly is essential because otherwise, the compiler might figure out the fact that we have precomputed matrices. Once it does so, it is free to calculate the results ahead of time, which would defeat the point of the benchmark. The original Fast 5×5 code was using index-based operations to fill up the matrix, like so:
 ```cpp
@@ -205,7 +205,7 @@ for (int i = 0; i < SIZE; i++) {
 
 This change was made in [`ff821df`](https://github.com/wermos/Fast5x5/commit/ff821df8906a226749408e24b40e627d21fa3894).
 
-# Benchmarking Results
+## Benchmarking Results
 
 I wrote benchmarks for testing the performance of `Eigen`, `fast5x5`, `blaze`, and `Fastor` in various matrix computation tasks like [matrix multiplication](https://github.com/wermos/Fast5x5/tree/a495e9bf66303c76550797a1cbdf09ad6a555baa/include/benchmarks/gemm), [matrix inversion](https://github.com/wermos/Fast5x5/tree/a495e9bf66303c76550797a1cbdf09ad6a555baa/include/benchmarks/inversion), computing the [similarity transform](https://github.com/wermos/Fast5x5/tree/a495e9bf66303c76550797a1cbdf09ad6a555baa/include/benchmarks/similarity) and computing [coordinate transforms](https://github.com/wermos/Fast5x5/tree/a495e9bf66303c76550797a1cbdf09ad6a555baa/include/benchmarks/coord-transform) in various matrix dimensions (more specifically, in 4×4, 6×6, 6×8, and 8×8).
 

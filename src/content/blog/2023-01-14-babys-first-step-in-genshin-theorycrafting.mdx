@@ -28,19 +28,19 @@ $
 \newcommand{\flathp}{h_{\text{flat}}}
 $
 </div>
-import ImageGalleryWrapper from '@/components/ImageGalleryWrapper.astro';
+import Gallery from '@/components/Gallery.astro';
 
 import img1 from '@/assets/images/genshin/stats-cards/raiden-stats.png';
 import img2 from '@/assets/images/genshin/stats-cards/albedo-stats.png';
 import img3 from '@/assets/images/genshin/stats-cards/zhongli-stats.png';
 
-# Calculating ATK, DEF, and Max HP
+## Calculating ATK, DEF, and Max HP
 
 Before one can do anything theory-related, we must learn how to calculate the ATK, DEF, and Max HP of a character, because these stats affect how much damage a character does against enemies.
 
 For the purpose of these tutorials and demonstrations, we will use three of my own characters and their builds. To see an enlarged version of a character card, just click on the one you want to see.
 
-<ImageGalleryWrapper
+<Gallery
   groupCaption="My Raiden Shogun, Albedo, and Zhongli stats."
   images={[
     {
@@ -60,7 +60,7 @@ For the purpose of these tutorials and demonstrations, we will use three of my o
     }
   ]}
 />
-## Conventions
+### Conventions
 
 We will use blackboard font letters to denote the total attack, defense, and Max HP of a character, respectively. That is,
 
@@ -98,13 +98,13 @@ $$
 \end{align*}
 $$
 
-### Motivation for Variable Names
+#### Motivation for Variable Names
 
 I chose $\alpha$ for the ATK-related quantities because $\alpha$ is the Greek letter for "A", which is the first letter in the word "attack". Similarly, $\delta$ is the Greek letter for "D", which is the first letter in the word "defense".
 
 For the English letter "H", there is no clear Greek counterpart, so I kept lowercase "h" for all the HP-related quantities.
 
-## ATK Formula
+### ATK Formula
 
 Using the aforementioned notation, we have
 
@@ -114,7 +114,7 @@ $$
 \end{equation*}
 $$
 
-## DEF Formula
+### DEF Formula
 
 We have a similar formula for DEF:
 
@@ -124,7 +124,7 @@ $$
 \end{equation*}
 $$
 
-## Max HP Formula
+### Max HP Formula
 
 The formula for Max HP is analogous to the DEF formula:
 
@@ -134,9 +134,9 @@ $$
 \end{equation*}
 $$
 
-## Examples
+### Examples
 
-### Example ATK Calculation
+#### Example ATK Calculation
 
 Let's calculate Raiden's ATK using the ATK formula. For ease of reference, I have put her character card below.
 
@@ -154,7 +154,7 @@ $$
 
 As we can see, our calculated value checks out with the ATK given in the character card.
 
-### Example DEF Calculation
+#### Example DEF Calculation
 
 Now, let’s calculate Albedo’s DEF using the DEF formula. Once again, for ease of reference, I have put his character card below.
 
@@ -172,7 +172,7 @@ $$
 
 Once again, since our calculated value checks out with the DEF given in the character card, we can be sure that we did the correct calculations.
 
-#### Albedo's DEF In Reality
+##### Albedo's DEF In Reality
 
 Since I have him on the 4-piece Husk set, he gets an additional 24% DEF bonus when he has all 4 Curiosity stacks. This means that in real-world scenarios, his DEF is
 $$
@@ -185,7 +185,7 @@ $$
 
 This is consistent with the numbers which show up in the game.
 
-### Example Max HP Calculation
+#### Example Max HP Calculation
 
 Now, let’s calculate Zhongli’s Max HP using the formula. Once again, for ease of reference, I have put his character card below.
 

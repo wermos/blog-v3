@@ -7,7 +7,7 @@ tags: ['gsoc', 'cern-hsf']
 
 import Figure from '@/components/Figure.astro'
 
-# Project Description
+## Project Description
 
 The original project description was:
 
@@ -20,7 +20,7 @@ The original project description was:
 
 The project, as described on the CERN-HSF webpage, can be found [here](https://hepsoftwarefoundation.org/gsoc/2022/proposal_Acts-vectorized-LA-backend.html).
 
-## What is Vectorization?
+### What is Vectorization?
 
 All matrix math libraries use something called [SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data) (short for Single Instruction, Multiple Data) to achieve a speed-up compared to a naïve implementation.
 
@@ -47,7 +47,7 @@ The first type simply exposes SIMD intrinsics to the user in an uniform way: The
 
 The second type goes one step further and offers fully vectorized types such as a 4-element `float`/`double` array which will use a vectorized add instruction to add all the elements at once. A good example of such a library is [`Vc`](https://github.com/VcDevel/Vc).
 
-## Alternate Project Description
+### Alternate Project Description
 
 The aforementioned project description might be a little terse for some. This is the way I like to explain it to others:
 
@@ -61,11 +61,11 @@ My work is to continue this work and write implementations for all these desired
 
 I will go more into the details of the work and what we have accomplished so far in the next blog post. For now, I will discuss a bit about our weekly meeting schedule, and what it is like to work with my mentors.
 
-### My Project Proposal
+#### My Project Proposal
 
 My proposal can be found [here](https://docs.google.com/document/d/1Ick3iDF_2bGbLiR-ZDGWnk06rrP64JBQG8Et4TccxRs/edit?usp=sharing). The only change I suggested was to use `xsimd` instead of `Vc`, because the latter is not in active development anymore.
 
-## Where Would The Work Go?
+### Where Would The Work Go?
 
 The math code in the [ACTS Project](https://github.com/acts-project/acts) proper is inextricably linked with the track-fitting code, so it would be a lot of work to change that.
 
@@ -74,21 +74,21 @@ However, in the [ACTS project family](https://github.com/acts-project), there ar
 My work involves fleshing out the [`Vc` portion](https://github.com/acts-project/algebra-plugins/tree/71ea1e814fae3020feedf6389c89a4ffac591bae/math/vc) of `algebra-plugins`, and adding all the functions which are present in the other math backends but not in the `Vc` stuff yet.
 My work involves out the [`Vc` portion](https://github.com/acts-project/algebra-plugins/tree/71ea1e814fae3020feedf6389c89a4ffac591bae/math/vc) of `algebra-plugins`, and adding all the functions which are present in the other math backends but not in the `Vc` stuff yet.
 
-# Weekly Meeting Schedule
+## Weekly Meeting Schedule
 
 We usually meet on Mondays at 10:00 am CEST (1:30 pm IST). Sometimes, we meet on other days, if the day is a holiday in some country, or one of us has other commitments.
 
-# Mentors
+## Mentors
 
 I have the pleasure of working with 3 highly qualified mentors. I will write a bit about each person:
 
-## Joana Niermann
+### Joana Niermann
 
 She is currently a PhD student in the [University of Göttingen](https://www.uni-goettingen.de/en/1.html).
 
 She was the first person I contacted, about my interest in working on this project for GSoC, so we have been corresponding since late March of this year. She is a developer in the [detray R&D project](https://github.com/acts-project/detray). In our weekly meets, she regularly helps us set the direction for the week, and also helps with gathering more data by running the benchmarks I have written on other machines.
 
-## Hadrien Grasland
+### Hadrien Grasland
 
 Hadrien is a software engineer who works for the [Centre National de la Recherche Scientifique](https://www.cnrs.fr/en) (CNRS).
 
@@ -96,7 +96,7 @@ His knowledge of the nitty-gritty details of computer architecture and SIMD inst
 
 In the early stages of the project, he was quite supportive of me adding other matrix library backends to our benchmarks, and seeing how they perform in comparison with Eigen and Fast 5×5.
 
-## Paul Gessinger-Befurt
+### Paul Gessinger-Befurt
 
 He is the person who knows the most about ACTS project out of all three mentors. When we have any questions about anything related to the ACTS project, he is the person who helps us out.
 
