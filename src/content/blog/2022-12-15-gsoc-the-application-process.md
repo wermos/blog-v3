@@ -2,7 +2,7 @@
 title: 'GSoC — The Application Process'
 date: 2022-12-15 21:02:29 +0530
 description: 'In this blog post, I will discuss what the application process for GSoC is like, and the timeline in which I did things and applied.'
-image: https://media2.dev.to/dynamic/image/width=900,height=450,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9kfay5ld90py6xtql220.png
+image: '@/assets/images/gsoc/gsoc-logo.png'
 tags: ['gsoc']
 ---
 
