@@ -31,12 +31,9 @@ const { class: className } = Astro.props
 
 <script>
   function updateGiscusTheme() {
-    const iframe = document.querySelector('iframe.giscus-frame')
+    const iframe = document.querySelector('iframe.giscus-frame') as HTMLIFrameElement
     if (iframe) {
-      // Check if dark mode is active (adjust this based on your theme implementation)
-      const isDark = document.documentElement.classList.contains('dark') || 
-                     document.documentElement.getAttribute('data-theme') === 'dark'
-      
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
       const theme = isDark ? 'catppuccin_frappe' : 'catppuccin_latte'
       
       iframe.contentWindow?.postMessage(
@@ -46,15 +43,40 @@ const { class: className } = Astro.props
     }
   }
 
-  // Update theme on page load
+  function observeThemeChanges() {
+    // Create a MutationObserver to watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && 
+            (mutation.attributeName === 'data-theme' || mutation.attributeName === 'class')) {
+          updateGiscusTheme()
+        }
+      })
+    })
+
+    // Start observing the document element for attribute changes
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'class']
+    })
+
+    return observer
+  }
+
+  // Initialize on page load
   document.addEventListener('astro:page-load', () => {
-    // Wait a bit for Giscus to load
+    // Wait for Giscus to load
     setTimeout(updateGiscusTheme, 1000)
+    
+    // Start observing theme changes
+    observeThemeChanges()
   })
 
-  // Listen for theme changes (adjust the event based on your theme switcher)
-  document.addEventListener('theme-changed', updateGiscusTheme)
-  
-  // Also listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateGiscusTheme)
+  // Also handle page swaps
+  document.addEventListener('astro:after-swap', () => {
+    setTimeout(() => {
+      updateGiscusTheme()
+      observeThemeChanges()
+    }, 1000)
+  })
 </script>
