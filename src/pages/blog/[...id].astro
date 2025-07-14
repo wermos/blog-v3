@@ -7,6 +7,7 @@ import SubpostsHeader from '@/components/SubpostsHeader.astro'
 import SubpostsSidebar from '@/components/SubpostsSidebar.astro'
 import TOCHeader from '@/components/TOCHeader.astro'
 import TOCSidebar from '@/components/TOCSidebar.astro'
+import GiscusComment from '@/components/Giscus.astro'
 import { badgeVariants } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import Layout from '@/layouts/Layout.astro'
@@ -187,86 +188,84 @@ const tocSections = await getTOCSections(currentPostId)
           </span>
         </div>
 
+        <!-- Last modified date with hover tooltip (if exists) -->
+        {
+          post.data.lastModified && (
+            <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+              <Icon name="lucide:edit" class="size-3" />
+              <span>
+                Updated <span
+                  class="relative cursor-help"
+                  data-full-date={(() => {
+                    const date = post.data.lastModified
+                    const hasTime =
+                      date.getHours() !== 0 || date.getMinutes() !== 0
 
-
-          <!-- Last modified date with hover tooltip (if exists) -->
-          {
-            post.data.lastModified && (
-              <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
-                <Icon name="lucide:edit" class="size-3" />
-                <span>
-                  Updated <span
-                    class="relative cursor-help"
-                    data-full-date={(() => {
-                      const date = post.data.lastModified
-                      const hasTime =
-                        date.getHours() !== 0 || date.getMinutes() !== 0
-
-                      return date.toLocaleString('en-US', {
-                        weekday: 'short',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        ...(hasTime && {
-                          hour: 'numeric',
-                          minute: '2-digit',
-                          timeZoneName: 'short',
-                        }),
-                      })
-                    })()}
-                  >
-                    {formatDate(post.data.lastModified)}
-                  </span>
-                </span>
-              </div>
-            )
-          }
-
-          <!-- Reading time with icon -->
-          <div
-            class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
-          >
-            <Icon name="lucide:clock" class="size-3" />
-            <span>
-              {postReadingTime}
-              {
-                combinedReadingTime &&
-                  combinedReadingTime !== postReadingTime && (
-                    <span class="text-muted-foreground">
-                      {' '}
-                      ({combinedReadingTime} total)
-                    </span>
-                  )
-              }
-            </span>
-          </div>
-
-          <!-- Subpost count -->
-          {
-            subpostCount > 0 && (
-              <div class="flex w-full items-center justify-center gap-1 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
-                <Icon name="lucide:file-text" class="size-3" />
-                {subpostCount} subpost{subpostCount === 1 ? '' : 's'}
-              </div>
-            )
-          }
-        </div>
-        <div class="flex flex-wrap justify-center gap-2">
-          {
-            post.data.tags &&
-              post.data.tags.length > 0 &&
-              post.data.tags.map((tag) => (
-                <a
-                  href={`/tags/${tag}`}
-                  class={badgeVariants({ variant: 'secondary' })}
+                    return date.toLocaleString('en-US', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      ...(hasTime && {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        timeZoneName: 'short',
+                      }),
+                    })
+                  })()}
                 >
-                  <Icon name="lucide:hash" class="size-3" />
-                  {tag}
-                </a>
-              ))
-          }
+                  {formatDate(post.data.lastModified)}
+                </span>
+              </span>
+            </div>
+          )
+        }
+
+        <!-- Reading time with icon -->
+        <div
+          class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
+        >
+          <Icon name="lucide:clock" class="size-3" />
+          <span>
+            {postReadingTime}
+            {
+              combinedReadingTime &&
+                combinedReadingTime !== postReadingTime && (
+                  <span class="text-muted-foreground">
+                    {' '}
+                    ({combinedReadingTime} total)
+                  </span>
+                )
+            }
+          </span>
         </div>
+
+        <!-- Subpost count -->
+        {
+          subpostCount > 0 && (
+            <div class="flex w-full items-center justify-center gap-1 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+              <Icon name="lucide:file-text" class="size-3" />
+              {subpostCount} subpost{subpostCount === 1 ? '' : 's'}
+            </div>
+          )
+        }
       </div>
+      <div class="flex flex-wrap justify-center gap-2">
+        {
+          post.data.tags &&
+            post.data.tags.length > 0 &&
+            post.data.tags.map((tag) => (
+              <a
+                href={`/tags/${tag}`}
+                class={badgeVariants({ variant: 'secondary' })}
+              >
+                <Icon name="lucide:hash" class="size-3" />
+                {tag}
+              </a>
+            ))
+        }
+      </div>
+    </div>
 
       <PostNavigation
         newerPost={navigation.newer}
@@ -301,6 +300,11 @@ const tocSections = await getTOCSections(currentPostId)
       olderPost={navigation.older}
       parentPost={isCurrentSubpost ? navigation.parent : undefined}
     />
+
+    <!-- Add comments section -->
+    <div class="col-start-2">
+      <GiscusComment class="mt-8" />
+    </div>
   </section>
 
   <Button

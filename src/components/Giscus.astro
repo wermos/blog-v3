@@ -1,0 +1,60 @@
+---
+import { comment } from '@/consts'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+{comment.enable && comment.type === 'giscus' && (
+  <div class={className}>
+    <script
+      src="https://giscus.app/client.js"
+      data-repo={comment.giscusConfig['data-repo']}
+      data-repo-id={comment.giscusConfig['data-repo-id']}
+      data-category={comment.giscusConfig['data-category']}
+      data-category-id={comment.giscusConfig['data-category-id']}
+      data-mapping={comment.giscusConfig['data-mapping']}
+      data-strict={comment.giscusConfig['data-strict']}
+      data-reactions-enabled={comment.giscusConfig['data-reactions-enabled']}
+      data-emit-metadata={comment.giscusConfig['data-emit-metadata']}
+      data-input-position={comment.giscusConfig['data-input-position']}
+      data-theme="catppuccin_latte"
+      data-lang={comment.giscusConfig['data-lang']}
+      crossorigin={comment.giscusConfig['crossorigin']}
+      async
+    ></script>
+  </div>
+)}
+
+<script>
+  function updateGiscusTheme() {
+    const iframe = document.querySelector('iframe.giscus-frame')
+    if (iframe) {
+      // Check if dark mode is active (adjust this based on your theme implementation)
+      const isDark = document.documentElement.classList.contains('dark') || 
+                     document.documentElement.getAttribute('data-theme') === 'dark'
+      
+      const theme = isDark ? 'catppuccin_frappe' : 'catppuccin_latte'
+      
+      iframe.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme } } },
+        'https://giscus.app'
+      )
+    }
+  }
+
+  // Update theme on page load
+  document.addEventListener('astro:page-load', () => {
+    // Wait a bit for Giscus to load
+    setTimeout(updateGiscusTheme, 1000)
+  })
+
+  // Listen for theme changes (adjust the event based on your theme switcher)
+  document.addEventListener('theme-changed', updateGiscusTheme)
+  
+  // Also listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateGiscusTheme)
+</script>

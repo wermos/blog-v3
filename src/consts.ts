@@ -53,3 +53,23 @@ export const ICON_MAP: IconMap = {
   Email: 'lucide:mail',
   RSS: 'lucide:rss',
 }
+
+export const comment = {
+  enable: true,
+  type: 'giscus',
+  
+  giscusConfig: {
+    'data-repo': 'wermos/blog-v3',
+    'data-repo-id': 'R_kgDOO-NeMg',
+    'data-category': 'General',
+    'data-category-id': 'DIC_kwDOO-NeMs4Cs6_j',
+    'data-mapping': 'pathname',
+    'data-strict': '1',
+    'data-reactions-enabled': '1',
+    'data-emit-metadata': '0',
+    'data-input-position': 'top',
+    'data-theme': 'preferred_color_scheme', // We'll handle theme switching dynamically
+    'data-lang': 'en',
+    'crossorigin': 'anonymous',
+  }
+}
