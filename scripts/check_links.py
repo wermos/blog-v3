@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+
+"""Link Checking Script
+Check if outgoing links from my blog actually exist or not.
+"""
+
 import os
 import re
 import argparse
