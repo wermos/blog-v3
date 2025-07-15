@@ -1,6 +1,8 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTime, calculateWordCountFromHtml } from '@/lib/utils'
 
+import { extractHeadingHtml } from '@/lib/heading-html-extractor'
+
 export async function getAllAuthors(): Promise<CollectionEntry<'authors'>[]> {
   return await getCollection('authors')
 }
@@ -248,6 +250,7 @@ export type TOCHeading = {
   slug: string
   text: string
   depth: number
+  html?: string
   isSubpostTitle?: boolean
 }
 
@@ -269,32 +272,62 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
 
   const sections: TOCSection[] = []
 
-  const { headings: parentHeadings } = await render(parentPost)
-  if (parentHeadings.length > 0) {
+  // Process parent post
+  const parentResult = await render(parentPost)
+  
+  // Debug: Check what's in the render result
+  console.log('Parent render result keys:', Object.keys(parentResult))
+  console.log('Parent headings:', parentResult.headings)
+  
+  // Try multiple ways to access the extracted HTML
+  const parentHtmlHeadings = 
+    (parentResult as any).headingsWithHtml || 
+    (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml ||
+    []
+  
+  console.log('Parent HTML headings:', parentHtmlHeadings)
+  
+  if (parentResult.headings.length > 0) {
     sections.push({
       type: 'parent',
       title: 'Overview',
-      headings: parentHeadings.map((heading) => ({
-        slug: heading.slug,
-        text: heading.text,
-        depth: heading.depth,
-      })),
-    })
-  }
-
-  const subposts = await getSubpostsForParent(parentId)
-  for (const subpost of subposts) {
-    const { headings: subpostHeadings } = await render(subpost)
-    if (subpostHeadings.length > 0) {
-      sections.push({
-        type: 'subpost',
-        title: subpost.data.title,
-        headings: subpostHeadings.map((heading, index) => ({
+      headings: parentResult.headings.map((heading) => {
+        const htmlHeading = parentHtmlHeadings.find(h => h.slug === heading.slug)
+        console.log(`Mapping heading ${heading.slug}:`, htmlHeading)
+        
+        return {
           slug: heading.slug,
           text: heading.text,
           depth: heading.depth,
-          isSubpostTitle: index === 0,
-        })),
+          html: htmlHeading?.html || heading.text,
+        }
+      }),
+    })
+  }
+
+  // Same for subposts...
+  const subposts = await getSubpostsForParent(parentId)
+  for (const subpost of subposts) {
+    const subpostResult = await render(subpost)
+    const subpostHtmlHeadings = 
+      (subpostResult as any).headingsWithHtml || 
+      (subpostResult.remarkPluginFrontmatter as any)?.headingsWithHtml ||
+      []
+    
+    if (subpostResult.headings.length > 0) {
+      sections.push({
+        type: 'subpost',
+        title: subpost.data.title,
+        headings: subpostResult.headings.map((heading, index) => {
+          const htmlHeading = subpostHtmlHeadings.find(h => h.slug === heading.slug)
+          return {
+            slug: heading.slug,
+            text: heading.text,
+            depth: heading.depth,
+            html: htmlHeading?.html || heading.text,
+            isSubpostTitle: index === 0,
+          }
+        }),
         subpostId: subpost.id,
       })
     }
@@ -302,3 +335,4 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
 
   return sections
 }
+
