@@ -276,12 +276,7 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
   // console.log('Parent render result keys:', Object.keys(parentResult))
   // console.log('Parent headings:', parentResult.headings)
   
-  // Try multiple ways to access the extracted HTML
-  const parentHtmlHeadings = 
-    (parentResult as any).headingsWithHtml || 
-    (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml ||
-    []
-
+  const parentHtmlHeadings = (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
   // console.log('Parent HTML headings:', parentHtmlHeadings)
 
   if (parentResult.headings.length > 0) {
