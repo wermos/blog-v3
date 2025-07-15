@@ -3,21 +3,21 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
-import icon from 'astro-icon'
-
-import expressiveCode from 'astro-expressive-code'
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
-import rehypeExternalLinks from 'rehype-external-links'
-import rehypePrettyCode from 'rehype-pretty-code'
-import rehypeMathjax from 'rehype-mathjax/browser'
-import remarkEmoji from 'remark-emoji'
-import remarkMath from 'remark-math'
-import remarkGemoji from 'remark-gemoji'
+import icon from 'astro-icon'
+import mermaid from 'astro-mermaid'
+import expressiveCode from 'astro-expressive-code'
 
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 
-import mermaid from 'astro-mermaid'
+import remarkEmoji from 'remark-emoji'
+import remarkGemoji from 'remark-gemoji'
+import remarkMath from 'remark-math'
+
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypePrettyCode from 'rehype-pretty-code'
+import rehypeMathjax from 'rehype-mathjax/browser'
 
 import tailwindcss from '@tailwindcss/vite'
 
@@ -26,7 +26,6 @@ import { extractHeadingHtml } from './src/lib/heading-html-extractor'
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
   base: 'blog-v3',
-  // trailingSlash: 'always',
   output: 'static',
   integrations: [mermaid({
     theme: 'default', // Default light theme
