@@ -272,21 +272,14 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
 
   // Process parent post
   const parentResult = await render(parentPost)
-  // Debug: Check what's in the render result
-  // console.log('Parent render result keys:', Object.keys(parentResult))
-  // console.log('Parent headings:', parentResult.headings)
-  
   const parentHtmlHeadings = (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
-  // console.log('Parent HTML headings:', parentHtmlHeadings)
-
+  
   if (parentResult.headings.length > 0) {
     sections.push({
       type: 'parent',
       title: 'Overview',
       headings: parentResult.headings.map((heading) => {
         const htmlHeading = parentHtmlHeadings.find(h => h.slug === heading.slug)
-        // console.log(`Mapping heading ${heading.slug}:`, htmlHeading)
-        
         return {
           slug: heading.slug,
           text: heading.text,
@@ -297,26 +290,25 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
     })
   }
 
-  // Same for subposts...
+  // Process subposts with proper HTML extraction
   const subposts = await getSubpostsForParent(parentId)
   for (const subpost of subposts) {
     const subpostResult = await render(subpost)
-    const subpostHtmlHeadings = 
-      (subpostResult as any).headingsWithHtml || 
-      (subpostResult.remarkPluginFrontmatter as any)?.headingsWithHtml ||
-      []
+    // Extract HTML headings for this subpost
+    const subpostHtmlHeadings = (subpostResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
     
     if (subpostResult.headings.length > 0) {
       sections.push({
         type: 'subpost',
         title: subpost.data.title,
         headings: subpostResult.headings.map((heading, index) => {
+          // Find the corresponding HTML heading
           const htmlHeading = subpostHtmlHeadings.find(h => h.slug === heading.slug)
           return {
             slug: heading.slug,
             text: heading.text,
             depth: heading.depth,
-            html: htmlHeading?.html || heading.text,
+            html: htmlHeading?.html || heading.text, // Use extracted HTML
             isSubpostTitle: index === 0,
           }
         }),
@@ -327,4 +319,3 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
 
   return sections
 }
-
