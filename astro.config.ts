@@ -21,6 +21,8 @@ import mermaid from 'astro-mermaid'
 
 import tailwindcss from '@tailwindcss/vite'
 
+import { extractHeadingHtml } from './src/lib/heading-html-extractor'
+
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
   base: 'blog-v3',
@@ -114,6 +116,7 @@ export default defineConfig({
           },
         },
       ],
+      extractHeadingHtml,
     ],
     remarkPlugins: [remarkMath, remarkEmoji, remarkGemoji],
   },
