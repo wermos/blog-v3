@@ -1,8 +1,6 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTime, calculateWordCountFromHtml } from '@/lib/utils'
 
-import { extractHeadingHtml } from '@/lib/heading-html-extractor'
-
 export async function getAllAuthors(): Promise<CollectionEntry<'authors'>[]> {
   return await getCollection('authors')
 }
@@ -274,26 +272,25 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
 
   // Process parent post
   const parentResult = await render(parentPost)
-  
   // Debug: Check what's in the render result
-  console.log('Parent render result keys:', Object.keys(parentResult))
-  console.log('Parent headings:', parentResult.headings)
+  // console.log('Parent render result keys:', Object.keys(parentResult))
+  // console.log('Parent headings:', parentResult.headings)
   
   // Try multiple ways to access the extracted HTML
   const parentHtmlHeadings = 
     (parentResult as any).headingsWithHtml || 
     (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml ||
     []
-  
-  console.log('Parent HTML headings:', parentHtmlHeadings)
-  
+
+  // console.log('Parent HTML headings:', parentHtmlHeadings)
+
   if (parentResult.headings.length > 0) {
     sections.push({
       type: 'parent',
       title: 'Overview',
       headings: parentResult.headings.map((heading) => {
         const htmlHeading = parentHtmlHeadings.find(h => h.slug === heading.slug)
-        console.log(`Mapping heading ${heading.slug}:`, htmlHeading)
+        // console.log(`Mapping heading ${heading.slug}:`, htmlHeading)
         
         return {
           slug: heading.slug,

@@ -298,15 +298,6 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
       const tocContainer = document.getElementById('toc-sidebar-container')
       if (!tocContainer) return
 
-      // Since HTML is already built at build-time, we only need to handle MathJax
-      if (window.MathJax && (window.MathJax as any).typesetPromise) {
-        try {
-          await (window.MathJax as any).typesetPromise([tocContainer])
-        } catch (error) {
-          console.warn('MathJax processing failed:', error)
-        }
-      }
-
       // Mark as enhanced
       tocContainer.classList.add('toc-enhanced')
     }
@@ -347,6 +338,11 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 
       // Build enhanced TOC content
       await TOCEnhancer.buildTOCFromDOM()
+
+      // // Trigger MathJax discovery for new content
+      // if (window.MathJax?.startup?.document) {
+      //   window.MathJax.startup.document.render()
+      // }
 
       this.handleScroll()
       setTimeout(() => TOCScrollMask.update(), 100)
