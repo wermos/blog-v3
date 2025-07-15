@@ -1,12 +1,12 @@
 ---
-title: 'Feature Test 2'
+title: 'Feature Test'
 description: 'Testing features in an mdx post'
 date: 2025-07-05
 tags: ['test']
 mathjax: true
 ---
 import { Image } from 'astro:assets'
-import royalFlora from '../../assets/images/genshin/artifacts/Royal_Flora.png'
+import royalFlora from '@/assets/images/genshin/artifacts/Royal_Flora.png'
 
 import Gallery from '@/components/Gallery.astro';
 
@@ -97,6 +97,38 @@ This paragraph will flow around the left-aligned image, just like in Jekyll's Mi
 
 <div class="clear-float"></div>
 
+### Checking Mermaid
+
+A mermaid diagram:
+
+```mermaid
+graph TD
+  A[Start] --> B{Is it working?}
+  B -- Yes --> C[Celebrate]
+  B -- No --> D[Debug]
+  D --> B
+```
+
+A more complex diagram:
+
+```mermaid
+flowchart TB
+  subgraph Interpretation 2
+    direction TB
+    A(+)-->B(a)
+    A(+)-->C(+)
+    C-->D(b)
+    C-->E(c)
+  end
+  subgraph Interpretation 1
+    direction TB
+    G(+)-->H(+)
+    H-->I(a)
+    H-->J(b)
+    G-->K(c)
+  end
+```
+
 ### Image Gallery Testing
 
 <Gallery
@@ -159,3 +191,7 @@ This paragraph will flow around the left-aligned image, just like in Jekyll's Mi
     }
   ]}
 />
+
+### Checking External Links
+
+Let's check a link [like this](https://www.mathjax.org/).
