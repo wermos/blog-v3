@@ -357,7 +357,9 @@ const tocSections = await getTOCSections(currentPostId)
         // Optional TOCs (only processed if present)
         ['mobile-toc-container', 'toc-sidebar-container'].forEach((id) => {
           const el = document.getElementById(id);
-          if (el) window.MathJax.typesetPromise([el]).catch(console.warn);
+          if (el && window.MathJax?.typesetPromise) {
+            window.MathJax.typesetPromise([el]).catch(console.warn);
+          }
         });
       }
 
