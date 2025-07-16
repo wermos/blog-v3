@@ -466,12 +466,10 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
           if (mainContent) {
             await window.MathJax.typesetPromise([mainContent])
           }
-          
-          // Only process mobile TOC if post has subposts
+
           const tocContainer = document.getElementById('mobile-toc-container')
-          const hasSubposts = tocContainer?.getAttribute('data-has-subposts') === 'true'
-          
-          if (hasSubposts && tocContainer) {
+
+          if (tocContainer) {
             await window.MathJax.typesetPromise([tocContainer])
           }
         } catch (error) {
@@ -494,11 +492,9 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
             await window.MathJax.typesetPromise([mainContent])
           }
           
-          // Only process mobile TOC if post has subposts
           const tocContainer = document.getElementById('mobile-toc-container')
-          const hasSubposts = tocContainer?.getAttribute('data-has-subposts') === 'true'
-          
-          if (hasSubposts && tocContainer) {
+
+          if (tocContainer) {
             await window.MathJax.typesetPromise([tocContainer])
           }
         } catch (error) {
@@ -511,5 +507,4 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
   document.addEventListener('astro:before-swap', () =>
     MobileTOCController.cleanup(),
   )
-
 </script>

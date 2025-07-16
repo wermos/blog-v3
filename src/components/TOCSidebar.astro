@@ -299,13 +299,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
       const tocContainer = document.getElementById('toc-sidebar-container')
       if (!tocContainer) return
 
-      // Mark as enhanced
-      tocContainer.classList.add('toc-enhanced')
-
-      // Only force MathJax processing if this post has subposts
-      const hasSubposts = tocContainer.getAttribute('data-has-subposts') === 'true'
-      
-      if (hasSubposts && window.MathJax?.typesetPromise) {
+      if (window.MathJax?.typesetPromise) {
         try {
           await window.MathJax.typesetPromise([tocContainer])
         } catch (error) {
