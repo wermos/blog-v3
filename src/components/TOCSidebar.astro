@@ -305,7 +305,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
       // Only force MathJax processing if this post has subposts
       const hasSubposts = tocContainer.getAttribute('data-has-subposts') === 'true'
       
-      if (hasSubposts && window.MathJax && window.MathJax.typesetPromise) {
+      if (hasSubposts && window.MathJax?.typesetPromise) {
         try {
           await window.MathJax.typesetPromise([tocContainer])
         } catch (error) {
@@ -380,7 +380,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     requestAnimationFrame(async () => {
       await TOCController.init()
 
-      if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax?.typesetPromise) {
         try {
           const mainContent = document.querySelector('.prose')
           if (mainContent) {
@@ -398,8 +398,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     requestAnimationFrame(async () => {
       await TOCController.init()
       
-      // Only process MathJax if this post has subposts
-      if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax?.typesetPromise) {
         try {
           const mainContent = document.querySelector('.prose')
           if (mainContent) {

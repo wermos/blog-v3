@@ -11,6 +11,7 @@ const { class: className } = Astro.props
 {comment.enable && comment.type === 'giscus' && (
   <div class={className}>
     <script
+      is:inline
       src="https://giscus.app/client.js"
       data-repo={comment.giscusConfig['data-repo']}
       data-repo-id={comment.giscusConfig['data-repo-id']}

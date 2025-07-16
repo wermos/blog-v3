@@ -1,5 +1,6 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTime, calculateWordCountFromHtml } from '@/lib/utils'
+import type { HeadingWithHtml } from '@/lib/heading-html-extractor'
 
 export async function getAllAuthors(): Promise<CollectionEntry<'authors'>[]> {
   return await getCollection('authors')
@@ -272,7 +273,10 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
 
   // Process parent post
   const parentResult = await render(parentPost)
-  const parentHtmlHeadings = (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
+  
+  // Properly type the HTML headings array
+  const parentHtmlHeadings: HeadingWithHtml[] = 
+    (parentResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
   
   if (parentResult.headings.length > 0) {
     sections.push({
@@ -290,25 +294,26 @@ export async function getTOCSections(postId: string): Promise<TOCSection[]> {
     })
   }
 
-  // Process subposts with proper HTML extraction
+  // Process subposts
   const subposts = await getSubpostsForParent(parentId)
   for (const subpost of subposts) {
     const subpostResult = await render(subpost)
-    // Extract HTML headings for this subpost
-    const subpostHtmlHeadings = (subpostResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
+    
+    // Properly type the HTML headings array
+    const subpostHtmlHeadings: HeadingWithHtml[] = 
+      (subpostResult.remarkPluginFrontmatter as any)?.headingsWithHtml || []
     
     if (subpostResult.headings.length > 0) {
       sections.push({
         type: 'subpost',
         title: subpost.data.title,
         headings: subpostResult.headings.map((heading, index) => {
-          // Find the corresponding HTML heading
           const htmlHeading = subpostHtmlHeadings.find(h => h.slug === heading.slug)
           return {
             slug: heading.slug,
             text: heading.text,
             depth: heading.depth,
-            html: htmlHeading?.html || heading.text, // Use extracted HTML
+            html: htmlHeading?.html || heading.text,
             isSubpostTitle: index === 0,
           }
         }),

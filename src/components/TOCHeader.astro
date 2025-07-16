@@ -330,9 +330,12 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
           
           if (window.MathJax && window.MathJax.typesetPromise) {
             try {
+              const tocContainer = document.getElementById('mobile-toc-container')
               // Add a small delay to ensure DOM is settled
               setTimeout(async () => {
-                await window.MathJax.typesetPromise([tocContainer])
+                if (tocContainer && window.MathJax?.typesetPromise) {
+                  await window.MathJax.typesetPromise([tocContainer])
+                }
               }, 100)
             } catch (error) {
               console.warn('MathJax re-processing failed on dropdown toggle:', error)
@@ -457,7 +460,7 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
       await MobileTOCController.init()
 
       // Always process main content MathJax
-      if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax?.typesetPromise) {
         try {
           const mainContent = document.querySelector('.prose')
           if (mainContent) {
@@ -484,7 +487,7 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
       await MobileTOCController.init()
       
       // Always process main content MathJax
-      if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax?.typesetPromise) {
         try {
           const mainContent = document.querySelector('.prose')
           if (mainContent) {
