@@ -34,10 +34,19 @@ export default defineConfig({
       startOnLoad: true, // Ensures Mermaid is loaded on page load
     }
   }), expressiveCode({
-    themes: ['catppuccin-latte', 'catppuccin-macchiato'],
+    themes: ['catppuccin-latte', 'catppuccin-frappe'],
     plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
     useDarkModeMediaQuery: false,
-    themeCssSelector: (theme) => `[data-theme="${theme.name.split('-')[1]}"]`,
+    themeCssSelector: (theme) => {
+      // Map catppuccin themes to your data-theme values
+      const themeMap = {
+        'catppuccin-latte': 'light',
+        'catppuccin-frappe': 'dark'
+      }
+      
+      const dataTheme = themeMap[theme.name] || 'light'
+      return `[data-theme="${dataTheme}"]`
+    },
     defaultProps: {
       wrap: true,
       collapseStyle: 'collapsible-auto',
