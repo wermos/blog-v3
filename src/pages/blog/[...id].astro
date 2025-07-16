@@ -75,7 +75,7 @@ const tocSections = await getTOCSections(currentPostId)
         isCurrentSubpost &&
         headings.length === 1 &&
         headings[0].text === post.data.title
-      ) && <TOCHeader slot="table-of-contents" headings={headings} />
+      ) && <TOCHeader slot="table-of-contents" sections={tocSections} />
   }
 
   <section

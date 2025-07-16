@@ -1,19 +1,28 @@
 ---
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn, getHeadingMargin } from '@/lib/utils'
-import type { MarkdownHeading } from 'astro'
+import type { TOCSection } from '@/lib/data-utils'
 import { Icon } from 'astro-icon/components'
 
 type Props = {
-  headings: MarkdownHeading[]
+  sections: TOCSection[]
 }
 
-const { headings } = Astro.props
+const { sections } = Astro.props
+
+// Extract headings from processed sections (same as TOCSidebar)
+const headings = sections.flatMap(section => section.headings)
+const hasSubposts = sections.some(section => section.type === 'subpost')
 ---
 
 {
   headings && headings.length > 0 && (
-    <div id="mobile-toc-container" class="w-full xl:hidden">
+    <div 
+      id="mobile-toc-container" 
+      class="w-full xl:hidden"
+      data-has-subposts={hasSubposts}
+      data-processed-headings={JSON.stringify(headings)}
+    >
       <details class="group">
         <summary class="flex w-full cursor-pointer items-center justify-between">
           <div class="mx-auto flex w-full max-w-3xl items-center px-4 py-3">
@@ -69,6 +78,7 @@ const { headings } = Astro.props
               id="mobile-table-of-contents"
             >
               {headings.map((heading) => (
+                // console.log(heading),
                 <li
                   class={cn(
                     'px-4 text-sm',
@@ -80,8 +90,8 @@ const { headings } = Astro.props
                     href={`#${heading.slug}`}
                     class="mobile-toc-item underline decoration-transparent underline-offset-[3px] transition-colors duration-200 hover:decoration-inherit"
                     data-heading-id={heading.slug}
+                    set:html={heading.html || heading.text}
                   >
-                    {heading.text}
                   </a>
                 </li>
               ))}
@@ -106,6 +116,7 @@ const { headings } = Astro.props
     listElement: HTMLElement | null = null
     scrollArea: HTMLElement | null = null
     headings: HTMLElement[] = []
+    processedHeadings: any[] = []
     regions: { id: string; start: number; end: number }[] = []
     activeIds: string[] = []
 
@@ -124,6 +135,7 @@ const { headings } = Astro.props
       this.scrollArea =
         tocContainer?.querySelector('[data-radix-scroll-area-viewport]') || null
       this.headings = []
+      this.processedHeadings = []
       this.regions = []
       this.activeIds = []
 
@@ -214,7 +226,7 @@ const { headings } = Astro.props
   }
 
   class MobileTOCLinks {
-    static update(headingIds: string[]) {
+    static async update(headingIds: string[]) {
       if (!state.listElement || !state.currentSectionText) return
 
       state.listElement.querySelectorAll('.mobile-toc-item').forEach((item) => {
@@ -232,26 +244,34 @@ const { headings } = Astro.props
       }
 
       this.updateCurrentSectionText(headingIds)
+
+      await this.updateCurrentSectionText(headingIds)
     }
 
-    static updateCurrentSectionText(headingIds: string[]) {
+    static async updateCurrentSectionText(headingIds: string[]) {
       if (!state.currentSectionText) return
 
-      let textToShow = INITIAL_OVERVIEW_TEXT
+      let contentToShow = INITIAL_OVERVIEW_TEXT
 
-      if (headingIds.length > 0) {
-        const activeTexts = state.headings
-          .filter(
-            (heading) => headingIds.includes(heading.id) && heading.textContent,
-          )
-          .map((heading) => heading.textContent!.trim())
+      if (headingIds.length > 0 && state.processedHeadings.length > 0) {
+        const activeHtmlContent = state.processedHeadings
+          .filter((heading) => headingIds.includes(heading.slug))
+          .map((heading) => heading.html || heading.text)
 
-        if (activeTexts.length > 0) {
-          textToShow = activeTexts.join(', ')
+        if (activeHtmlContent.length > 0) {
+          contentToShow = activeHtmlContent.join(', ')
         }
       }
 
-      state.currentSectionText.textContent = textToShow
+      state.currentSectionText.innerHTML = contentToShow
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        try {
+          await window.MathJax.typesetPromise([state.currentSectionText])
+        } catch (error) {
+          console.warn('MathJax processing failed for current section text:', error)
+        }
+      }
     }
 
     static scrollToActive(activeHeadingId: string) {
@@ -302,11 +322,38 @@ const { headings } = Astro.props
       }
 
       if (state.detailsElement) {
-        state.detailsElement.addEventListener('toggle', () => {
+        state.detailsElement.addEventListener('toggle', async () => {
+          // Always update scroll mask
           if (state.detailsElement?.open) {
             setTimeout(TOCHeaderScrollMask.update, 100)
           }
+          
+          if (window.MathJax && window.MathJax.typesetPromise) {
+            try {
+              // Add a small delay to ensure DOM is settled
+              setTimeout(async () => {
+                await window.MathJax.typesetPromise([tocContainer])
+              }, 100)
+            } catch (error) {
+              console.warn('MathJax re-processing failed on dropdown toggle:', error)
+            }
+          }
         })
+      }
+    }
+  }
+
+  class MobileTOCEnhancer {
+    static async buildTOCFromDOM(): Promise<void> {
+      const tocContainer = document.getElementById('mobile-toc-container')
+      if (!tocContainer) return
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        try {
+          await window.MathJax.typesetPromise([tocContainer])
+        } catch (error) {
+          console.warn('MathJax mobile TOC processing failed:', error)
+        }
       }
     }
   }
@@ -330,12 +377,12 @@ const { headings } = Astro.props
   }
 
   class MobileTOCController {
-    static handleScroll() {
+    static async handleScroll() {
       const newActiveIds = HeadingRegions.getVisibleIds()
 
       if (JSON.stringify(newActiveIds) !== JSON.stringify(state.activeIds)) {
         state.activeIds = newActiveIds
-        MobileTOCLinks.update(state.activeIds)
+        await MobileTOCLinks.update(state.activeIds)
       }
 
       ProgressCircle.update()
@@ -353,11 +400,25 @@ const { headings } = Astro.props
       ProgressCircle.update()
     }
 
-    static init() {
+    static async init() {
       state.reset()
       HeadingRegions.build()
 
       if (!state.currentSectionText) return
+
+      // Store processed headings data
+      const tocContainer = document.getElementById('mobile-toc-container')
+      if (tocContainer) {
+        const processedHeadingsData = tocContainer.getAttribute('data-processed-headings')
+        if (processedHeadingsData) {
+          try {
+            state.processedHeadings = JSON.parse(processedHeadingsData)
+          } catch (error) {
+            console.warn('Failed to parse processed headings data:', error)
+            state.processedHeadings = []
+          }
+        }
+      }
 
       if (state.headings.length === 0) {
         state.currentSectionText.textContent = INITIAL_OVERVIEW_TEXT
@@ -367,6 +428,9 @@ const { headings } = Astro.props
         ProgressCircle.update()
         return
       }
+
+      // Process MathJax for mobile TOC
+      await MobileTOCEnhancer.buildTOCFromDOM()
 
       state.activeIds = HeadingRegions.getVisibleIds()
       MobileTOCLinks.update(state.activeIds)
@@ -387,12 +451,62 @@ const { headings } = Astro.props
     }
   }
 
-  document.addEventListener('astro:page-load', () => MobileTOCController.init())
+  // Use requestAnimationFrame to ensure DOM is ready
+  document.addEventListener('astro:page-load', () => {
+    requestAnimationFrame(async () => {
+      await MobileTOCController.init()
+
+      // Always process main content MathJax
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        try {
+          const mainContent = document.querySelector('.prose')
+          if (mainContent) {
+            await window.MathJax.typesetPromise([mainContent])
+          }
+          
+          // Only process mobile TOC if post has subposts
+          const tocContainer = document.getElementById('mobile-toc-container')
+          const hasSubposts = tocContainer?.getAttribute('data-has-subposts') === 'true'
+          
+          if (hasSubposts && tocContainer) {
+            await window.MathJax.typesetPromise([tocContainer])
+          }
+        } catch (error) {
+          console.warn('MathJax processing failed:', error)
+        }
+      }
+    })
+  })
+
   document.addEventListener('astro:after-swap', () => {
     MobileTOCController.cleanup()
-    MobileTOCController.init()
+    requestAnimationFrame(async () => {
+      await MobileTOCController.init()
+      
+      // Always process main content MathJax
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        try {
+          const mainContent = document.querySelector('.prose')
+          if (mainContent) {
+            await window.MathJax.typesetPromise([mainContent])
+          }
+          
+          // Only process mobile TOC if post has subposts
+          const tocContainer = document.getElementById('mobile-toc-container')
+          const hasSubposts = tocContainer?.getAttribute('data-has-subposts') === 'true'
+          
+          if (hasSubposts && tocContainer) {
+            await window.MathJax.typesetPromise([tocContainer])
+          }
+        } catch (error) {
+          console.warn('MathJax processing failed:', error)
+        }
+      }
+    })
   })
+
   document.addEventListener('astro:before-swap', () =>
     MobileTOCController.cleanup(),
   )
+
 </script>
