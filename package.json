@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check": "cspell \"**/*.{md,mdx,js,ts,jsx,tsx,astro}\"",
     "fix": "npm run format",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "postinstall": "patch-patckage"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
