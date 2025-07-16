@@ -10,7 +10,7 @@
     "check": "cspell \"**/*.{md,mdx,js,ts,jsx,tsx,astro}\"",
     "fix": "npm run format",
     "format": "prettier . --write",
-    "postinstall": "patch-patckage"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
