@@ -4,18 +4,16 @@ Font Subsetting Script
 Automatically subsets fonts based on text content found in build files.
 """
 
-import os
 import sys
 import subprocess
 import shutil
 from pathlib import Path
 import re
-from typing import List, Set
 
 # Configuration
 BUILD_DIR = "./dist"
 FONTS_DIR = "./public/fonts"
-SUBSET_DIR = "./public/fonts/subsets"
+DIST_FONTS_DIR = "./dist/fonts"
 
 class FontSubsetter:
     def __init__(self):
@@ -59,7 +57,7 @@ class FontSubsetter:
         
         build_path = Path(BUILD_DIR)
         if not build_path.exists():
-            print(f"⚠️  Build directory '{BUILD_DIR}' not found. Please specify the correct BUILD_DIR.")
+            print(f"⚠️  Build directory '{BUILD_DIR}' not found. Please run 'npm run build' first.")
             sys.exit(1)
         
         # File extensions to scan
@@ -96,16 +94,21 @@ class FontSubsetter:
         print(f"📝 Extracted {len(unique_chars)} unique characters from {file_count} files")
         return unique_chars
     
-    def create_subset(self, font_path: Path, text_content: str) -> bool:
-        """Create a subset of the given font."""
+    def create_subset_and_replace(self, font_path: Path, text_content: str) -> bool:
+        """Create a subset of the given font and replace the original in dist."""
         font_name = font_path.name
         name_without_ext = font_path.stem
         extension = font_path.suffix
         
-        subset_dir = Path(SUBSET_DIR)
-        subset_dir.mkdir(parents=True, exist_ok=True)
+        # Find the corresponding font in the dist directory
+        dist_font_path = Path(DIST_FONTS_DIR) / font_name
         
-        output_path = subset_dir / f"{name_without_ext}.subset{extension}"
+        if not dist_font_path.exists():
+            print(f"⚠️  Font not found in dist: {dist_font_path}")
+            return False
+        
+        # Create temporary subset file
+        temp_subset_path = Path("/tmp") / f"{name_without_ext}.subset{extension}"
         
         print(f"\n🔧 Processing: {font_name}")
         
@@ -133,7 +136,7 @@ class FontSubsetter:
         try:
             cmd = [
                 "pyftsubset", str(font_path),
-                f"--output-file={output_path}",
+                f"--output-file={temp_subset_path}",
                 f"--text-file={temp_text_file}",
                 "--layout-features=*",
                 "--flavor=woff2",
@@ -150,7 +153,7 @@ class FontSubsetter:
                 # Fallback to python module
                 cmd = [
                     sys.executable, "-m", "fontTools.subset", str(font_path),
-                    f"--output-file={output_path}",
+                    f"--output-file={temp_subset_path}",
                     f"--text-file={temp_text_file}",
                     "--layout-features=*",
                     "--flavor=woff2",
@@ -168,7 +171,7 @@ class FontSubsetter:
             # Direct python module call
             cmd = [
                 sys.executable, "-m", "fontTools.subset", str(font_path),
-                f"--output-file={output_path}",
+                f"--output-file={temp_subset_path}",
                 f"--text-file={temp_text_file}",
                 "--layout-features=*",
                 "--flavor=woff2",
@@ -181,7 +184,7 @@ class FontSubsetter:
             if result.returncode == 0:
                 success = True
         
-        # Clean up temp file
+        # Clean up temp text file
         try:
             temp_text_file.unlink()
         except:
@@ -194,24 +197,32 @@ class FontSubsetter:
             return False
         
         # Check if subset was created successfully
-        if not output_path.exists():
-            print(f"❌ Failed to create subset file: {output_path}")
+        if not temp_subset_path.exists():
+            print(f"❌ Failed to create subset file: {temp_subset_path}")
             return False
         
-        subset_size = output_path.stat().st_size
+        subset_size = temp_subset_path.stat().st_size
         if subset_size == 0:
-            print(f"❌ Subset file is empty: {output_path}")
-            output_path.unlink()
+            print(f"❌ Subset file is empty: {temp_subset_path}")
+            temp_subset_path.unlink()
+            return False
+        
+        # Replace the original font in dist with the subset
+        try:
+            shutil.move(str(temp_subset_path), str(dist_font_path))
+            print(f"✅ Replaced: {dist_font_path}")
+        except Exception as e:
+            print(f"❌ Failed to replace font file: {e}")
+            temp_subset_path.unlink()
             return False
         
         # Calculate savings
         original_formatted = self.format_bytes(original_size)
         subset_formatted = self.format_bytes(subset_size)
-        reduction = 100 - (subset_size * 100 // original_size)
+        reduction = 100 - (subset_size * 100 // original_size) if original_size > 0 else 0
         saved_bytes = original_size - subset_size
         saved_formatted = self.format_bytes(saved_bytes)
         
-        print(f"✅ Created: {output_path.name}")
         print(f"   📊 Size: {original_formatted} → {subset_formatted} (saved {saved_formatted}, {reduction}% reduction)")
         
         # Track totals
@@ -230,16 +241,10 @@ class FontSubsetter:
         if not self.check_and_install_dependencies():
             sys.exit(1)
         
-        print("\n🧹 Cleaning up old subset fonts...")
-        subset_path = Path(SUBSET_DIR)
-        if subset_path.exists():
-            shutil.rmtree(subset_path)
-        subset_path.mkdir(parents=True, exist_ok=True)
-        
         print()
         text_content = self.extract_text_content()
         
-        print("\n⚡ Creating font subsets...")
+        print("\n⚡ Creating font subsets and replacing originals...")
         
         # Process all font files
         fonts_dir = Path(FONTS_DIR)
@@ -247,10 +252,16 @@ class FontSubsetter:
         
         for ext in font_extensions:
             for font_path in fonts_dir.glob(f"*{ext}"):
-                self.create_subset(font_path, text_content)
+                self.create_subset_and_replace(font_path, text_content)
         
         print("\n🧹 Cleaning up temporary files...")
-        # Any remaining temp files are already cleaned up
+        # Clean up any remaining temp files
+        temp_files = Path("/tmp").glob("*.subset.*")
+        for temp_file in temp_files:
+            try:
+                temp_file.unlink()
+            except:
+                pass
         
         # Summary
         print("\n📈 Summary")
@@ -260,17 +271,17 @@ class FontSubsetter:
             total_subset_formatted = self.format_bytes(self.total_subset)
             total_saved = self.total_original - self.total_subset
             total_saved_formatted = self.format_bytes(total_saved)
-            total_reduction = 100 - (self.total_subset * 100 // self.total_original)
+            total_reduction = 100 - (self.total_subset * 100 // self.total_original) if self.total_original > 0 else 0
             
             print(f"✅ Processed {self.fonts_processed} font(s)")
             print(f"📊 Total size: {total_original_formatted} → {total_subset_formatted}")
             print(f"💾 Total saved: {total_saved_formatted} ({total_reduction}% reduction)")
-            print(f"📁 Subsetted fonts are in: {SUBSET_DIR}")
+            print(f"📁 Subsetted fonts replaced originals in: {DIST_FONTS_DIR}")
         else:
             print("❌ No fonts were processed successfully")
             print(f"🔍 Check that fonts exist in: {FONTS_DIR}")
+            print(f"🔍 Check that built fonts exist in: {DIST_FONTS_DIR}")
 
 if __name__ == "__main__":
     subsetter = FontSubsetter()
     subsetter.run()
-
