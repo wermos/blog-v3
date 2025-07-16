@@ -343,4 +343,33 @@ const tocSections = await getTOCSections(currentPostId)
       }
     })
   </script>
+
+  {post.data.mathjax && (
+    <script>
+      // One small helper that (re)typesets everything we care about
+      async function typesetAllMath() {
+        if (!window.MathJax?.typesetPromise) return;
+
+        // Main article body
+        const main = document.querySelector('.prose');
+        if (main) await window.MathJax.typesetPromise([main]);
+
+        // Optional TOCs (only processed if present)
+        ['mobile-toc-container', 'toc-sidebar-container'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) window.MathJax.typesetPromise([el]).catch(console.warn);
+        });
+      }
+
+      // First load (full refresh, hard-reload, or first page of dev server)
+      document.addEventListener('astro:page-load', () => {
+        requestAnimationFrame(typesetAllMath);
+      });
+
+      // Every client-side navigation that Astro performs (after the swap is done)
+      document.addEventListener('astro:after-swap', () => {
+        requestAnimationFrame(typesetAllMath);
+      });
+    </script>
+  )}
 </Layout>
