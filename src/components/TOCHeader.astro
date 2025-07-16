@@ -456,52 +456,12 @@ const hasSubposts = sections.some(section => section.type === 'subpost')
 
   // Use requestAnimationFrame to ensure DOM is ready
   document.addEventListener('astro:page-load', () => {
-    requestAnimationFrame(async () => {
-      await MobileTOCController.init()
-
-      // Always process main content MathJax
-      if (window.MathJax?.typesetPromise) {
-        try {
-          const mainContent = document.querySelector('.prose')
-          if (mainContent) {
-            await window.MathJax.typesetPromise([mainContent])
-          }
-
-          const tocContainer = document.getElementById('mobile-toc-container')
-
-          if (tocContainer) {
-            await window.MathJax.typesetPromise([tocContainer])
-          }
-        } catch (error) {
-          console.warn('MathJax processing failed:', error)
-        }
-      }
-    })
+    requestAnimationFrame(() => MobileTOCController.init())
   })
 
   document.addEventListener('astro:after-swap', () => {
     MobileTOCController.cleanup()
-    requestAnimationFrame(async () => {
-      await MobileTOCController.init()
-      
-      // Always process main content MathJax
-      if (window.MathJax?.typesetPromise) {
-        try {
-          const mainContent = document.querySelector('.prose')
-          if (mainContent) {
-            await window.MathJax.typesetPromise([mainContent])
-          }
-          
-          const tocContainer = document.getElementById('mobile-toc-container')
-
-          if (tocContainer) {
-            await window.MathJax.typesetPromise([tocContainer])
-          }
-        } catch (error) {
-          console.warn('MathJax processing failed:', error)
-        }
-      }
-    })
+    requestAnimationFrame(() => MobileTOCController.init())
   })
 
   document.addEventListener('astro:before-swap', () =>

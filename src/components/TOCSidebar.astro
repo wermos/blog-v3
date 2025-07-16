@@ -371,39 +371,13 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 
   // Use requestAnimationFrame to ensure DOM is ready
   document.addEventListener('astro:page-load', () => {
-    requestAnimationFrame(async () => {
-      await TOCController.init()
-
-      if (window.MathJax?.typesetPromise) {
-        try {
-          const mainContent = document.querySelector('.prose')
-          if (mainContent) {
-            await window.MathJax.typesetPromise([mainContent])
-          }
-        } catch (error) {
-          console.warn('MathJax main content processing failed:', error)
-        }
-      }
-    })
+    requestAnimationFrame(() => TOCController.init())
   })
-  
+
   document.addEventListener('astro:after-swap', () => {
     TOCController.cleanup()
-    requestAnimationFrame(async () => {
-      await TOCController.init()
-      
-      if (window.MathJax?.typesetPromise) {
-        try {
-          const mainContent = document.querySelector('.prose')
-          if (mainContent) {
-            await window.MathJax.typesetPromise([mainContent])
-          }
-        } catch (error) {
-          console.warn('MathJax main content processing failed:', error)
-        }
-      }
-    })
+    requestAnimationFrame(() => TOCController.init())
   })
-  
+ 
   document.addEventListener('astro:before-swap', () => TOCController.cleanup())
 </script>
