@@ -29,69 +29,28 @@ export default defineConfig({
   output: 'static',
   integrations: [mermaid({
     theme: 'default', // Default light theme
-    autoTheme: true, // Automatically switches based on data-theme
+    autoTheme: true,
     mermaidConfig: {
-      startOnLoad: true, // Ensures Mermaid is loaded on page load
+      startOnLoad: true,
     }
   }), expressiveCode({
     themes: ['catppuccin-latte', 'catppuccin-frappe'],
     plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
     useDarkModeMediaQuery: false,
     themeCssSelector: (theme) => {
-      // Map catppuccin themes to your data-theme values
       const themeMap = {
         'catppuccin-latte': 'light',
         'catppuccin-frappe': 'dark'
-      }
+      } as const
       
-      const dataTheme = themeMap[theme.name] || 'light'
+      const dataTheme = themeMap[theme.name as keyof typeof themeMap]
       return `[data-theme="${dataTheme}"]`
     },
     defaultProps: {
       wrap: true,
       collapseStyle: 'collapsible-auto',
       showLineNumbers: false,
-      // overridesByLang: {
-      //   'mermaid': { 
-      //     // This effectively disables Expressive Code for mermaid
-      //     frame: "none",
-      //     wrap: false
-      //   },
-      // },
-      // overridesByLang: {
-      //   'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
-      //     {
-      //       showLineNumbers: false,
-      //     },
-      // },
     },
-    // styleOverrides: {
-    //   codeFontSize: '0.75rem',
-    //   borderColor: 'var(--border)',
-    //   codeFontFamily: 'var(--font-mono)',
-    //   codeBackground:
-    //     'color-mix(in oklab, var(--secondary) 25%, transparent)',
-    //   frames: {
-    //     editorActiveTabForeground: 'var(--muted-foreground)',
-    //     editorActiveTabBackground:
-    //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
-    //     editorActiveTabIndicatorBottomColor: 'transparent',
-    //     editorActiveTabIndicatorTopColor: 'transparent',
-    //     editorTabBorderRadius: '0',
-    //     editorTabBarBackground: 'transparent',
-    //     editorTabBarBorderBottomColor: 'transparent',
-    //     frameBoxShadowCssValue: 'none',
-    //     terminalBackground:
-    //       'color-mix(in oklab, var(--secondary) 25%, transparent)',
-    //     terminalTitlebarBackground: 'transparent',
-    //     terminalTitlebarBorderBottomColor: 'transparent',
-    //     terminalTitlebarForeground: 'var(--muted-foreground)',
-    //   },
-    //   lineNumbers: {
-    //     foreground: 'var(--muted-foreground)',
-    //   },
-    //   uiFontFamily: 'var(--font-sans)',
-    // },
   }), mdx(), react(), sitemap(), icon(), (await import("@playform/compress")).default()],
   vite: {
     plugins: [tailwindcss()],
@@ -119,8 +78,8 @@ export default defineConfig({
         rehypePrettyCode,
         {
           theme: {
-            light: 'github-light',
-            dark: 'github-dark',
+            light: 'catppuccin-latte',
+            dark: 'catppuccin-frappe',
           },
         },
       ],
