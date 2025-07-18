@@ -1,0 +1,449 @@
+diff --git a/node_modules/astro-mermaid/astro-mermaid-integration.js b/node_modules/astro-mermaid/astro-mermaid-integration.js
+index 9587451..af40550 100644
+--- a/node_modules/astro-mermaid/astro-mermaid-integration.js
++++ b/node_modules/astro-mermaid/astro-mermaid-integration.js
+@@ -139,241 +139,241 @@ export default function astroMermaid(options = {}) {
+           loader: pack.loader.toString()
+         }));
+ 
+-        // Inject client-side mermaid script with conditional loading
++        const mermaidCssText = `
++pre.mermaid {
++  display: flex;
++  justify-content: center;
++  align-items: center;
++  margin: 2rem 0;
++  padding: 1rem;
++  background-color: transparent;
++  border: none;
++  overflow: auto;
++  min-height: 200px;
++  position: relative;
++}
++
++pre.mermaid:not([data-processed]) {
++  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
++  background-size: 200% 100%;
++  animation: shimmer 1.5s infinite;
++}
++
++[data-theme="dark"] pre.mermaid:not([data-processed]) {
++  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
++  background-size: 200% 100%;
++}
++
++@keyframes shimmer {
++  0% {
++    background-position: -200% 0;
++  }
++  100% {
++    background-position: 200% 0;
++  }
++}
++
++pre.mermaid[data-processed] {
++  animation: none;
++  background: transparent;
++  min-height: auto;
++}
++
++pre.mermaid svg {
++  max-width: 100%;
++  height: auto;
++}
++
++@media (prefers-color-scheme: dark) {
++  pre.mermaid[data-processed] {
++    background-color: rgba(255, 255, 255, 0.02);
++    border-radius: 0.5rem;
++  }
++}
++
++@media (prefers-color-scheme: light) {
++  pre.mermaid[data-processed] {
++    background-color: rgba(0, 0, 0, 0.02);
++    border-radius: 0.5rem;
++  }
++}
++
++[data-theme="dark"] pre.mermaid[data-processed] {
++  background-color: rgba(255, 255, 255, 0.02);
++}
++
++[data-theme="light"] pre.mermaid[data-processed] {
++  background-color: rgba(0, 0, 0, 0.02);
++}
++`;
++        // Inject client-side mermaid script with proper view transition support
+         const mermaidScriptContent = `
+-// Check if page has mermaid diagrams
+-const hasMermaidDiagrams = () => {
+-  return document.querySelectorAll('pre.mermaid').length > 0;
+-};
+-
+-// Only proceed if there are mermaid diagrams on the page
+-if (hasMermaidDiagrams()) {
+-  console.log('[astro-mermaid] Mermaid diagrams detected, loading mermaid.js...');
+-  
+-  // Dynamically import mermaid only when needed
+-  import('mermaid').then(async ({ default: mermaid }) => {
+-    // Register icon packs if provided
+-    const iconPacks = ${JSON.stringify(iconPacksConfig)};
+-    if (iconPacks && iconPacks.length > 0) {
+-      console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');
+-      const packs = iconPacks.map(pack => ({
+-        name: pack.name,
+-        loader: new Function('return ' + pack.loader)()
+-      }));
+-      await mermaid.registerIconPacks(packs);
+-    }
+-    // Mermaid configuration
+-    const defaultConfig = ${JSON.stringify({
+-      startOnLoad: false,
+-      theme: theme,
+-      ...mermaidConfig
+-    })};
+-
+-    // Theme mapping for auto-theme switching
+-    const themeMap = {
+-      'light': 'default',
+-      'dark': 'dark'
+-    };
++if (window.__astroMermaidSetupDone) {
++  console.log('[astro-mermaid] Script already initialized, skipping.');
++} else {
++  window.__astroMermaidSetupDone = true;
+ 
+-    // Initialize all mermaid diagrams
+-    async function initMermaid() {
+-      console.log('[astro-mermaid] Initializing mermaid diagrams...');
+-      const diagrams = document.querySelectorAll('pre.mermaid');
++  const injectMermaidCssIfNeeded = debounce(() => {
++    if (document.__mermaidCssInjected) return;
+ 
+-      console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');
++    const hasDiagrams = document.querySelector('pre.mermaid');
++    if (!hasDiagrams) return;
+ 
+-      if (diagrams.length === 0) {
+-        return;
+-      }
++    const style = document.createElement('style');
++    style.textContent = ${JSON.stringify(mermaidCssText)};
++    document.head.appendChild(style);
+ 
+-      // Get current theme from multiple sources
+-      let currentTheme = defaultConfig.theme;
++    document.__mermaidCssInjected = true;
++    console.log('[astro-mermaid] CSS injected');
++  }, 50);
+ 
+-      if (${autoTheme}) {
+-        // Check both html and body for data-theme attribute
+-        const htmlTheme = document.documentElement.getAttribute('data-theme');
+-        const bodyTheme = document.body.getAttribute('data-theme');
+-        const dataTheme = htmlTheme || bodyTheme;
+-        currentTheme = themeMap[dataTheme] || defaultConfig.theme;
+-        console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
+-      }
+ 
+-      // Configure mermaid with gitGraph support
+-      mermaid.initialize({
+-        ...defaultConfig,
+-        theme: currentTheme,
+-        gitGraph: {
+-          mainBranchName: 'main',
+-          showCommitLabel: true,
+-          showBranches: true,
+-          rotateCommitLabel: true
+-        }
+-      });
++  const hasMermaidDiagrams = () =>
++    document.querySelectorAll('pre.mermaid').length > 0;
+ 
+-      // Render each diagram
+-      for (const diagram of diagrams) {
+-        // Skip if already processed
+-        if (diagram.hasAttribute('data-processed')) continue;
++  let mermaidInstance = null;
++  let isInitialized = false;
+ 
+-        // Store original content
+-        if (!diagram.hasAttribute('data-diagram')) {
+-          diagram.setAttribute('data-diagram', diagram.textContent || '');
+-        }
++  const defaultConfig = ${JSON.stringify({
++    startOnLoad: false,
++    theme: theme,
++    ...mermaidConfig,
++  })};
+ 
+-        const diagramDefinition = diagram.getAttribute('data-diagram') || '';
+-        const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
++  const themeMap = {
++    light: 'default',
++    dark: 'dark',
++  };
+ 
+-        console.log('[astro-mermaid] Rendering diagram:', id);
++  function debounce(fn, delay) {
++    let timer;
++    return function (...args) {
++      clearTimeout(timer);
++      timer = setTimeout(() => fn.apply(this, args), delay);
++    };
++  }
+ 
+-        try {
+-          // Clear any existing error state
+-          const existingGraph = document.getElementById(id);
+-          if (existingGraph) {
+-            existingGraph.remove();
+-          }
++  async function initMermaidLibrary() {
++    if (isInitialized) return mermaidInstance;
+ 
+-          const { svg } = await mermaid.render(id, diagramDefinition);
+-          diagram.innerHTML = svg;
+-          diagram.setAttribute('data-processed', 'true');
+-          console.log('[astro-mermaid] Successfully rendered diagram:', id);
+-        } catch (error) {
+-          console.error('[astro-mermaid] Mermaid rendering error for diagram:', id, error);
+-          diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
+-            <strong>Error rendering diagram:</strong><br/>
+-            \${error.message || 'Unknown error'}
+-          </div>\`;
+-          diagram.setAttribute('data-processed', 'true');
+-        }
++    console.log('[astro-mermaid] Loading mermaid.js library...');
++    try {
++      const { default: mermaid } = await import('mermaid');
++      mermaidInstance = mermaid;
++
++      const iconPacks = ${JSON.stringify(iconPacksConfig)};
++      if (iconPacks.length > 0) {
++        console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');
++        const packs = iconPacks.map((pack) => ({
++          name: pack.name,
++          loader: new Function('return ' + pack.loader)(),
++        }));
++        await mermaid.registerIconPacks(packs);
+       }
++
++      isInitialized = true;
++      console.log('[astro-mermaid] Mermaid library loaded and initialized');
++      return mermaidInstance;
++    } catch (error) {
++      console.error('[astro-mermaid] Failed to load mermaid:', error);
++      throw error;
+     }
++  }
+ 
+-    // Initialize immediately since DOM is ready
+-    initMermaid();
++  async function initMermaidDiagrams() {
++    injectMermaidCssIfNeeded();
++    const diagrams = document.querySelectorAll('pre.mermaid');
++    console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');
++    if (diagrams.length === 0) return;
+ 
+-    // Re-render on theme change if auto-theme is enabled
++    const mermaid = await initMermaidLibrary();
++
++    let currentTheme = defaultConfig.theme;
+     if (${autoTheme}) {
+-      const observer = new MutationObserver((mutations) => {
+-        for (const mutation of mutations) {
+-          if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+-            // Reset processed state and re-render
+-            document.querySelectorAll('pre.mermaid[data-processed]').forEach(diagram => {
+-              diagram.removeAttribute('data-processed');
+-            });
+-            initMermaid();
+-          }
+-        }
+-      });
+-      
+-      // Observe both html and body for data-theme changes
+-      observer.observe(document.documentElement, {
+-        attributes: true,
+-        attributeFilter: ['data-theme']
+-      });
+-      observer.observe(document.body, {
+-        attributes: true,
+-        attributeFilter: ['data-theme']
+-      });
++      const htmlTheme = document.documentElement.getAttribute('data-theme');
++      const bodyTheme = document.body.getAttribute('data-theme');
++      const dataTheme = htmlTheme || bodyTheme;
++      currentTheme = themeMap[dataTheme] || defaultConfig.theme;
++      console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
+     }
+ 
+-    // Handle view transitions (for Astro View Transitions API)
+-    document.addEventListener('astro:after-swap', () => {
+-      // Check again if new page has diagrams
+-      if (hasMermaidDiagrams()) {
+-        initMermaid();
+-      }
++    mermaid.initialize({
++      ...defaultConfig,
++      theme: currentTheme,
++      gitGraph: {
++        mainBranchName: 'main',
++        showCommitLabel: true,
++        showBranches: true,
++        rotateCommitLabel: true,
++      },
+     });
+-  }).catch(error => {
+-    console.error('[astro-mermaid] Failed to load mermaid:', error);
+-  });
+-} else {
+-  console.log('[astro-mermaid] No mermaid diagrams found on this page, skipping mermaid.js load');
+-}
+-`;
+ 
+-        injectScript('page', mermaidScriptContent);
++    for (const diagram of diagrams) {
++      if (diagram.hasAttribute('data-processed')) continue;
+ 
+-        // Add CSS to the page with layout shift prevention
+-        injectScript('page', `
+-          // Add CSS for mermaid diagrams
+-          const style = document.createElement('style');
+-          style.textContent = \`
+-            /* Prevent layout shifts by setting minimum height */
+-            pre.mermaid {
+-              display: flex;
+-              justify-content: center;
+-              align-items: center;
+-              margin: 2rem 0;
+-              padding: 1rem;
+-              background-color: transparent;
+-              border: none;
+-              overflow: auto;
+-              min-height: 200px; /* Prevent layout shift */
+-              position: relative;
+-            }
++      if (!diagram.hasAttribute('data-diagram')) {
++        diagram.setAttribute('data-diagram', diagram.textContent || '');
++      }
+ 
+-            /* Loading state with skeleton loader */
+-            pre.mermaid:not([data-processed]) {
+-              background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+-              background-size: 200% 100%;
+-              animation: shimmer 1.5s infinite;
+-            }
++      const diagramDefinition = diagram.getAttribute('data-diagram') || '';
++      const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
+ 
+-            /* Dark mode skeleton loader */
+-            [data-theme="dark"] pre.mermaid:not([data-processed]) {
+-              background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+-              background-size: 200% 100%;
+-            }
++      console.log('[astro-mermaid] Rendering diagram:', id);
+ 
+-            @keyframes shimmer {
+-              0% {
+-                background-position: -200% 0;
+-              }
+-              100% {
+-                background-position: 200% 0;
+-              }
+-            }
++      try {
++        const existing = document.getElementById(id);
++        if (existing) existing.remove();
+ 
+-            /* Show processed diagrams with smooth transition */
+-            pre.mermaid[data-processed] {
+-              animation: none;
+-              background: transparent;
+-              min-height: auto; /* Allow natural height after render */
+-            }
++        const { svg } = await mermaid.render(id, diagramDefinition);
++        diagram.innerHTML = svg;
++        diagram.setAttribute('data-processed', 'true');
++        console.log('[astro-mermaid] Successfully rendered diagram:', id);
++      } catch (error) {
++        console.error('[astro-mermaid] Mermaid rendering error:', error);
++        diagram.innerHTML = \`
++          <div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
++            <strong>Error rendering diagram:</strong><br/>
++            \${error.message || 'Unknown error'}
++          </div>
++        \`;
++        diagram.setAttribute('data-processed', 'true');
++      }
++    }
++  }
++
++  const debouncedPageLoad = debounce(async () => {
++    console.log('[astro-mermaid] Handling page load/transition');
++    if (hasMermaidDiagrams()) {
++      console.log('[astro-mermaid] Mermaid diagrams detected, initializing...');
++      await initMermaidDiagrams();
++    } else {
++      console.log('[astro-mermaid] No mermaid diagrams found on this page');
++    }
++  }, 100);
+ 
+-            /* Ensure responsive sizing for mermaid SVGs */
+-            pre.mermaid svg {
+-              max-width: 100%;
+-              height: auto;
+-            }
++  debouncedPageLoad(); // Initial load
++  document.addEventListener('astro:after-swap', () => {
++    injectMermaidCssIfNeeded();
++    debouncedPageLoad();
++  });
+ 
+-            /* Optional: Add subtle background for better visibility */
+-            @media (prefers-color-scheme: dark) {
+-              pre.mermaid[data-processed] {
+-                background-color: rgba(255, 255, 255, 0.02);
+-                border-radius: 0.5rem;
+-              }
+-            }
++  if (${autoTheme}) {
++    const observer = new MutationObserver(debouncedPageLoad);
+ 
+-            @media (prefers-color-scheme: light) {
+-              pre.mermaid[data-processed] {
+-                background-color: rgba(0, 0, 0, 0.02);
+-                border-radius: 0.5rem;
+-              }
+-            }
++    observer.observe(document.documentElement, {
++      attributes: true,
++      attributeFilter: ['data-theme'],
++    });
+ 
+-            /* Respect user's color scheme preference */
+-            [data-theme="dark"] pre.mermaid[data-processed] {
+-              background-color: rgba(255, 255, 255, 0.02);
+-              border-radius: 0.5rem;
+-            }
++    observer.observe(document.body, {
++      attributes: true,
++      attributeFilter: ['data-theme'],
++    });
++  }
++}
++`;
+ 
+-            [data-theme="light"] pre.mermaid[data-processed] {
+-              background-color: rgba(0, 0, 0, 0.02);
+-              border-radius: 0.5rem;
+-            }
+-          \`;
+-          document.head.appendChild(style);
+-        `);
++        injectScript('page', mermaidScriptContent);
+       }
+     }
+   };
