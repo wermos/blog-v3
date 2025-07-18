@@ -345,47 +345,47 @@ const tocSections = await getTOCSections(currentPostId)
   </script>
 
   {post.data.mathjax && (
-  <script>
-    // Enhanced helper that handles MathJax state properly
-    async function typesetAllMath() {
-      if (!window.MathJax?.typesetPromise) return;
+    <script>
+      // Enhanced helper that handles MathJax state properly
+      async function typesetAllMath() {
+        if (!window.MathJax?.typesetPromise) return;
 
-      try {
-        // Clear any previous MathJax state
-        if (window.MathJax.startup?.document) {
-          window.MathJax.startup.document.clear();
-        }
-
-        // Main article body
-        const main = document.querySelector('.prose');
-        if (main) {
-          await window.MathJax.typesetPromise([main]);
-        }
-
-        // Optional TOCs (only processed if present)
-        const tocContainers = ['mobile-toc-container', 'toc-sidebar-container'];
-        for (const id of tocContainers) {
-          const el = document.getElementById(id);
-          if (el) {
-            await window.MathJax.typesetPromise([el]);
+        try {
+          // Clear any previous MathJax state
+          if (window.MathJax.startup?.document) {
+            window.MathJax.startup.document.clear();
           }
+
+          // Main article body
+          const main = document.querySelector('.prose');
+          if (main) {
+            await window.MathJax.typesetPromise([main]);
+          }
+
+          // Optional TOCs (only processed if present)
+          const tocContainers = ['mobile-toc-container', 'toc-sidebar-container'];
+          for (const id of tocContainers) {
+            const el = document.getElementById(id);
+            if (el) {
+              await window.MathJax.typesetPromise([el]);
+            }
+          }
+        } catch (error) {
+          console.warn('MathJax processing failed:', error);
         }
-      } catch (error) {
-        console.warn('MathJax processing failed:', error);
       }
-    }
 
-    // First load
-    document.addEventListener('astro:page-load', () => {
-      // Use setTimeout instead of requestAnimationFrame for more delay
-      setTimeout(typesetAllMath, 100);
-    });
+      // First load
+      document.addEventListener('astro:page-load', () => {
+        // Use setTimeout instead of requestAnimationFrame for more delay
+        setTimeout(typesetAllMath, 100);
+      });
 
-    // Navigation - needs more time to settle
-    document.addEventListener('astro:after-swap', () => {
-      // Longer delay for navigation to ensure DOM is fully settled
-      setTimeout(typesetAllMath, 200);
-    });
-  </script>
-)}
+      // Navigation - needs more time to settle
+      document.addEventListener('astro:after-swap', () => {
+        // Longer delay for navigation to ensure DOM is fully settled
+        setTimeout(typesetAllMath, 200);
+      });
+    </script>
+  )}
 </Layout>
