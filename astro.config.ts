@@ -28,10 +28,10 @@ export default defineConfig({
   base: 'blog-v3',
   output: 'static',
   integrations: [mermaid({
-    theme: 'default', // Default light theme
+    theme: 'default',
     autoTheme: true,
     mermaidConfig: {
-      startOnLoad: true,
+      startOnLoad: false, // Let astro-mermaid handle initialization
     }
   }), expressiveCode({
     themes: ['catppuccin-latte', 'catppuccin-frappe'],
