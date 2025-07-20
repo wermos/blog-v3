@@ -7,6 +7,7 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import icon from 'astro-icon'
 import mermaid from 'astro-mermaid'
 import expressiveCode from 'astro-expressive-code'
+// import pagefind from 'astro-pagefind'
 
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
@@ -21,12 +22,13 @@ import rehypeMathjax from 'rehype-mathjax/browser'
 
 import tailwindcss from '@tailwindcss/vite'
 
+import pagefind from './src/integrations/pagefind'
+
 import { extractHeadingHtml } from './src/lib/heading-html-extractor'
 
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
-  base: '/blog-v3',
-  trailingSlash: 'always',
+  base: '/blog-v3/',
   output: 'static',
   integrations: [mermaid({
     theme: 'default',
@@ -52,7 +54,7 @@ export default defineConfig({
       collapseStyle: 'collapsible-auto',
       showLineNumbers: false,
     },
-  }), mdx(), react(), sitemap(), icon(), (await import("@playform/compress")).default()],
+  }), mdx(), react(), sitemap(), icon(), pagefind()],
   vite: {
     plugins: [tailwindcss()],
   },

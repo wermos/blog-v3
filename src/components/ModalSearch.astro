@@ -1,0 +1,80 @@
+---
+import "@pagefind/modular-ui/css/ui.css";
+// import { initPagefindModal } from "@/lib/search.js";
+---
+
+
+<div class="pf-wrapper">
+  <!-- Trigger button -->
+  <button id="magnifying-glass" aria-label="Search" class="inline-flex items-center gap-2">
+    🔍 Search
+  </button>
+
+  <!-- Backdrop + Dialog -->
+  <div id="backdrop" class="pf-backdrop pf-hidden" aria-hidden="true">
+    <div id="pf-dialog" class="pf-dialog" role="dialog" aria-modal="true" aria-label="Search">
+      <div id="searchbox"></div>
+      <div id="searchresults"></div>
+      <button id="pf-close" class="pf-close" aria-label="Close search">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initPagefindModal } from "@/lib/search";
+
+  initPagefindModal();
+</script>
+
+<style>
+/* Modal shell */
+.pf-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.5);
+  transition: opacity 150ms ease, visibility 150ms ease;
+}
+.pf-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.pf-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.pf-dialog {
+  position: relative;
+  width: min(800px, 92vw);
+  max-height: 85vh;
+  overflow: auto;
+  border-radius: 12px;
+  background: #fff;
+  padding: 16px;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.18),
+    0 2px 8px rgba(0,0,0,0.12);
+}
+.pf-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.pf-close:hover { opacity: 1; }
+
+/* Optional dark mode */
+:root[data-theme="dark"] .pf-dialog {
+  background: #0f0f10;
+}
+</style>

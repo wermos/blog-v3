@@ -2,6 +2,9 @@
 import Link from '@/components/Link.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 import MobileMenu from '@/components/ui/mobile-menu'
+// import SearchBar from '@/components/SearchBar.astro'
+// import Search from '@/components/Search.astro'
+import Search from '@/components/PagefindSearch.astro'
 import { NAV_LINKS, SITE } from '@/consts'
 import { Image } from 'astro:assets'
 import logo from '../../public/static/logo.svg'
@@ -17,7 +20,8 @@ import logo from '../../public/static/logo.svg'
         >{SITE.title}</span
       >
     </Link>
-    <div class="flex items-center sm:gap-4">
+    
+    <div class="flex items-center gap-3 sm:gap-4">      
       <nav class="hidden items-center gap-4 text-sm sm:flex sm:gap-6">
         {
           NAV_LINKS.map((item) => (
@@ -30,8 +34,20 @@ import logo from '../../public/static/logo.svg'
           ))
         }
       </nav>
-      <MobileMenu client:load transition:persist />
+
+      <!-- Search Bar - hidden on mobile, shown on larger screens -->
+      <!-- <div class="hidden sm:block w-48 md:w-56">
+        <SearchBar />
+      </div> -->
+      <Search />
+      
       <ThemeToggle transition:persist />
+      <MobileMenu client:load transition:persist />
     </div>
   </div>
+  
+  <!-- Mobile Search Bar - shown only on mobile -->
+  <!-- <div class="sm:hidden px-4 pb-3">
+    <SearchBar />
+  </div> -->
 </header>

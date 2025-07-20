@@ -1,0 +1,84 @@
+---
+import "@/styles/search.css";
+---
+
+<!-- Search Input -->
+<div class="search-wrapper">
+  <input 
+    id="search" 
+    type="text" 
+    placeholder="Search..." 
+    autocomplete="off" 
+  />
+
+  <!-- Floating results dropdown -->
+  <div id="results" class="search-results"></div>
+</div>
+
+<!-- Load Pagefind -->
+<script>
+  // @ts-nocheck
+  import(/* @vite-ignore */ `${import.meta.env.BASE_URL}pagefind/pagefind.js`).then(async (pagefind) => {
+    await pagefind.init();
+
+    const input = document.getElementById("search");
+    const resultsContainer = document.getElementById("results");
+
+    // Handle input
+    input.addEventListener("input", async (e) => {
+      const query = e.target.value.trim();
+
+      if (!query) {
+        resultsContainer.style.display = "none";
+        resultsContainer.innerHTML = "";
+        return;
+      }
+
+      const search = await pagefind.debouncedSearch(query, 200);
+      resultsContainer.innerHTML = "";
+
+      if (!search.results.length) {
+        resultsContainer.style.display = "none";
+        return;
+      }
+
+      resultsContainer.style.display = "block";
+
+      for (const hit of search.results) {
+        const data = await hit.data();
+
+        // Card
+        const card = document.createElement("div");
+        card.className = "result-card";
+        card.onclick = () => {
+          // Navigate and clear search
+          window.location.href = data.url;
+          input.value = "";
+          resultsContainer.style.display = "none";
+        };
+
+        // Title
+        const title = document.createElement("div");
+        title.className = "result-card-title";
+        title.textContent = data.meta.title || data.url;
+
+        // Excerpt (if available, else fallback)
+        const excerpt = document.createElement("div");
+        excerpt.className = "result-card-excerpt";
+        excerpt.innerHTML = data.excerpt || "No preview available.";
+
+        // Assemble
+        card.appendChild(title);
+        card.appendChild(excerpt);
+        resultsContainer.appendChild(card);
+      }
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".search-wrapper")) {
+        resultsContainer.style.display = "none";
+      }
+    });
+  });
+</script>
