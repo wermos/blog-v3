@@ -25,7 +25,8 @@ import { extractHeadingHtml } from './src/lib/heading-html-extractor'
 
 export default defineConfig({
   site: 'https://wermos.github.io/blog-v3/',
-  base: 'blog-v3',
+  base: '/blog-v3',
+  trailingSlash: 'always',
   output: 'static',
   integrations: [mermaid({
     theme: 'default',
