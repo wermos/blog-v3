@@ -81,27 +81,26 @@ const tocSections = await getTOCSections(currentPostId)
   <section
     class="grid grid-cols-[minmax(0px,1fr)_min(calc(var(--breakpoint-md)-2rem),100%)_minmax(0px,1fr)] gap-y-6"
   >
-    <!-- <div class="col-start-2" data-pagefind-ignore> -->
       <div class="col-start-2">
       <Breadcrumbs
         items={[
-          { href: '/blog', label: 'Blog', icon: 'lucide:library-big' },
+          { href: `${import.meta.env.BASE_URL}blog`, label: 'Blog', icon: 'lucide:library-big' },
           ...(isCurrentSubpost && parentPost
             ? [
                 {
-                  href: `/blog/${parentPost.id}`,
+                  href: `${import.meta.env.BASE_URL}blog/${parentPost.id}`,
                   label: parentPost.data.title,
                   icon: 'lucide:book-open',
                 },
                 {
-                  href: `/blog/${currentPostId}`,
+                  href: `${import.meta.env.BASE_URL}blog/${currentPostId}`,
                   label: post.data.title,
                   icon: 'lucide:file-text',
                 },
               ]
             : [
                 {
-                  href: `/blog/${currentPostId}`,
+                  href: `${import.meta.env.BASE_URL}blog/${currentPostId}`,
                   label: post.data.title,
                   icon: 'lucide:book-open-text',
                 },
