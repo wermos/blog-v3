@@ -1,9 +1,8 @@
+// src/components/react/EmbeddedSearch.tsx
 import { useState, useEffect } from "react";
 import type { SetStateAction } from "react";
 
-// shadcn/ui components
 import {
-  Command,
   CommandDialog,
   CommandInput,
   CommandList,
@@ -15,8 +14,24 @@ import {
 import { DialogTitle } from "@/components/ui/dialog";
 import { HomeIcon } from "lucide-react";
 
-type SearchResultData = {
-  meta: { image: string; title: string };
+type EmbeddedSearchProps = {
+  postMetaMap: Record<string, PostMeta>
+}
+
+export type PostMeta = {
+  url: string;
+  title: string;
+  tags: string[];
+};
+
+export type HitType = "title" | "tag" | "body";
+
+export type SearchResultData = {
+  meta: {
+    image: string;
+    title: string;
+    tag: string[];
+  };
   excerpt: string;
   raw_url: string;
 };
@@ -52,13 +67,43 @@ const initPagefind = async (): Promise<Pagefind> => {
   }
 };
 
-export const Search = () => {
+export const Search = ({ postMetaMap }: EmbeddedSearchProps) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>();
   const [results, setResults] = useState<SearchResultData[]>([]);
   const [pagefind, setPagefind] = useState<Pagefind>();
+
+  const processHit = (hit: SearchResultData): HitType[] => {
+    const hitTypes: HitType[] = [];
+
+    // Check if the hit matches a known post in postMetaMap
+    const meta = postMetaMap[hit.raw_url];
+
+    if (meta) {
+      // Compare title (case-insensitive)
+      if (
+        hit.excerpt.toLowerCase().includes(meta.title.toLowerCase()) ||
+        hit.meta.title.toLowerCase().includes(meta.title.toLowerCase())
+      ) {
+        hitTypes.push("title");
+      }
+
+      // Compare tags
+      if (meta.tags.some((tag) => hit.excerpt.toLowerCase().includes(tag.toLowerCase()))) {
+        hitTypes.push("tag");
+      }
+    }
+
+    // If not title or tag, fallback to body
+    if (!hitTypes.length) {
+      hitTypes.push("body");
+    }
+
+    return hitTypes;
+  };
+
 
   const openSearchBar = async (open: SetStateAction<boolean>) => {
     setOpen(open);
@@ -82,18 +127,23 @@ export const Search = () => {
 
   const onChange = async (value: string) => {
     setSearchTerm(value);
-    if (pagefind) {
-      setIsSearching(true);
-      const search = await pagefind.debouncedSearch(value);
-      if (search) {
-        const data: SearchResultData[] = [];
-        for (let a = 0; a < Math.min(search.results.length, 5); a++) {
-          data.push(await search.results[a].data());
-        }
-        setResults(data);
+    if (!pagefind) return;
+
+    setIsSearching(true);
+    const search = await pagefind.debouncedSearch(value);
+    if (search) {
+      const data: SearchResultData[] = [];
+      console.log("Number of hits:", Math.min(search.results.length, 5));
+      for (let i = 0; i < Math.min(search.results.length, 5); i++) {
+        const itemData = await search.results[i].data();
+        console.log("Search hit:", itemData);
+        const hitTypes = processHit(itemData);
+        console.log('Hit types for this result:', hitTypes);
+        data.push(itemData);
       }
-      setIsSearching(false);
+      setResults(data);
     }
+    setIsSearching(false);
   };
 
   return (

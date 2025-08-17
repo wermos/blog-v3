@@ -6,9 +6,7 @@ import { NAV_LINKS, SITE } from '@/consts'
 import { Image } from 'astro:assets'
 import logo from '../../public/static/logo.svg'
 
-// import SearchButton from '@/components/SearchButton.astro'
-// import Search from '@/components/ModalSearch.astro'
-import { Search } from '@/components/react/EmbeddedSearch'
+import Search from '@/components/Search.astro'
 ---
 
 <header transition:persist>
@@ -36,9 +34,7 @@ import { Search } from '@/components/react/EmbeddedSearch'
         }
       </nav>
 
-      <!-- Use SearchButton component -->
-      <!-- <SearchButton /> -->
-       <Search client:load />
+       <Search />
       
       <ThemeToggle transition:persist />
       <MobileMenu client:load transition:persist />

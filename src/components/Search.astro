@@ -1,0 +1,25 @@
+---
+import { Search as EmbeddedSearch } from '@/components/react/EmbeddedSearch';
+import { getAllPostsAndSubposts } from '@/lib/data-utils';
+
+export type PostMeta = {
+  url: string;
+  title: string;
+  tags: string[];
+};
+
+const posts = await getAllPostsAndSubposts();
+
+const postMetaMap: Record<string, PostMeta> = {};
+
+for (const post of posts) {
+  const url = `/blog/${post.id}`;
+  postMetaMap[url] = {
+    url,
+    title: post.data.title ?? post.id,
+    tags: post.data.tags ?? [],
+  };
+}
+---
+
+<EmbeddedSearch client:load postMetaMap={postMetaMap} />
