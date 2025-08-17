@@ -126,14 +126,12 @@ const tocSections = await getTOCSections(currentPostId)
         <h1
           class="mb-2 scroll-mt-31 text-3xl leading-tight font-medium sm:text-4xl"
           id="post-title"
+          data-pagefind-meta="title"
+          data-pagefind-weight="10"
         >
           {post.data.title}
         </h1>
 
-        <!-- <div
-          class="text-muted-foreground divide-border mb-4 flex flex-col items-center justify-center divide-y text-xs sm:flex-row sm:flex-wrap sm:divide-x sm:divide-y-0 sm:text-sm"
-          data-pagefind-ignore
-        > -->
         <div
           class="text-muted-foreground divide-border mb-4 flex flex-col items-center justify-center divide-y text-xs sm:flex-row sm:flex-wrap sm:divide-x sm:divide-y-0 sm:text-sm"
         >
@@ -169,113 +167,118 @@ const tocSections = await getTOCSections(currentPostId)
 
           <!-- Published date with hover tooltip -->
           <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
-          <Icon name="lucide:calendar" class="size-3" />
-          <span>
-            Posted <span
-              class="relative cursor-help"
-              data-full-date={(() => {
-                const date = post.data.date
-                const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0
-                return date.toLocaleString('en-US', {
-                  weekday: 'short',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  ...(hasTime && {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    timeZoneName: 'short',
-                  }),
-                })
-              })()}
-            >{formatDate(post.data.date)}</span>
-          </span>
-        </div>
+            <Icon name="lucide:calendar" class="size-3" />
+            <span>
+              Posted <span
+                class="relative cursor-help"
+                data-full-date={(() => {
+                  const date = post.data.date
+                  const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0
+                  return date.toLocaleString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    ...(hasTime && {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      timeZoneName: 'short',
+                    }),
+                  })
+                })()}
+              >{formatDate(post.data.date)}</span>
+            </span>
+          </div>
 
-        <!-- Last modified date with hover tooltip (if exists) -->
-        {
-          post.data.lastModified && (
-            <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
-              <Icon name="lucide:edit" class="size-3" />
-              <span>
-                Updated <span
-                  class="relative cursor-help"
-                  data-full-date={(() => {
-                    const date = post.data.lastModified
-                    const hasTime =
-                      date.getHours() !== 0 || date.getMinutes() !== 0
+          <!-- Last modified date with hover tooltip (if exists) -->
+          {
+            post.data.lastModified && (
+              <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+                <Icon name="lucide:edit" class="size-3" />
+                <span>
+                  Updated <span
+                    class="relative cursor-help"
+                    data-full-date={(() => {
+                      const date = post.data.lastModified
+                      const hasTime =
+                        date.getHours() !== 0 || date.getMinutes() !== 0
 
-                    return date.toLocaleString('en-US', {
-                      weekday: 'short',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      ...(hasTime && {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        timeZoneName: 'short',
-                      }),
-                    })
-                  })()}
-                >
-                  {formatDate(post.data.lastModified)}
-                </span>
-              </span>
-            </div>
-          )
-        }
-
-        <!-- Reading time with icon -->
-        <div
-          class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
-        >
-          <Icon name="lucide:clock" class="size-3" />
-          <span>
-            {postReadingTime}
-            {
-              combinedReadingTime &&
-                combinedReadingTime !== postReadingTime && (
-                  <span class="text-muted-foreground">
-                    {' '}
-                    ({combinedReadingTime} total)
+                      return date.toLocaleString('en-US', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        ...(hasTime && {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          timeZoneName: 'short',
+                        }),
+                      })
+                    })()}
+                  >
+                    {formatDate(post.data.lastModified)}
                   </span>
-                )
-            }
-          </span>
+                </span>
+              </div>
+            )
+          }
+
+          <!-- Reading time with icon -->
+          <div
+            class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
+          >
+            <Icon name="lucide:clock" class="size-3" />
+            <span>
+              {postReadingTime}
+              {
+                combinedReadingTime &&
+                  combinedReadingTime !== postReadingTime && (
+                    <span class="text-muted-foreground">
+                      {' '}
+                      ({combinedReadingTime} total)
+                    </span>
+                  )
+              }
+            </span>
+          </div>
+
+          <!-- Subpost count -->
+          {
+            subpostCount > 0 && (
+              <div class="flex w-full items-center justify-center gap-1 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+                <Icon name="lucide:file-text" class="size-3" />
+                {subpostCount} subpost{subpostCount === 1 ? '' : 's'}
+              </div>
+            )
+          }
         </div>
 
-        <!-- Subpost count -->
-        {
-          subpostCount > 0 && (
-            <div class="flex w-full items-center justify-center gap-1 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
-              <Icon name="lucide:file-text" class="size-3" />
-              {subpostCount} subpost{subpostCount === 1 ? '' : 's'}
-            </div>
-          )
-        }
+        <div class="flex flex-wrap justify-center gap-2">
+          {
+            post.data.tags &&
+              post.data.tags.length > 0 &&
+              post.data.tags.map((tag) => (
+                <a
+                  href={`${import.meta.env.BASE_URL}tags/${tag}`}
+                  class={badgeVariants({ variant: 'secondary' })}
+                  data-pagefind-meta="tag"
+                  data-pagefind-weight="5"
+                >
+                  <Icon name="lucide:hash" class="size-3" />
+                  {tag}
+                </a>
+              ))
+          }
+        </div>
       </div>
-      <div class="flex flex-wrap justify-center gap-2">
-        {
-          post.data.tags &&
-            post.data.tags.length > 0 &&
-            post.data.tags.map((tag) => (
-              <a
-                href={`/tags/${tag}`}
-                class={badgeVariants({ variant: 'secondary' })}
-              >
-                <Icon name="lucide:hash" class="size-3" />
-                {tag}
-              </a>
-            ))
-        }
-      </div>
-    </div>
 
-      <PostNavigation
-        newerPost={navigation.newer}
-        olderPost={navigation.older}
-        parentPost={isCurrentSubpost ? navigation.parent : undefined}
-      />
+      <div>
+        <PostNavigation
+          newerPost={navigation.newer}
+          olderPost={navigation.older}
+          parentPost={isCurrentSubpost ? navigation.parent : undefined}
+        />
+      </div>
     </section>
 
     {
@@ -284,8 +287,7 @@ const tocSections = await getTOCSections(currentPostId)
       )
     }
 
-    <!-- <article class="prose col-start-2 max-w-none" data-pagefind-body> -->
-    <article class="prose col-start-2 max-w-none">
+    <article class="prose col-start-2 max-w-none" data-pagefind-body>
       <Content />
     </article>
 
