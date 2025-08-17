@@ -1,0 +1,85 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHead from '@/components/PageHead.astro'
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import "@pagefind/default-ui/css/ui.css"
+---
+
+<Layout class="max-w-3xl">
+  <PageHead slot="head" title="Search" />
+  <Breadcrumbs
+    items={[
+      {
+        label: 'Search',
+        href: `${import.meta.env.BASE_URL}search`,
+        icon: 'lucide:search',
+      },
+    ]}
+  />
+
+  <div class="flex min-h-[calc(100vh-18rem)] flex-col gap-y-8">
+    <!-- Pagefind container -->
+    <div
+      id="pagefind"
+      class="pagefind-init"
+      data-pagefind-ui
+      data-bundle-path="/pagefind/"
+    ></div>
+  </div>
+</Layout>
+
+<style>
+/* Customize Pagefind input to match your theme */
+#pagefind input[type="text"] {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  background-color: white;
+  color: #111827; /* gray-900 */
+  transition: border-color 0.2s;
+}
+
+#pagefind input[type="text"]:focus {
+  outline: none;
+  border-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+#pagefind {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+</style>
+
+<script>
+  // @ts-nocheck
+  import { PagefindUI } from "@pagefind/default-ui";
+
+  function initPageFind() {
+    const el = document.querySelector(".pagefind-init");
+    if (!el) return;
+
+    const ui = new PagefindUI({
+      element: el,
+      bundlePath: "/pagefind/",
+      showSubResults: true,
+    });
+
+    el.classList.remove("pagefind-init");
+
+    // Autofocus the input when page loads
+    const input = el.querySelector<HTMLInputElement>("input[type='text']");
+    if (input) input.focus();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPageFind);
+  } else {
+    initPageFind();
+  }
+
+  document.addEventListener("astro:page-load", initPageFind);
+</script>
