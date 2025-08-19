@@ -53,6 +53,8 @@ export default defineConfig({
     },
   }), mdx(), react(), sitemap(), icon()],
   vite: {
+    // need to silence spurious error because of https://github.com/withastro/astro/issues/14030
+    // @ts-expect-error
     plugins: [tailwindcss()],
   },
   server: {
