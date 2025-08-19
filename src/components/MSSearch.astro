@@ -1,0 +1,48 @@
+---
+import Search from '@/components/react/SearchModal.tsx';
+import { getAllPostsAndSubposts } from '@/lib/data-utils';
+
+interface SearchItem {
+  id: string;
+  title: string;
+  body: string;
+  tags: string[];
+}
+
+// Step 1: fetch all posts and subposts
+const posts = await getAllPostsAndSubposts();
+
+// Step 2: build corpus
+const corpus: SearchItem[] = [];
+
+// Helper regex to remove <div style="none">…</div> blocks
+const divNoneRegex = /<div style="none">.*?<\/div>/gs;
+
+for (const post of posts) {
+  // Use frontmatter.plainText if present (from plainTextPlugin)
+  const plainText: string | [string, string][] = (post.data as any).plainText ?? post.body ?? '';
+
+  let bodyText = '';
+
+  if (typeof plainText === 'string') {
+    bodyText = plainText;
+  } else if (Array.isArray(plainText)) {
+    // Array of [heading, text] sections: join text for search
+    bodyText = plainText.map(([heading, text]) => `${heading} ${text}`).join(' ');
+  }
+
+  // Remove MathJax / LaTeX <div style="none"> blocks
+  bodyText = bodyText.replace(divNoneRegex, '');
+
+  corpus.push({
+    id: post.id,
+    title: post.data.title,
+    tags: post.data.tags ?? [],
+    body: bodyText,
+  });
+}
+---
+
+<div>
+  <Search client:load data={corpus} />
+</div>
