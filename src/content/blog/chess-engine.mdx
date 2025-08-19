@@ -1,0 +1,159 @@
+---
+title: 'Chess Engine Dev Log'
+description: 'Detailed analysis and motivation behind the design choices made in the chess engine.'
+date: 2025-08-08
+tags: ['chess-engine']
+---
+
+import Figure from '@/components/Figure.astro'
+
+## People
+
+[[ todo: talk about prateek, etc. ]]
+
+## Naming the Engine
+
+To come up with the name of the engine, we sat with ChatGPT and fed it different ideas and prompts to come up with the name. The idea was to name it something sea-related, like a monster, that would be bigger than a fish and would eat fish (like [_stockfish_](https://en.wikipedia.org/wiki/Stockfish)) for breakfast.
+
+The reason for that is simple: we are aiming to build a chess engine that can rival [Stockfish](https://en.wikipedia.org/wiki/Stockfish_(chess)).
+
+Is it a lofty goal? Of course. Are we almost sure to miss and not be able to achieve our goal? Of course. We are just two people with 0 prior experience in chess programming, going up against a large team of Stockfish contributors who have been relentlessly optimizing the engine for more than a decade.
+
+### Why ``Scylla"?
+
+Ultimately, we settled on the name ``Scylla", as a reference to the multi-headed sea monster in The [Odyssey](https://en.wikipedia.org/wiki/Odyssey).
+
+<Figure
+  src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Scylla_Louvre_CA1341.jpg"
+  width="500"
+  height="250"
+  alt="picture depicting the sea monster Scylla"
+  caption="An ancient depiction of Scylla, as drawn on a Boeotian red-figure bell-crater from 450–425 BC."
+  class="mx-auto w-full max-w-xl rounded-md"
+/>
+
+## GitHub Repository
+
+Once the name was decided, the time came to make the GitHub repo. I made the repo [here](https://github.com/wermos/ScyllaChess),  and all the code can be found over there.
+
+## Language of Implementation
+
+We also had to decide what language to implement the engine in. I originally wanted to implement the engine in Rust, so that I could practice Rust programming and get used to thinking like a Rustacean.
+
+However, because Prateek did not know any Rust, we decided to move from Rust to C++ as the language of implementation. Since I was the "technical lead", I decided that we would use C++23 (the latest version at the time) so that we could use all the latest features and benefit from as much `constexpr{:cpp}` as possible.
+
+## References
+
+Since I had no prior experience with chess engine programming, I had to do some reading to understand the basics and figure out where to start. To that end, the main references I looked at, while implementing the engine and thinking about how to implement it, are
+
+- [The Rustic Book](https://rustic-chess.org/introduction/roadmap.html)
+- [The Chess Programming Wiki](https://www.chessprogramming.org/Main_Page)
+
+I also looked at some existing chess engines. The main ones are
+- [Stockfish](https://github.com/official-stockfish/Stockfish)
+- [LC0](https://github.com/LeelaChessZero/lc0) (Leela Chess Zero)
+- [Ethereal](https://github.com/AndyGrant/Ethereal)
+
+I kept the ``peeking under the hood" to a minimum to avoid being influenced too much by their design and ways of thinking, but every now and then I checked existing chess engine implementations to see how they did things.
+
+## Architecture Overview
+
+We decided to use C++23 as our programming language, and CMake for our build system.
+
+### CMake
+
+The entire repo can be built using CMake.
+
+I also added `CMakePresets.json` so that users would have a easier time building everything.
+
+[[ finish. talk about build targets, etc. ]]
+
+### Dependencies
+
+When using CMake, the two options we have for dependencies are to have them as [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) or to use CMake's `FetchContent{:cmake}` feature and download and compile them on-the-fly.
+
+I opted for the former because it makes the dependencies more visible.
+
+As of now, we have 3 main dependencies:
+
+- [`Catch2`](https://github.com/catchorg/Catch2) — This is the library we are using for testing. We could have also used [`GoogleTest`](https://github.com/google/googletest); there is no real difference between the two as far as the engine and its implementation are concerned. I simply opted to use `Catch2` because while I have prior experience with `GoogleTest`, I have no prior experience with `Catch2`.
+- [`libassert`](https://github.com/jeremy-rifkin/libassert) — This is an assertions library. The reason I decided to use this library over the basic `static_assert{:cpp}` and `assert{:cpp}` functions is because this library allows me to output more useful assertion messages for the user, to help ease debugging.
+- [`Xoshiro-cpp`](https://github.com/Reputeless/Xoshiro-cpp) — I decided to opt for the ``Xoshiro256\*\*" PRNG for my needs. W`e need a PRNG to implement Zobrist hashing. We will discuss Zobrist hashing, what it is, and how I implemented it later, in more detail.
+
+### File Structure
+
+Barring configuration files like `.gitmodules`, `.precommit-config.yaml`, etc., we have 3 main directories:
+
+- `include/` — This directory holds all the header files, like `scylla/core/types.hpp` for example.
+- `src/` — This directory is supposed to hold the ``end-result" files like the final chess application that can be hooked on to [Cutechess](https://cutechess.com/), for example, or uploaded to [Lichess](https://github.com/lichess-bot-devs/lichess-bot). However, since we are not at that stage yet, this directory is mostly empty, with a couple of dummy files that are required to be there to keep CMake happy.
+- `tests/` — This directory holds all the tests that we have to ensure that our implementation of the different subsystems are correct.
+
+### Code Formatting
+
+For code formatting, we are are using `clang-format`, with the Google style with some minor modifications (like using 4 spaces for indentation instead of just 2, among a few others).
+
+For CMake files, we are using `cmake-format` with all the default options, with the exception of the tab size. Once again, we are using a tab size of 4.
+
+Both of the aforementioned formatting tools are being handled by [`pre-commit`](https://pre-commit.com/). [[finish]]
+
+### GitHub Actions
+
+asdf
+
+### Testing
+
+As I mentioned before, we are using the `Catch2` library for testing. 
+
+## Design Overview
+
+There are a lot of things to talk about related to the design of the engine. But before that, we need to take a small detour to understand the steps of writing a chess engine.
+
+### Steps of Writing a Chess Engine
+
+The [Rustic book](https://rustic-chess.org/introduction/roadmap.html) does a great job of explaining the overall roadmap. We will paste a snippet of the first phase below:
+
+> - Design and write the board representation
+>   - Represent the board
+>   - Represent the pieces
+>   - Read a position from an FEN-string
+>   - Keep the current state of the game
+>   - Keep a history of played moves
+>   - Implement Zobrist hashing
+>   - Create functions to control the board
+>   - Create functions to get information from the board
+> - Design and write the move generator
+>   - "Teach" the move generator how the pieces move
+>   - Create a move format
+>   - Generate moves for all the pieces when the MG is given a position
+>   - Take special moves into account (such as castling)
+>   - Adds generated moves to a move list and returns this when done
+>   - Can generate captures and silent moves separately
+>   - Can determine if a square is attacked
+> - Add perft (performance testing)
+>   - Add a perft function that runs on a given position.
+>   - Run through a perft suite containing "tricky" positions. 
+
+That's quite a lot, just to get up and running! But I wanted to do the whole thing from scratch and not rely on an existing chess library for the backbone, because it's more fun that way, we get to learn more, and I get to flex my software architecture and software design muscles.
+
+### Board representation
+
+I read through the CPW page on [Board Representations](https://www.chessprogramming.org/Board_Representation) to see what board representations people usually use.
+
+After reading through it for some time, I decided to use the bitboard representation, because I wanted my engine to be fast and it seemed like the bitboard representation was the one that offered the greatest speed.
+
+At its core, it uses 6 bitboards, one for each piece type (rook, knight, bishop, queen, king, pawn) per color (black and white) to store the pieces and their positions.
+
+Moreover, for the movegen phase, bitboards have optimizations like [magic bitboards](https://www.chessprogramming.org/Magic_Bitboards) which are essentially pre-computed attack masks for each piece type. The idea of magic bitboards was of great interest to me, because I thought (and still do) that if I design the core of the library correctly, we can essentially compute all the magic bitboards at compile-time using `constexpr{:cpp}` and `consteval{:cpp}` constructs.
+
+Whether that is possible or not remains to be seen, as I have not reached that stage in the implementation yet.
+
+#### Core Types
+
+For the bitboard, there are 4 main types:
+
+1. `File`
+2. `Rank`
+3. `Square`
+4. `Bitboard`
+
+The names are mostly self-explanatory: The `File`, `Rank`, and `Square` classes are wrappers around 
