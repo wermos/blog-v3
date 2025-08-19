@@ -7,7 +7,6 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import icon from 'astro-icon'
 import mermaid from 'astro-mermaid'
 import expressiveCode from 'astro-expressive-code'
-// import pagefind from 'astro-pagefind'
 
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
@@ -22,8 +21,6 @@ import rehypeMathjax from 'rehype-mathjax/browser'
 
 import tailwindcss from '@tailwindcss/vite'
 
-import pagefind from './src/integrations/pagefind'
-
 import { extractHeadingHtml } from './src/lib/heading-html-extractor'
 
 export default defineConfig({
@@ -34,7 +31,7 @@ export default defineConfig({
     theme: 'default',
     autoTheme: true,
     mermaidConfig: {
-      startOnLoad: false, // Let astro-mermaid handle initialization
+      startOnLoad: false,
     }
   }), expressiveCode({
     themes: ['catppuccin-latte', 'catppuccin-frappe'],
@@ -54,7 +51,7 @@ export default defineConfig({
       collapseStyle: 'collapsible-auto',
       showLineNumbers: false,
     },
-  }), mdx(), react(), sitemap(), icon(), pagefind()],
+  }), mdx(), react(), sitemap(), icon()],
   vite: {
     plugins: [tailwindcss()],
   },
