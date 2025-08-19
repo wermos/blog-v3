@@ -69,8 +69,6 @@ Let $a, b, c$ be positive real numbers. Show that
 
 #### Problem 3
 
-#### Problem 4
-
 ### Cauchy-Schwarz Problems
 
 #### Problem 1
@@ -79,4 +77,24 @@ Consider the function $f\colon \R\to\R$ defined as $f(x) \coloneqq \dfrac{(x + k
 
 #### Problem 2
 
+Let $a_1, a_2, \dots, a_n$ and $b_1, b_2, \dots, b_n$ be positive real numbers such that $a_1 + a_2 + \dots + a_n = b_1 + b_2 + \dots + b_n$. Show that
+\begin{equation*}
+\dfrac{a_1^2}{a_1 + b_1} + \dfrac{a_1^2}{a_1 + b_1} + \dots + \dfrac{a_n^2}{a_n + b_n} \ge \dfrac{a_1 + a_2 + \dots + a_n}{2}
+\end{equation*}
+
 #### Problem 3
+
+Let $a_1, a_2, \dots, a_n$ be real numbers. Show that
+
+
+### Miscellaneous Problems
+
+#### Problem 1
+
+If $abc = 1$, then show that $a^2 + b^2 + c^2 \ge a + b + c$.
+
+
+Let $a, b, c, d$ be real numbers. What is the minimum value of
+\begin{equation}
+(a + b + c + d)\left(\dfrac{1}{a} + \dfrac{1}{b} + \dfrac{1}{c} + \dfrac{1}{d}\right)?
+\end{equation}
