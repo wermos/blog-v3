@@ -3,3 +3,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://wermos.github.io/blog-v3/sitemap-index.xml
+
+# Algolia-Crawler-Verif: C31C40B31D42E6BB
