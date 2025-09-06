@@ -5,11 +5,26 @@ export const GET: APIRoute = async () => {
   const posts = await getCollection("blog");
 
   const body = {
-    posts: posts.map((post) => ({
-      title: post.data.title,
-      tags: post.data.tags || [],
-      path: `/blog/${post.id}/`, // Use id since slug doesn't exist
-    })),
+    posts: await Promise.all(
+      posts.map(async (post) => {
+        let image = null;
+        if (post.data.image) {
+          try {
+            const resolved = await import(post.data.image.src);
+            image = resolved.default; // Vite gives you the final URL
+          } catch (e) {
+            image = null;
+          }
+        }
+
+        return {
+          title: post.data.title,
+          tags: post.data.tags || [],
+          path: `/blog/${post.id}/`,
+          image,
+        };
+      })
+    ),
   };
 
   return new Response(JSON.stringify(body), {
