@@ -20,7 +20,7 @@ export const GET: APIRoute = async () => {
         return {
           title: post.data.title,
           tags: post.data.tags || [],
-          path: `/blog/${post.id}/`,
+          path: `${import.meta.env.BASE_URL}blog/${post.id}/`,
           image,
         };
       })
